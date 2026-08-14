@@ -1,4 +1,3 @@
-USE vietlogis_demo;
 
 TRUNCATE TABLE pricing_rates;
 
