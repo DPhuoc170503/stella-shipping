@@ -15,14 +15,27 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Đường dẫn hỗ trợ khởi tạo Database trực tiếp từ trình duyệt
+// Hàm hỗ trợ đọc và thực thi từng câu lệnh SQL lẻ
+const executeSqlFile = async (filePath) => {
+    if (!fs.existsSync(filePath)) return;
+    const sqlContent = fs.readFileSync(filePath, 'utf8');
+
+    // Tách các câu lệnh theo dấu chấm phẩy ;
+    const statements = sqlContent
+        .split(';')
+        .map(stmt => stmt.trim())
+        .filter(stmt => stmt.length > 0);
+
+    for (const statement of statements) {
+        await db.query(statement);
+    }
+};
+
+// Route khởi tạo Database chuẩn xác
 app.get('/api/init-db', async (req, res) => {
     try {
-        const schemaSql = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
-        const migrationSql = fs.readFileSync(path.join(__dirname, 'pricing_migration.sql'), 'utf8');
-
-        await db.query(schemaSql);
-        await db.query(migrationSql);
+        await executeSqlFile(path.join(__dirname, 'schema.sql'));
+        await executeSqlFile(path.join(__dirname, 'pricing_migration.sql'));
 
         res.send("✅ Đã khởi tạo cơ sở dữ liệu thành công!");
     } catch (err) {
