@@ -39,12 +39,16 @@ CREATE TABLE IF NOT EXISTS admin_users (
   role VARCHAR(100) NOT NULL DEFAULT 'Biên tập viên',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
--- Pricing Rates table
+
+-- Pricing Rates table (Thêm DROP TABLE để làm sạch bảng cũ thiếu cột)
+DROP TABLE IF EXISTS pricing_rates;
+
 CREATE TABLE IF NOT EXISTS pricing_rates (
   id INT AUTO_INCREMENT PRIMARY KEY,
   origin VARCHAR(255),
   destination VARCHAR(255),
   service VARCHAR(100),
+  service_type VARCHAR(100),
   price VARCHAR(100),
   unit VARCHAR(50),
   notes TEXT,
