@@ -1,7 +1,3 @@
--- Run this in MySQL Workbench to create sample DB and tables
-CREATE DATABASE IF NOT EXISTS vietlogis_demo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE vietlogis_demo;
-
 -- Navigation table
 CREATE TABLE IF NOT EXISTS navigation (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -44,7 +40,7 @@ CREATE TABLE IF NOT EXISTS admin_users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Seed admin users (passwords are plain-text for demo; use bcrypt in production)
+-- Seed admin users
 TRUNCATE TABLE admin_users;
 INSERT INTO admin_users (username, password, name, role) VALUES
 ('admin', 'admin123', 'Admin', 'Quản trị viên'),
