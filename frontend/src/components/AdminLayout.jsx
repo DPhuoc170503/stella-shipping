@@ -66,6 +66,7 @@ const NAV_ITEMS = [
     { icon: '🖼️', label: 'Media', path: '/admin/media' },
   ]},
   { section: 'Khách hàng & Kinh doanh', items: [
+    { icon: '💰', label: 'Bảng giá', path: '/admin/pricing' },
     { icon: '💼', label: 'Báo giá (Leads)', path: '/admin/quotes' },
   ]},
   { section: 'Quản lý hệ thống', items: [

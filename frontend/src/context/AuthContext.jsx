@@ -2,12 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 
 const STORAGE_KEY = 'stella_admin_auth'
 
-// Demo credentials — replace with real auth in production
-const ADMIN_USERS = [
-  { username: 'admin', password: 'admin123', name: 'Admin', role: 'Quản trị viên' },
-  { username: 'editor', password: 'editor123', name: 'Editor', role: 'Biên tập viên' },
-]
-
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
@@ -28,13 +22,26 @@ export function AuthProvider({ children }) {
     }
   }, [user])
 
-  const login = (username, password) => {
-    const found = ADMIN_USERS.find(u => u.username === username && u.password === password)
-    if (found) {
-      setUser({ username: found.username, name: found.name, role: found.role })
-      return { success: true }
+  const login = async (username, password) => {
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+      const res = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        setUser(data.user);
+        return { success: true };
+      } else {
+        return { success: false, error: data.error || 'Tên đăng nhập hoặc mật khẩu không đúng.' };
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      return { success: false, error: 'Không thể kết nối đến máy chủ.' };
     }
-    return { success: false, error: 'Tên đăng nhập hoặc mật khẩu không đúng.' }
   }
 
   const logout = () => setUser(null)

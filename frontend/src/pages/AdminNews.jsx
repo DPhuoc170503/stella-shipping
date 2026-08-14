@@ -132,6 +132,19 @@ export default function AdminNews() {
   const [page, setPage] = useState(1)
   const perPage = 8
 
+  // Media files
+  const [mediaFiles, setMediaFiles] = useState([])
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
+  React.useEffect(() => {
+    fetch(`${API_URL}/api/media`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) setMediaFiles(data)
+      })
+      .catch(console.error)
+  }, [])
+
   // modal states
   const [showEditor, setShowEditor] = useState(false)
   const [editingId, setEditingId] = useState(null)
@@ -365,9 +378,10 @@ export default function AdminNews() {
               </div>
 
               <div className="adm-form-group">
-                <label>Ảnh đại diện</label>
-                <div className="adm-img-preview">
-                  {IMAGES.map(img => (
+                <label>Ảnh đại diện (Chọn ảnh mẫu hoặc ảnh đã tải lên từ thư viện Media)</label>
+                <input type="text" value={form.img} onChange={e => setForm(f => ({ ...f, img: e.target.value }))} placeholder="Ví dụ: http://localhost:4000/uploads/..." style={{ marginBottom: 12 }} />
+                <div className="adm-img-preview" style={{ maxHeight: 200, overflowY: 'auto', padding: 4, background: '#f8fafc', borderRadius: 8, border: '1px solid #e1e8ef' }}>
+                  {[...IMAGES, ...mediaFiles.map(f => `${API_URL}${f.url}`)].map(img => (
                     <img key={img} src={img} alt="" className={`adm-img-opt ${form.img === img ? 'selected' : ''}`} onClick={() => setForm(f => ({ ...f, img }))} />
                   ))}
                 </div>

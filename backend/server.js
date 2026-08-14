@@ -9,11 +9,18 @@ const navRoute = require('./routes/nav');
 const articlesRoute = require('./routes/articles');
 const pricingRoute = require('./routes/pricing');
 const quotesRoute = require('./routes/quotes');
+const settingsRoute = require('./routes/settings');
+const mediaRoute = require('./routes/media');
+const statsRoute = require('./routes/stats');
+const authRoute = require('./routes/auth');
 
 dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the uploads folder
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Hàm hỗ trợ đọc và thực thi từng câu lệnh SQL lẻ
 const executeSqlFile = async (filePath) => {
@@ -47,6 +54,10 @@ app.use('/api/nav', navRoute);
 app.use('/api/articles', articlesRoute);
 app.use('/api/pricing', pricingRoute);
 app.use('/api/quotes', quotesRoute);
+app.use('/api/settings', settingsRoute);
+app.use('/api/media', mediaRoute);
+app.use('/api/stats', statsRoute);
+app.use('/api/auth', authRoute);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Backend running on http://localhost:${port}`));

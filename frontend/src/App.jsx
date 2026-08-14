@@ -20,6 +20,9 @@ import AdminLogin from './pages/AdminLogin';
 import AdminNews from './pages/AdminNews';
 import AdminPricing from './pages/AdminPricing';
 import AdminQuotes from './pages/AdminQuotes';
+import AdminSettings from './pages/AdminSettings';
+import AdminMedia from './pages/AdminMedia';
+import AdminStats from './pages/AdminStats';
 import { ArticlesProvider } from './context/ArticlesContext';
 import { AuthProvider } from './context/AuthContext';
 
@@ -65,10 +68,10 @@ export default function App() {
           <Route path="/admin/news" element={<AdminLayout><AdminNews /></AdminLayout>} />
           <Route path="/admin/pricing" element={<AdminPricing />} />
           <Route path="/admin/categories" element={<AdminLayout><div style={{ padding: 40, textAlign: 'center', color: '#7b8a9a' }}><h2>📂 Quản lý Danh mục</h2><p>Tính năng đang phát triển...</p></div></AdminLayout>} />
-          <Route path="/admin/media" element={<AdminLayout><div style={{ padding: 40, textAlign: 'center', color: '#7b8a9a' }}><h2>🖼️ Quản lý Media</h2><p>Tính năng đang phát triển...</p></div></AdminLayout>} />
-          <Route path="/admin/stats" element={<AdminLayout><div style={{ padding: 40, textAlign: 'center', color: '#7b8a9a' }}><h2>📊 Thống kê</h2><p>Tính năng đang phát triển...</p></div></AdminLayout>} />
+          <Route path="/admin/media" element={<AdminLayout><AdminMedia /></AdminLayout>} />
+          <Route path="/admin/stats" element={<AdminLayout><AdminStats /></AdminLayout>} />
           <Route path="/admin/users" element={<AdminLayout><div style={{ padding: 40, textAlign: 'center', color: '#7b8a9a' }}><h2>👥 Quản lý Người dùng</h2><p>Tính năng đang phát triển...</p></div></AdminLayout>} />
-          <Route path="/admin/settings" element={<AdminLayout><div style={{ padding: 40, textAlign: 'center', color: '#7b8a9a' }}><h2>⚙️ Cài đặt</h2><p>Tính năng đang phát triển...</p></div></AdminLayout>} />
+          <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
         </Routes>
       </ArticlesProvider>
     </AuthProvider>
