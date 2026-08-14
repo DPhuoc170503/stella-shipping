@@ -44,6 +44,9 @@ CREATE TABLE IF NOT EXISTS admin_users (
 -- Pricing Rates table (Đã bổ sung đầy đủ route, service_type và các cột cần thiết)
 DROP TABLE IF EXISTS pricing_rates;
 
+-- Pricing Rates table (Đã đầy đủ tất cả các cột: price_from, transit_time, currency, route,...)
+DROP TABLE IF EXISTS pricing_rates;
+
 CREATE TABLE IF NOT EXISTS pricing_rates (
   id INT AUTO_INCREMENT PRIMARY KEY,
   route VARCHAR(255),
@@ -52,7 +55,11 @@ CREATE TABLE IF NOT EXISTS pricing_rates (
   service VARCHAR(100),
   service_type VARCHAR(100),
   price VARCHAR(100),
+  price_from VARCHAR(100),
+  transit_time VARCHAR(100),
   unit VARCHAR(50),
+  currency VARCHAR(20),
+  valid_until VARCHAR(100),
   notes TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
