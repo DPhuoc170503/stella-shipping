@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const path = require('path');
-const db = require('./db'); // Kết nối file db.js
+const db = require('./db');
 
 const navRoute = require('./routes/nav');
 const articlesRoute = require('./routes/articles');
@@ -15,21 +15,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Tự động khởi tạo các bảng dữ liệu trên Database Render
-const autoInitDB = async () => {
+// Đường dẫn hỗ trợ khởi tạo Database trực tiếp từ trình duyệt
+app.get('/api/init-db', async (req, res) => {
     try {
         const schemaSql = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
         const migrationSql = fs.readFileSync(path.join(__dirname, 'pricing_migration.sql'), 'utf8');
 
         await db.query(schemaSql);
         await db.query(migrationSql);
-        console.log("==> Đã khởi tạo cơ sở dữ liệu trên Render thành công!");
-    } catch (err) {
-        console.log("Thông báo DB:", err.message);
-    }
-};
 
-autoInitDB();
+        res.send("✅ Đã khởi tạo cơ sở dữ liệu thành công!");
+    } catch (err) {
+        res.status(500).send("❌ Lỗi khởi tạo DB: " + err.message);
+    }
+});
 
 app.use('/api/nav', navRoute);
 app.use('/api/articles', articlesRoute);
