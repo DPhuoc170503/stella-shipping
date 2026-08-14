@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import AdminLayout from '../components/AdminLayout'
 
-const API = 'http://localhost:4000/api/pricing'
+const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
 
 const SERVICE_TYPES = [
   { value: 'sea_fcl', label: '🚢 Biển FCL' },

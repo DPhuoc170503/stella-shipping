@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const API = 'http://localhost:4000/api/pricing'
+const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
 
 /* ── Cấu hình tabs dịch vụ ── */
 const TABS = [
@@ -235,7 +235,8 @@ export default function Pricing() {
     e.preventDefault()
     setSending(true)
     try {
-      const res = await fetch('http://localhost:4000/api/quotes', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      const res = await fetch(`${API_URL}/api/quotes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)

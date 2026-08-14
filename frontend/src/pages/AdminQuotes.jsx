@@ -107,7 +107,8 @@ export default function AdminQuotes() {
 
   const fetchQuotes = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/api/quotes');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      const res = await axios.get(`${API_URL}/api/quotes`);
       setQuotes(res.data);
     } catch (error) {
       console.error('Lỗi lấy danh sách báo giá', error);
@@ -122,7 +123,8 @@ export default function AdminQuotes() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.put(`http://localhost:4000/api/quotes/${id}`, { status: newStatus });
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      await axios.put(`${API_URL}/api/quotes/${id}`, { status: newStatus });
       setQuotes(prev => prev.map(q => q.id === id ? { ...q, status: newStatus } : q));
     } catch (error) {
       alert('Không thể cập nhật trạng thái');

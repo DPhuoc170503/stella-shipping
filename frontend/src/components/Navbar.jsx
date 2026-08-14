@@ -218,8 +218,9 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
     axios
-      .get('http://localhost:4000/api/nav')
+      .get(`${API_URL}/api/nav`)
       .then((r) => {
         if (r.data && r.data.length > 0) setItems(r.data)
       })

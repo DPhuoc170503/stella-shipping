@@ -300,7 +300,8 @@ export default function Contact() {
     setSending(true)
     try {
       const subjectNames = { quote: 'Yêu cầu báo giá', consult: 'Tư vấn vận chuyển', partner: 'Hợp tác kinh doanh', support: 'Hỗ trợ kỹ thuật', other: 'Khác' }
-      const res = await fetch('http://localhost:4000/api/quotes', {
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      const res = await fetch(`${API_URL}/api/quotes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
