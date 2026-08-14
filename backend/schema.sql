@@ -39,7 +39,17 @@ CREATE TABLE IF NOT EXISTS admin_users (
   role VARCHAR(100) NOT NULL DEFAULT 'Biên tập viên',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
+-- Pricing Rates table
+CREATE TABLE IF NOT EXISTS pricing_rates (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  origin VARCHAR(255),
+  destination VARCHAR(255),
+  service VARCHAR(100),
+  price VARCHAR(100),
+  unit VARCHAR(50),
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- Seed admin users
 TRUNCATE TABLE admin_users;
 INSERT INTO admin_users (username, password, name, role) VALUES
