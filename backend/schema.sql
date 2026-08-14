@@ -41,10 +41,12 @@ CREATE TABLE IF NOT EXISTS admin_users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Pricing Rates table (Thêm DROP TABLE để làm sạch bảng cũ thiếu cột)
+-- Pricing Rates table (Đã bổ sung đầy đủ route, service_type và các cột cần thiết)
 DROP TABLE IF EXISTS pricing_rates;
 
 CREATE TABLE IF NOT EXISTS pricing_rates (
   id INT AUTO_INCREMENT PRIMARY KEY,
+  route VARCHAR(255),
   origin VARCHAR(255),
   destination VARCHAR(255),
   service VARCHAR(100),
