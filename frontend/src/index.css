@@ -1,0 +1,153 @@
+*{box-sizing:border-box;font-family:'Inter',Arial,Helvetica,sans-serif}
+body{margin:0;color:#1f2d3d; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale}
+h1, h2, h3, h4, h5, h6, .brand-name, .nav-link, .btn, .kicker, .eyebrow {font-family: 'Be Vietnam Pro', sans-serif;}
+a{color:inherit}
+
+/* Contact page styles */
+.container{max-width:1100px;margin:0 auto;padding:24px}
+.page-title{text-align:center;margin-bottom:24px}
+.page-title .kicker{color:#f36c1f;letter-spacing:2px;font-size:13px;margin:8px 0}
+.page-title h1{font-size:32px;margin:6px 0}
+.page-title .lead{color:#6b7a8a}
+
+.contact-grid{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:start}
+.contact-form{background:#f3f6f8;padding:24px;border-radius:6px}
+.contact-form label{display:block;font-size:13px;color:#556;margin:12px 0 6px}
+.contact-form input,.contact-form select,.contact-form textarea{width:100%;padding:12px;border:1px solid #e1e6ea;border-radius:4px;background:#fff}
+.contact-form .row{display:flex;gap:16px}
+.contact-form .col{flex:1}
+.btn-primary{display:inline-block;margin-top:18px;background:#f36c1f;color:#fff;padding:14px 18px;border-radius:6px;border:none;cursor:pointer;width:100%;font-weight:600}
+
+.contact-aside .info-card{background:#0f2b57;color:#fff;padding:20px;border-radius:8px}
+.contact-aside .info-card h3{margin-top:0}
+.info-list{list-style:none;padding:0;margin:0}
+.info-list li{margin:12px 0}
+.branches-card{background:#f7f9fb;padding:16px;border-radius:8px;margin-top:16px}
+.branches-card h4{margin:0 0 8px}
+.branches-card ul{list-style:none;padding:0;margin:0}
+.branches-card li{padding:12px 0;border-top:1px solid #e6ecf0}
+.branches-card li:first-child{border-top:0;padding-top:0}
+.muted{color:#f36c1f}
+
+/* Header / Navbar styles */
+.site-header{background:#fff}
+.topbar{background:transparent}
+.topbar-inner{display:flex;justify-content:space-between;align-items:center;padding:8px 0;color:#233}
+.topbar-right{font-size:13px;color:#2b3b4a}
+
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.brand{display:flex;align-items:center;gap:12px}
+.logo-icon{background:#f36c1f;color:#fff;border-radius:8px;padding:8px;font-size:18px}
+.brand-name{font-weight:700;color:#16324a}
+.brand-sub{font-size:12px;color:#7b8a9a;letter-spacing:1px}
+
+.main-nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+.main-nav .nav-link{color:#16324a;text-decoration:none;padding:6px 0;margin:0 12px;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;font-size:0.85em;transition:color .18s ease, border-color .18s ease}
+.main-nav .nav-link:hover{color:#0f2433}
+.main-nav .nav-link.active{color:#f36c1f;font-weight:700;border-bottom:3px solid #f36c1f;padding-bottom:4px}
+
+.header-actions{display:flex;align-items:center;gap:12px}
+.header-actions .phone{color:#16324a;text-decoration:none;font-weight:600}
+.header-actions .cta{background:#f36c1f;color:#fff;padding:10px 14px;border-radius:6px;text-decoration:none}
+
+@media(max-width:900px){
+	.main-nav{display:none}
+}
+
+/* Hero */
+.hero{position:relative;min-height:520px;display:flex;align-items:center;color:#fff;background-size:cover;background-position:center;}
+.hero::before{content:"";position:absolute;inset:0;z-index:0}
+.hero-overlay{position:absolute;inset:0;background-image: linear-gradient(90deg, rgba(8,29,52,0.45), rgba(8,29,52,0.25)), url('/Banner.jpg');background-size:cover;background-position:center;z-index:1}
+.hero-inner{position:relative;z-index:2;padding:60px 24px}
+.hero .eyebrow{color:#f36c1f;font-weight:600;letter-spacing:3px;margin-bottom:12px}
+.hero h1{font-size:56px;line-height:0.95;margin:0 0 18px;font-weight:700}
+.hero .highlight{color:#f36c1f}
+.hero-lead{max-width:640px;color:rgba(255,255,255,0.85);margin-bottom:22px}
+.hero-cta{display:flex;gap:14px}
+.btn{display:inline-block;padding:12px 18px;border-radius:8px;border:none;cursor:pointer;text-decoration:none}
+.btn-primary{background:#f36c1f;color:#fff;font-weight:700}
+.btn-ghost{background:rgba(255,255,255,0.08);color:#fff;border:1px solid rgba(255,255,255,0.12)}
+
+/* Quick quote card in hero */
+.quote-card{background:#fff;border-radius:10px;padding:18px;min-width:420px;box-shadow:0 6px 24px rgba(5,20,40,0.12);color:#16324a}
+.quote-card h4{margin:0 0 8px}
+.quote-form .row{display:flex;gap:8px;margin-bottom:10px}
+.quote-form input,.quote-form select{flex:1;padding:10px;border:1px solid #e6eef5;border-radius:6px}
+
+/* Services grid */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+.service-card{background:#fff;padding:16px;border-radius:8px;box-shadow:0 6px 18px rgba(10,20,35,0.04);text-align:center}
+.service-card img{width:100%;height:120px;object-fit:contain;opacity:0.95}
+.service-card h4{margin:12px 0 8px}
+
+.stat-bar{display:flex;gap:24px;justify-content:space-between;padding:22px;margin-top:28px;background:#f7fafc;border-radius:10px;text-align:center}
+.stat-bar div{flex:1}
+
+@media(max-width:800px){
+	.hero h1{font-size:34px}
+	.hero{min-height:420px}
+	.hero-inner{padding:36px 16px}
+}
+
+/* About page additions */
+.about-hero{position:relative;background-image:url('/Banner.jpg');background-size:cover;background-position:center;color:#fff}
+.about-hero-overlay{background:linear-gradient(90deg,rgba(8,29,52,0.6),rgba(8,29,52,0.35));padding:40px 0}
+.about-cards .cap-card{background:#fff;border-radius:8px;padding:12px;flex:1;min-width:220px;box-shadow:0 6px 18px rgba(10,20,35,0.06)}
+.about-cards .cap-card img{width:100%;height:120px;object-fit:cover;border-radius:6px}
+.case img{object-fit:cover}
+
+@media(max-width:900px){
+  .about-cards{flex-direction:column}
+  .about-hero .hero-inner{padding:28px 12px}
+}
+
+/* Services section (CMA CGM-like) */
+.services-section{padding:40px 0}
+.services-section .section-title{font-size:40px;color:#153468;margin:0 0 8px}
+.services-section .section-lead{color:#33475b;margin-bottom:26px}
+.services-row{display:flex;gap:24px}
+.services-col{flex:1;padding-left:22px;border-left:4px solid #d71a1a}
+.col-title{color:#d71a1a;letter-spacing:2px;font-weight:700;margin-bottom:12px}
+.service-tile{display:flex;gap:14px;align-items:center;background:#f7f9fb;padding:18px;border-radius:6px;margin-bottom:18px;text-decoration:none;color:inherit;box-shadow:0 14px 28px rgba(10,20,35,0.04)}
+.service-tile img{width:160px;height:110px;object-fit:cover;border-radius:4px}
+.service-tile .tile-content h3{margin:0;color:#153468;letter-spacing:2px;text-transform:uppercase;border-bottom:2px dotted rgba(21,52,104,0.08);padding-bottom:6px}
+
+@media(max-width:1000px){
+	.services-row{flex-direction:column}
+	.services-col{padding-left:0;border-left:0}
+	.service-tile{flex-direction:row}
+}
+
+/* Center and refine typography for tiles */
+.services-section .section-title{text-align:center}
+.services-section .section-lead{text-align:center}
+.services-row{align-items:flex-start}
+.service-tile{display:flex;align-items:center}
+.service-tile .tile-content{flex:1;text-align:center;padding-left:12px;padding-right:12px}
+.service-tile .tile-content h3{font-size:18px;letter-spacing:3px;border-bottom:0;padding-bottom:0}
+.service-tile:hover .tile-content h3{color:#d71a1a}
+
+/* Make tiles visually centered within column */
+.services-col{display:flex;flex-direction:column;align-items:center}
+.service-tile{width:100%;max-width:520px}
+
+@media(max-width:1000px){
+	.service-tile{max-width:100%}
+}
+
+/* Customer service promo */
+.customer-service{display:flex;gap:28px;align-items:center;justify-content:center;padding:28px;background:#fff;border-radius:8px;margin:40px auto;box-shadow:0 18px 40px rgba(10,20,35,0.06);max-width:1100px}
+.customer-service .customer-image{flex:0 0 480px;display:flex;justify-content:center}
+.customer-service img{width:100%;height:auto;border-radius:6px;display:block}
+.customer-service .customer-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px}
+.customer-service h2{font-size:28px;color:#153468;margin:6px 0 12px}
+.customer-service p{color:#33475b;margin-bottom:18px;max-width:560px}
+.customer-cta{background:#d71a1a;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;font-weight:700}
+
+@media(max-width:900px){
+	.customer-service{flex-direction:column;padding:18px}
+	.customer-service .customer-image{width:100%;flex:auto}
+	.customer-service .customer-content{text-align:center}
+}
+
+/* Footer styles — now scoped inside FFotter.jsx component */
