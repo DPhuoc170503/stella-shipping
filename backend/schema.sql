@@ -40,11 +40,7 @@ CREATE TABLE IF NOT EXISTS admin_users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Pricing Rates table (Thêm DROP TABLE để làm sạch bảng cũ thiếu cột)
--- Pricing Rates table (Đã bổ sung đầy đủ route, service_type và các cột cần thiết)
-DROP TABLE IF EXISTS pricing_rates;
 
--- Pricing Rates table (Đã đầy đủ tất cả các cột: price_from, transit_time, currency, route,...)
 DROP TABLE IF EXISTS pricing_rates;
 
 CREATE TABLE IF NOT EXISTS pricing_rates (
@@ -60,6 +56,7 @@ CREATE TABLE IF NOT EXISTS pricing_rates (
   unit VARCHAR(50),
   currency VARCHAR(20),
   valid_until VARCHAR(100),
+  note TEXT,
   notes TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
