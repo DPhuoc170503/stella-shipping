@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { verifyToken } = require('../middleware/auth');
 
 // Đảm bảo thư mục uploads tồn tại
 const uploadDir = path.join(__dirname, '../uploads');
@@ -68,7 +69,7 @@ router.get('/', (req, res) => {
 });
 
 // POST /api/media/upload - Upload file mới
-router.post('/upload', (req, res) => {
+router.post('/upload', verifyToken, (req, res) => {
   upload.single('image')(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ error: err.message });
@@ -90,7 +91,7 @@ router.post('/upload', (req, res) => {
 });
 
 // DELETE /api/media/:filename - Xóa file
-router.delete('/:filename', (req, res) => {
+router.delete('/:filename', verifyToken, (req, res) => {
   try {
     const filename = req.params.filename;
     const filepath = path.join(uploadDir, filename);

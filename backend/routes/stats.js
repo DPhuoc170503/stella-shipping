@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const { verifyToken } = require('../middleware/auth');
 
 // GET /api/stats
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
   try {
     // 1. Thống kê Quotes
     const [quotesSummary] = await pool.query(`
@@ -24,6 +25,10 @@ router.get('/', async (req, res) => {
         SUM(CASE WHEN status = 'draft' THEN 1 ELSE 0 END) as drafts
       FROM articles
     `);
+
+    // 2.5 Thống kê Danh mục và Người dùng
+    const [categoriesSummary] = await pool.query('SELECT COUNT(*) as total FROM categories');
+    const [usersSummary] = await pool.query('SELECT COUNT(*) as total FROM admin_users');
 
     // 3. 5 Quotes mới nhất
     const [recentQuotes] = await pool.query(`
@@ -57,6 +62,8 @@ router.get('/', async (req, res) => {
         published: articlesSummary[0].published || 0,
         drafts: articlesSummary[0].drafts || 0,
       },
+      categories: { total: categoriesSummary[0].total || 0 },
+      users: { total: usersSummary[0].total || 0 },
       recentQuotes,
       quotesTrend
     });

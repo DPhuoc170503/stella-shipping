@@ -34,6 +34,7 @@ export function AuthProvider({ children }) {
       
       if (res.ok && data.success) {
         setUser(data.user);
+        localStorage.setItem('adminToken', data.token);
         return { success: true };
       } else {
         return { success: false, error: data.error || 'Tên đăng nhập hoặc mật khẩu không đúng.' };
@@ -44,7 +45,10 @@ export function AuthProvider({ children }) {
     }
   }
 
-  const logout = () => setUser(null)
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem('adminToken');
+  }
 
   return (
     <AuthContext.Provider value={{ user, login, logout, isAuthenticated: !!user }}>

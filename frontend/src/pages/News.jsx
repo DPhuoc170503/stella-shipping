@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useArticles } from '../context/ArticlesContext'
+import SEO from '../components/SEO'
 
 /* ─── Scroll-reveal hook ─── */
 function useScrollReveal() {
@@ -22,7 +23,7 @@ function useScrollReveal() {
   return containerRef
 }
 
-const CATEGORIES = ['Tất cả', 'Công ty', 'Thị trường', 'Dịch vụ', 'Công nghệ', 'Bền vững', 'Sự kiện']
+// removed hardcoded CATEGORIES
 
 const TRENDING = [
   { title: 'Cước vận tải biển quý 4 dự kiến tăng 20%', views: '12.5K' },
@@ -170,10 +171,24 @@ const newsCSS = `
 export default function News() {
   const pageRef = useScrollReveal()
   const { articles: allArticles } = useArticles()
+  const [categories, setCategories] = useState(['Tất cả'])
   const [filter, setFilter] = useState('Tất cả')
   const [search, setSearch] = useState('')
   const [email, setEmail] = useState('')
   const [visibleCount, setVisibleCount] = useState(6)
+
+  useEffect(() => {
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+    fetch(`${API_URL}/api/categories`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const catNames = data.map(c => c.name)
+          setCategories(['Tất cả', ...catNames])
+        }
+      })
+      .catch(console.error)
+  }, [])
 
   // Only show published articles on the public News page
   const publishedArticles = allArticles.filter(a => a.status === 'published')
@@ -186,7 +201,7 @@ export default function News() {
 
   const visible = filtered.slice(0, visibleCount)
 
-  const categoryCounts = CATEGORIES.reduce((acc, cat) => {
+  const categoryCounts = categories.reduce((acc, cat) => {
     acc[cat] = cat === 'Tất cả' ? publishedArticles.length : publishedArticles.filter(a => a.category === cat).length
     return acc
   }, {})
@@ -212,7 +227,8 @@ export default function News() {
   }, [filter, search, visibleCount, pageRef])
 
   return (
-    <div ref={pageRef}>
+    <div ref={pageRef} className="news-page">
+      <SEO title="Tin tức & Kiến thức Logistics" description="Cập nhật tin tức thị trường, kiến thức logistics, xuất nhập khẩu và hải quan mới nhất từ Stella Shipping." />
       <style>{newsCSS}</style>
 
       {/* ═══════ HERO ═══════ */}
@@ -247,9 +263,9 @@ export default function News() {
 
       {/* ═══════ FILTERS ═══════ */}
       <div className="nw-filters rv">
-        {CATEGORIES.map(c => (
+        {categories.map(c => (
           <button key={c} className={`nw-fbtn ${filter === c ? 'active' : ''}`} onClick={() => { setFilter(c); setVisibleCount(6) }}>
-            {c}<span className="count">{categoryCounts[c]}</span>
+            {c}<span className="count">{categoryCounts[c] || 0}</span>
           </button>
         ))}
       </div>
@@ -323,10 +339,10 @@ export default function News() {
           {/* Categories */}
           <div className="nw-side-card rv d2">
             <h3>📂 Danh mục</h3>
-            {CATEGORIES.filter(c => c !== 'Tất cả').map(c => (
+            {categories.filter(c => c !== 'Tất cả').map(c => (
               <div key={c} className="nw-cat-item" onClick={() => { setFilter(c); setVisibleCount(6) }}>
                 <span>{c}</span>
-                <span className="nw-cat-count">{categoryCounts[c]}</span>
+                <span className="nw-cat-count">{categoryCounts[c] || 0}</span>
               </div>
             ))}
           </div>

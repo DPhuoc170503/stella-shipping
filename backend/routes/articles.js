@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const { verifyToken } = require('../middleware/auth');
 
 // ─── GET /api/articles ─── lấy tất cả bài (có thể filter ?status=published)
 router.get('/', async (req, res) => {
@@ -58,7 +59,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // ─── POST /api/articles ─── tạo bài mới
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
   try {
     const { title, desc, fullDesc, category, author, img, readTime, status } = req.body;
     if (!title || !desc) return res.status(400).json({ error: 'title và desc là bắt buộc' });
@@ -100,7 +101,7 @@ router.post('/', async (req, res) => {
 });
 
 // ─── PUT /api/articles/:id ─── cập nhật bài
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyToken, async (req, res) => {
   try {
     const { title, desc, fullDesc, category, author, img, readTime, status } = req.body;
     const { id } = req.params;
@@ -143,7 +144,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // ─── DELETE /api/articles/:id ─── xóa bài
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyToken, async (req, res) => {
   try {
     const [check] = await pool.query('SELECT id FROM articles WHERE id = ?', [req.params.id]);
     if (!check.length) return res.status(404).json({ error: 'Not found' });

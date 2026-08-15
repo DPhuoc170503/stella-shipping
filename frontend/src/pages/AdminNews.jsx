@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { useArticles } from '../context/ArticlesContext'
 
-const CATEGORIES = ['Công ty', 'Thị trường', 'Dịch vụ', 'Công nghệ', 'Bền vững', 'Sự kiện']
 const IMAGES = ['/Banner.jpg', '/Shippinglines.jpg', '/AirFreight.jpg', '/INTERMODA.jpg', '/Logictis.jpg', '/OURRANGE.jpg', '/Chacracter.jpg']
 
 const emptyForm = {
-  title: '', desc: '', fullDesc: '', category: 'Công ty', author: '',
+  title: '', desc: '', fullDesc: '', category: '', author: '',
   img: '/Banner.jpg', readTime: '3 phút', status: 'draft'
 }
 
@@ -132,11 +131,23 @@ export default function AdminNews() {
   const [page, setPage] = useState(1)
   const perPage = 8
 
-  // Media files
+  // Categories & Media files
+  const [categories, setCategories] = useState([])
   const [mediaFiles, setMediaFiles] = useState([])
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
   React.useEffect(() => {
+    fetch(`${API_URL}/api/categories`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          const catNames = data.map(c => c.name)
+          setCategories(catNames)
+          if (catNames.length > 0) emptyForm.category = catNames[0]
+        }
+      })
+      .catch(console.error)
+
     fetch(`${API_URL}/api/media`)
       .then(res => res.json())
       .then(data => {
@@ -167,7 +178,7 @@ export default function AdminNews() {
   const totalArticles = articles.length
   const published = articles.filter(a => a.status === 'published').length
   const drafts = articles.filter(a => a.status === 'draft').length
-  const categories = [...new Set(articles.map(a => a.category))].length
+  const uniqueCatCount = [...new Set(articles.map(a => a.category))].length
 
   /* ── Open editor ── */
   const openCreate = () => {
@@ -246,7 +257,7 @@ export default function AdminNews() {
           </div>
           <div className="adm-stat-card">
             <div className="adm-stat-icon purple">📂</div>
-            <div><div className="adm-stat-num">{categories}</div><div className="adm-stat-lbl">Danh mục</div></div>
+            <div><div className="adm-stat-num">{uniqueCatCount}</div><div className="adm-stat-lbl">Danh mục</div></div>
           </div>
         </div>
 
@@ -256,7 +267,7 @@ export default function AdminNews() {
             <input className="adm-search" type="text" placeholder="🔍 Tìm kiếm bài viết..." value={search} onChange={e => setSearch(e.target.value)} />
             <select className="adm-select" value={filterCat} onChange={e => { setFilterCat(e.target.value); setPage(1) }}>
               <option value="all">Tất cả danh mục</option>
-              {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+              {categories.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
             <select className="adm-select" value={filterStatus} onChange={e => { setFilterStatus(e.target.value); setPage(1) }}>
               <option value="all">Tất cả trạng thái</option>
@@ -354,7 +365,7 @@ export default function AdminNews() {
                 <div className="adm-form-group">
                   <label>Danh mục</label>
                   <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}>
-                    {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+                    {categories.map(c => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div className="adm-form-group">

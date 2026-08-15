@@ -38,18 +38,21 @@ export default function ArticleDetail() {
     .filter(a => a.category === article.category && a.id !== article.id)
     .slice(0, 3)
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  const imgUrl = article.img?.startsWith('/') ? `${API_URL}${article.img}` : article.img;
+
   return (
     <div>
       <SEO 
         title={article.title} 
-        description={article.desc} 
-        image={`http://localhost:3000${article.img}`} 
-        url={`http://localhost:3000/news/${article.id}`} 
+        description={article.desc || article.description} 
+        image={imgUrl} 
+        url={`${window.location.origin}/news/${article.id}`} 
       />
       <style>{detailCSS}</style>
 
       {/* ═══════ HEADER ═══════ */}
-      <div className="dt-hero" style={{ backgroundImage: `linear-gradient(rgba(15,43,87,0.7), rgba(15,43,87,0.85)), url(${article.img || '/Banner.jpg'})` }}>
+      <div className="dt-hero" style={{ backgroundImage: `linear-gradient(rgba(15,43,87,0.7), rgba(15,43,87,0.85)), url(${imgUrl || '/Banner.jpg'})` }}>
         <div className="dt-hero-inner">
           <Link to="/news" className="dt-back">← Quay lại Tin tức</Link>
           <div className="dt-cat">{article.category}</div>

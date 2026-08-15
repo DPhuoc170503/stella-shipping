@@ -9,7 +9,7 @@ const adminCSS = `
   .adm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
   .adm-header h1 { font-size: 28px; margin: 0; font-weight: 800; display: flex; align-items: center; gap: 10px; }
   
-  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 32px; }
   .stat-card { background: #fff; padding: 24px; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); border: 1px solid #f0f3f6; }
   .stat-card-title { font-size: 14px; color: #7b8a9a; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
   .stat-card-value { font-size: 32px; font-weight: 800; color: #0f2b57; }
@@ -49,7 +49,9 @@ export default function AdminStats() {
     const fetchStats = async () => {
       try {
         const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-        const res = await fetch(`${API_URL}/api/stats`);
+        const res = await fetch(`${API_URL}/api/stats`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+        });
         if (!res.ok) throw new Error('Lỗi khi tải dữ liệu thống kê');
         const json = await res.json();
         setData(json);
@@ -108,6 +110,11 @@ export default function AdminStats() {
             <div className="stat-card-title">Tổng Bài Viết</div>
             <div className="stat-card-value">{data.articles.total}</div>
             <div className="stat-card-desc">Đã đăng {data.articles.published} bài</div>
+          </div>
+          <div className="stat-card">
+            <div className="stat-card-title">Nhân Sự</div>
+            <div className="stat-card-value" style={{ color: '#8b5cf6' }}>{data.users.total}</div>
+            <div className="stat-card-desc" style={{ color: '#7c3aed' }}>Quản trị viên</div>
           </div>
           <div className="stat-card">
             <div className="stat-card-title">Tỷ Lệ Chốt Sale</div>

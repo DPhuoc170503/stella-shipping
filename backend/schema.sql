@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS pricing_rates (
 -- Seed admin users
 TRUNCATE TABLE admin_users;
 INSERT INTO admin_users (username, password, name, role) VALUES
-('admin', 'Stella@2024', 'Admin', 'Quản trị viên');
+('admin', '$2b$10$qPxyKJepKzRPBvk47PDkeOE2XOJOM.f8B52TcO1XIzi9DNyOosWQS', 'Admin', 'Quản trị viên');
 
 -- Seed articles
 TRUNCATE TABLE articles;
@@ -176,3 +176,21 @@ INSERT IGNORE INTO settings (setting_key, setting_value) VALUES (
     ]
   }'
 );
+
+-- Categories table
+CREATE TABLE IF NOT EXISTS categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  slug VARCHAR(255),
+  description TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+TRUNCATE TABLE categories;
+INSERT INTO categories (name, slug, description) VALUES
+('Công ty', 'cong-ty', 'Tin tức nội bộ và thông báo của công ty'),
+('Thị trường', 'thi-truong', 'Thông tin và phân tích thị trường logistics'),
+('Dịch vụ', 'dich-vu', 'Cập nhật về các dịch vụ vận tải'),
+('Công nghệ', 'cong-nghe', 'Ứng dụng công nghệ trong chuỗi cung ứng'),
+('Bền vững', 'ben-vung', 'Các sáng kiến logistics xanh và Net-Zero'),
+('Sự kiện', 'su-kien', 'Sự kiện, hội thảo và triển lãm');

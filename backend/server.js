@@ -13,6 +13,8 @@ const settingsRoute = require('./routes/settings');
 const mediaRoute = require('./routes/media');
 const statsRoute = require('./routes/stats');
 const authRoute = require('./routes/auth');
+const usersRoute = require('./routes/users');
+const categoriesRoute = require('./routes/categories');
 
 dotenv.config();
 const app = express();
@@ -38,7 +40,9 @@ const executeSqlFile = async (filePath) => {
     }
 };
 
-// Route khởi tạo Database chuẩn xác
+// LƯU Ý BẢO MẬT: Route khởi tạo Database đã được comment lại để bảo vệ dữ liệu trên Production.
+// Nếu bạn muốn chạy lại khi đang code ở máy cá nhân (development), hãy mở comment ra.
+/*
 app.get('/api/init-db', async (req, res) => {
     try {
         await executeSqlFile(path.join(__dirname, 'schema.sql'));
@@ -49,6 +53,7 @@ app.get('/api/init-db', async (req, res) => {
         res.status(500).send("❌ Lỗi khởi tạo DB: " + err.message);
     }
 });
+*/
 
 app.use('/api/nav', navRoute);
 app.use('/api/articles', articlesRoute);
@@ -58,6 +63,8 @@ app.use('/api/settings', settingsRoute);
 app.use('/api/media', mediaRoute);
 app.use('/api/stats', statsRoute);
 app.use('/api/auth', authRoute);
+app.use('/api/users', usersRoute);
+app.use('/api/categories', categoriesRoute);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Backend running on http://localhost:${port}`));

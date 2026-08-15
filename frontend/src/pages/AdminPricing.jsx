@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import AdminLayout from '../components/AdminLayout'
+
 
 const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
 
@@ -194,7 +194,7 @@ export default function AdminPricing() {
   }
 
   return (
-    <AdminLayout>
+    <>
       <style>{css}</style>
       <div className="ap-wrap">
 
@@ -347,6 +347,6 @@ export default function AdminPricing() {
           </div>
         </div>
       )}
-    </AdminLayout>
+    </>
   )
 }

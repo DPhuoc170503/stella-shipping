@@ -23,8 +23,11 @@ import AdminQuotes from './pages/AdminQuotes';
 import AdminSettings from './pages/AdminSettings';
 import AdminMedia from './pages/AdminMedia';
 import AdminStats from './pages/AdminStats';
+import AdminUsers from './pages/AdminUsers';
+import AdminCategories from './pages/AdminCategories';
 import { ArticlesProvider } from './context/ArticlesContext';
 import { AuthProvider } from './context/AuthContext';
+import { HelmetProvider } from 'react-helmet-async';
 
 import ChatWidget from './components/ChatWidget';
 
@@ -42,9 +45,10 @@ function PublicLayout({ children }) {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <ArticlesProvider>
-        <Routes>
+    <HelmetProvider>
+      <AuthProvider>
+        <ArticlesProvider>
+          <Routes>
           {/* ── Public routes ── */}
           <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
           <Route path="/services" element={<PublicLayout><Services /></PublicLayout>} />
@@ -66,15 +70,16 @@ export default function App() {
           {/* ── Admin routes (protected, admin layout) ── */}
           <Route path="/admin/quotes" element={<AdminLayout><AdminQuotes /></AdminLayout>} />
           <Route path="/admin/news" element={<AdminLayout><AdminNews /></AdminLayout>} />
-          <Route path="/admin/pricing" element={<AdminPricing />} />
-          <Route path="/admin/categories" element={<AdminLayout><div style={{ padding: 40, textAlign: 'center', color: '#7b8a9a' }}><h2>📂 Quản lý Danh mục</h2><p>Tính năng đang phát triển...</p></div></AdminLayout>} />
+          <Route path="/admin/pricing" element={<AdminLayout><AdminPricing /></AdminLayout>} />
+          <Route path="/admin/categories" element={<AdminLayout><AdminCategories /></AdminLayout>} />
           <Route path="/admin/media" element={<AdminLayout><AdminMedia /></AdminLayout>} />
           <Route path="/admin/stats" element={<AdminLayout><AdminStats /></AdminLayout>} />
-          <Route path="/admin/users" element={<AdminLayout><div style={{ padding: 40, textAlign: 'center', color: '#7b8a9a' }}><h2>👥 Quản lý Người dùng</h2><p>Tính năng đang phát triển...</p></div></AdminLayout>} />
+          <Route path="/admin/users" element={<AdminLayout><AdminUsers /></AdminLayout>} />
           <Route path="/admin/settings" element={<AdminLayout><AdminSettings /></AdminLayout>} />
-        </Routes>
-      </ArticlesProvider>
-    </AuthProvider>
+          </Routes>
+        </ArticlesProvider>
+      </AuthProvider>
+    </HelmetProvider>
   );
 }
 

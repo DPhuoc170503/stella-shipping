@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 const db = require('../db');
+const { verifyToken } = require('../middleware/auth');
 
 // ─── GET /api/quotes ─── Lấy danh sách báo giá (Dành cho Admin)
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM quotes ORDER BY created_at DESC');
     res.json(rows);
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // ─── PUT /api/quotes/:id ─── Cập nhật trạng thái báo giá
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
   try {

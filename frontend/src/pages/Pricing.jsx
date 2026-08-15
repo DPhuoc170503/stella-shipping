@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import SEO from '../components/SEO'
 
 const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
 
@@ -254,6 +255,7 @@ export default function Pricing() {
 
   return (
     <div className="pr-page">
+      <SEO title="Bảng giá cước vận tải" description="Tham khảo bảng giá cước vận tải biển FCL, LCL, vận tải hàng không và dịch vụ kho bãi được cập nhật liên tục." />
       <style>{css}</style>
 
       {/* ═══════ HERO ═══════ */}

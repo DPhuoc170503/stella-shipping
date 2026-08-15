@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useArticles } from '../context/ArticlesContext'
+import SEO from '../components/SEO'
 
 /* ─── Scroll-reveal hook (reused) ─── */
 function useScrollReveal() {
@@ -345,6 +346,7 @@ export default function Home() {
 
   return (
     <div ref={pageRef}>
+      <SEO />
       <style>{homeCSS}</style>
 
       {/* ═══════════════ 1. HERO ═══════════════ */}

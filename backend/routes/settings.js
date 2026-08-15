@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const { verifyToken } = require('../middleware/auth');
 
 // GET /api/settings/:key
 router.get('/:key', async (req, res) => {
@@ -19,7 +20,7 @@ router.get('/:key', async (req, res) => {
 });
 
 // PUT /api/settings/:key
-router.put('/:key', async (req, res) => {
+router.put('/:key', verifyToken, async (req, res) => {
   try {
     const { key } = req.params;
     const value = req.body;

@@ -35,7 +35,10 @@ export function ArticlesProvider({ children }) {
     try {
       const res = await fetch(API, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
         body: JSON.stringify(article),
       })
       if (!res.ok) throw new Error('Không thể thêm bài viết')
@@ -53,7 +56,10 @@ export function ArticlesProvider({ children }) {
     try {
       const res = await fetch(`${API}/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
         body: JSON.stringify(updates),
       })
       if (!res.ok) throw new Error('Không thể cập nhật bài viết')
@@ -69,7 +75,10 @@ export function ArticlesProvider({ children }) {
   /* ── Xóa bài ── */
   const deleteArticle = useCallback(async (id) => {
     try {
-      const res = await fetch(`${API}/${id}`, { method: 'DELETE' })
+      const res = await fetch(`${API}/${id}`, { 
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
+      })
       if (!res.ok) throw new Error('Không thể xóa bài viết')
       setArticles(prev => prev.filter(a => a.id !== id))
     } catch (err) {

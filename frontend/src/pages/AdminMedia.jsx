@@ -44,6 +44,9 @@ export default function AdminMedia() {
     try {
       const res = await fetch(`${API_URL}/api/media/upload`, {
         method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
         body: formData
       });
       const data = await res.json();
@@ -65,7 +68,8 @@ export default function AdminMedia() {
     
     try {
       const res = await fetch(`${API_URL}/api/media/${filename}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Lỗi khi xóa ảnh');
