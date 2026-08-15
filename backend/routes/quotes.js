@@ -126,11 +126,11 @@ router.post('/', async (req, res) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
-    res.json({ success: true, message: 'Đã gửi yêu cầu báo giá thành công' });
+    // Tạm thời tắt gửi email vì Render chặn cổng SMTP trên gói Miễn phí
+    // await transporter.sendMail(mailOptions);
+    res.json({ success: true, message: 'Đã lưu yêu cầu báo giá thành công' });
   } catch (error) {
     console.error('Lỗi gửi email:', error);
-    // Vẫn trả về success nếu đã lưu DB thành công, hoặc trả về error
     res.json({ success: true, message: 'Đã lưu yêu cầu báo giá thành công (Email bị lỗi)' });
   }
 });
