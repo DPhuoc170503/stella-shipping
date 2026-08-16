@@ -251,7 +251,7 @@ export default function FFotter() {
 
           {/* ── 1. Brand & Newsletter ── */}
           <div>
-            <Link to="/">
+            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <img src="/stella-logo.png" alt="Stella Shipping" className="sf-brand-logo" />
             </Link>
             <span className="sf-brand-tagline">BETTER WAYS</span>
@@ -350,7 +350,7 @@ export default function FFotter() {
         <hr className="sf-divider" />
         <div className="sf-bottom">
           <div className="sf-copy">
-            © {new Date().getFullYear()} <Link to="/">Stella Shipping</Link>. All rights reserved.
+            © {new Date().getFullYear()} <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Stella Shipping</Link>. All rights reserved.
           </div>
           <div className="sf-bottom-links">
             <a href="#">Chính sách bảo mật</a>
