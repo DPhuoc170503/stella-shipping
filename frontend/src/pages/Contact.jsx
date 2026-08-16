@@ -352,7 +352,7 @@ export default function Contact() {
           <div className="ct-strip-item">
             <div className="ct-strip-icon orange">📞</div>
             <h4>Hotline</h4>
-            <p><a href="tel:19006868">1900 6868</a></p>
+            <p><a href="tel:0901048137">0901 048 137</a></p>
           </div>
           <div className="ct-strip-item">
             <div className="ct-strip-icon blue">✉️</div>
@@ -457,7 +457,7 @@ export default function Contact() {
                 <div className="ct-info-icon">📞</div>
                 <div className="ct-info-text">
                   <strong>Hotline</strong>
-                  <span><a href="tel:19006868">1900 6868</a> (miễn phí)</span>
+                  <span><a href="tel:0901048137">0901 048 137</a> (miễn phí)</span>
                 </div>
               </div>
 

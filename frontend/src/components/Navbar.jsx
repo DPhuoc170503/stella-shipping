@@ -310,7 +310,7 @@ export default function Navbar() {
           </div>
         </nav>
 
-        <a href="tel:19006868" className="nb-phone">📞 0901048137</a>
+        <a href="tel:0901048137" className="nb-phone">📞 0901048137</a>
       </div>
     </header>
   )
