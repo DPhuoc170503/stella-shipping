@@ -16,142 +16,8 @@ function useScrollReveal() {
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [])
-  }, [])
   useEffect(() => { const c = observe(); return c }, [observe])
   return containerRef
-}
-
-import { useTranslation } from 'react-i18next'
-
-/* ═══ DATA TRANSLATIONS ═══ */
-const t_faqs = {
-  vi: [
-    { q: 'Thời gian phản hồi báo giá mất bao lâu?', a: 'Chúng tôi cam kết phản hồi báo giá trong vòng 2 giờ làm việc. Với các yêu cầu phức tạp (project cargo, hàng nguy hiểm), thời gian có thể kéo dài đến 24 giờ để đảm bảo báo giá chính xác nhất.' },
-    { q: 'Stella Shipping có hỗ trợ thủ tục hải quan không?', a: 'Có. Chúng tôi cung cấp dịch vụ khai báo hải quan trọn gói: khai báo VNACCS/VCIS, phân loại mã HS, xin C/O, giấy phép XNK đặc biệt và tư vấn thuế XNK.' },
-    { q: 'Tôi có thể theo dõi hàng hóa bằng cách nào?', a: 'Bạn có thể tracking hàng hóa 24/7 thông qua hệ thống trên website hoặc liên hệ hotline. Chúng tôi cũng gửi thông báo tự động qua email/SMS về trạng thái lô hàng.' },
-    { q: 'Có hỗ trợ vận chuyển hàng nguy hiểm (DG cargo) không?', a: 'Có. Đội ngũ chúng tôi có chứng chỉ IMDG/IATA DG và kinh nghiệm xử lý hàng nguy hiểm tất cả các nhóm. Chi phí phụ thu tùy loại hàng và tuyến vận chuyển.' },
-  ],
-  en: [
-    { q: 'How long does it take to respond to a quote request?', a: 'We are committed to responding to quotes within 2 business hours. For complex requests (project cargo, dangerous goods), it may take up to 24 hours to ensure the most accurate quote.' },
-    { q: 'Does Stella Shipping support customs procedures?', a: 'Yes. We provide comprehensive customs declaration services: VNACCS/VCIS declaration, HS code classification, C/O application, special import/export licenses, and import/export tax consulting.' },
-    { q: 'How can I track my cargo?', a: 'You can track your cargo 24/7 through the system on our website or contact our hotline. We also send automatic notifications via email/SMS regarding shipment status.' },
-    { q: 'Do you support transporting dangerous goods (DG cargo)?', a: 'Yes. Our team holds IMDG/IATA DG certificates and has experience handling all classes of dangerous goods. Surcharges depend on the type of goods and transport route.' },
-  ]
-}
-
-const t_ui = {
-  vi: {
-    hero_kicker: "LUÔN SẴN SÀNG HỖ TRỢ",
-    hero_title_1: "Liên hệ với",
-    hero_title_2: "Stella Shipping",
-    hero_desc: "Đội ngũ chuyên gia sẵn sàng tư vấn miễn phí và báo giá cạnh tranh trong vòng 2 giờ làm việc.",
-    strip_1_title: "Hotline",
-    strip_2_title: "Email",
-    strip_3_title: "Phản hồi",
-    strip_3_desc: "Trong vòng 2 giờ làm việc",
-    strip_4_title: "Phạm vi",
-    strip_4_desc: "120+ quốc gia toàn cầu",
-    form_title: "📋 Gửi yêu cầu cho chúng tôi",
-    form_sub: "Điền thông tin bên dưới — chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.",
-    form_success_title: "Gửi thành công!",
-    form_success_desc: "Chúng tôi đã nhận được yêu cầu và sẽ phản hồi trong vòng 2 giờ làm việc.",
-    f_name: "Họ và tên *",
-    f_name_ph: "Nguyễn Văn A",
-    f_phone: "Số điện thoại *",
-    f_phone_ph: "0912 345 678",
-    f_email: "Email *",
-    f_email_ph: "email@congty.vn",
-    f_company: "Công ty",
-    f_company_ph: "Tên công ty (nếu có)",
-    f_subject: "Chủ đề yêu cầu",
-    f_subject_opt1: "📋 Yêu cầu báo giá",
-    f_subject_opt2: "💬 Tư vấn vận chuyển",
-    f_subject_opt3: "🤝 Hợp tác kinh doanh",
-    f_subject_opt4: "🛠️ Hỗ trợ kỹ thuật",
-    f_subject_opt5: "📝 Khác",
-    f_route: "Tuyến vận chuyển",
-    f_route_ph: "VD: TP.HCM → Hamburg",
-    f_message: "Nội dung chi tiết *",
-    f_message_ph: "Mô tả chi tiết hàng hóa, khối lượng, thời gian mong muốn, yêu cầu đặc biệt...",
-    f_btn_sending: "⏳ Đang gửi...",
-    f_btn_send: "🚀 Gửi yêu cầu",
-    f_err: "Có lỗi xảy ra. Vui lòng thử lại hoặc gọi hotline.",
-    info_title: "Thông tin liên hệ",
-    info_hq: "Trụ sở chính",
-    info_hq_addr: "Số 26 Đường T2, Khu Dân Cư và Công Viên Phước Thiện ( Khu C), Số 88 Đường Phước Thiện, Phường Long Bình, Thành phố Hồ Chí Minh, Việt Nam",
-    hours_title: "🕐 Giờ làm việc",
-    hours_open: "Đang mở cửa",
-    hours_closed: "Ngoài giờ làm việc",
-    hours_d1: "Thứ 2 – Thứ 6",
-    hours_t1: "08:00 – 17:30",
-    hours_d2: "Thứ 7",
-    hours_t2: "08:00 – 12:00",
-    hours_d3: "Chủ nhật",
-    hours_t3: "Nghỉ",
-    branch_title: "📍 Chi nhánh",
-    branch_name: "TP. Hồ Chí Minh",
-    map_kicker: "VỊ TRÍ",
-    map_title: "Tìm chúng tôi trên bản đồ",
-    map_desc: "Ghé thăm văn phòng để được tư vấn trực tiếp",
-    faq_kicker: "CÂU HỎI THƯỜNG GẶP",
-    faq_title: "Bạn cần biết thêm?"
-  },
-  en: {
-    hero_kicker: "ALWAYS READY TO HELP",
-    hero_title_1: "Contact",
-    hero_title_2: "Stella Shipping",
-    hero_desc: "Our expert team is ready to provide free consultation and competitive quotes within 2 business hours.",
-    strip_1_title: "Hotline",
-    strip_2_title: "Email",
-    strip_3_title: "Response Time",
-    strip_3_desc: "Within 2 business hours",
-    strip_4_title: "Coverage",
-    strip_4_desc: "120+ countries globally",
-    form_title: "📋 Send Us a Request",
-    form_sub: "Fill in the information below — we will get back to you as soon as possible.",
-    form_success_title: "Sent Successfully!",
-    form_success_desc: "We have received your request and will respond within 2 business hours.",
-    f_name: "Full Name *",
-    f_name_ph: "John Doe",
-    f_phone: "Phone Number *",
-    f_phone_ph: "+1 234 567 890",
-    f_email: "Email *",
-    f_email_ph: "email@company.com",
-    f_company: "Company",
-    f_company_ph: "Company Name (optional)",
-    f_subject: "Request Subject",
-    f_subject_opt1: "📋 Request Quote",
-    f_subject_opt2: "💬 Transport Consulting",
-    f_subject_opt3: "🤝 Business Partnership",
-    f_subject_opt4: "🛠️ Technical Support",
-    f_subject_opt5: "📝 Other",
-    f_route: "Transport Route",
-    f_route_ph: "Ex: HCMC → Hamburg",
-    f_message: "Detailed Message *",
-    f_message_ph: "Describe the goods, volume, desired timeline, special requirements...",
-    f_btn_sending: "⏳ Sending...",
-    f_btn_send: "🚀 Send Request",
-    f_err: "An error occurred. Please try again or call our hotline.",
-    info_title: "Contact Information",
-    info_hq: "Headquarters",
-    info_hq_addr: "No. 26 T2 Street, Phuoc Thien Residential Area and Park (Zone C), No. 88 Phuoc Thien Street, Long Binh Ward, Ho Chi Minh City, Vietnam",
-    hours_title: "🕐 Working Hours",
-    hours_open: "Currently Open",
-    hours_closed: "Outside Working Hours",
-    hours_d1: "Monday – Friday",
-    hours_t1: "08:00 – 17:30",
-    hours_d2: "Saturday",
-    hours_t2: "08:00 – 12:00",
-    hours_d3: "Sunday",
-    hours_t3: "Closed",
-    branch_title: "📍 Branches",
-    branch_name: "Ho Chi Minh City",
-    map_kicker: "LOCATION",
-    map_title: "Find Us on the Map",
-    map_desc: "Visit our office for direct consultation",
-    faq_kicker: "FREQUENTLY ASKED QUESTIONS",
-    faq_title: "Need to Know More?"
-  }
 }
 
 /* ═══════════════════════════════════════ CSS ═══════════════════════════════════════ */
@@ -411,13 +277,16 @@ const css = `
   }
 `
 
+/* ═══════ FAQ DATA ═══════ */
+const FAQS = [
+  { q: 'Thời gian phản hồi báo giá mất bao lâu?', a: 'Chúng tôi cam kết phản hồi báo giá trong vòng 2 giờ làm việc. Với các yêu cầu phức tạp (project cargo, hàng nguy hiểm), thời gian có thể kéo dài đến 24 giờ để đảm bảo báo giá chính xác nhất.' },
+  { q: 'Stella Shipping có hỗ trợ thủ tục hải quan không?', a: 'Có. Chúng tôi cung cấp dịch vụ khai báo hải quan trọn gói: khai báo VNACCS/VCIS, phân loại mã HS, xin C/O, giấy phép XNK đặc biệt và tư vấn thuế XNK.' },
+  { q: 'Tôi có thể theo dõi hàng hóa bằng cách nào?', a: 'Bạn có thể tracking hàng hóa 24/7 thông qua hệ thống trên website hoặc liên hệ hotline. Chúng tôi cũng gửi thông báo tự động qua email/SMS về trạng thái lô hàng.' },
+  { q: 'Có hỗ trợ vận chuyển hàng nguy hiểm (DG cargo) không?', a: 'Có. Đội ngũ chúng tôi có chứng chỉ IMDG/IATA DG và kinh nghiệm xử lý hàng nguy hiểm tất cả các nhóm. Chi phí phụ thu tùy loại hàng và tuyến vận chuyển.' },
+]
+
 /* ═══════════════════════════ Component ═══════════════════════════ */
 export default function Contact() {
-  const { i18n } = useTranslation()
-  const lang = i18n.language === 'en' ? 'en' : 'vi'
-  const t = t_ui[lang]
-  const FAQS = t_faqs[lang]
-
   const pageRef = useScrollReveal()
   const [form, setForm] = useState({ name: '', phone: '', email: '', company: '', subject: 'quote', origin: '', destination: '', message: '' })
   const [sending, setSending] = useState(false)
@@ -452,7 +321,7 @@ export default function Contact() {
       setForm({ name: '', phone: '', email: '', company: '', subject: 'quote', origin: '', destination: '', message: '' })
       setTimeout(() => setSent(false), 6000)
     } catch {
-      alert(t.f_err)
+      alert('Có lỗi xảy ra. Vui lòng thử lại hoặc gọi hotline.')
     } finally {
       setSending(false)
     }
@@ -471,9 +340,9 @@ export default function Contact() {
       {/* ═══════ HERO ═══════ */}
       <section className="ct-hero">
         <div className="ct-hero-inner">
-          <div className="kicker rv">{t.hero_kicker}</div>
-          <h1 className="rv d1">{t.hero_title_1} <span className="hl">{t.hero_title_2}</span></h1>
-          <p className="rv d2">{t.hero_desc}</p>
+          <div className="kicker rv">LUÔN SẴN SÀNG HỖ TRỢ</div>
+          <h1 className="rv d1">Liên hệ với <span className="hl">Stella Shipping</span></h1>
+          <p className="rv d2">Đội ngũ chuyên gia sẵn sàng tư vấn miễn phí và báo giá cạnh tranh trong vòng 2 giờ làm việc.</p>
         </div>
       </section>
 
@@ -482,23 +351,23 @@ export default function Contact() {
         <div className="ct-strip-inner">
           <div className="ct-strip-item">
             <div className="ct-strip-icon orange">📞</div>
-            <h4>{t.strip_1_title}</h4>
+            <h4>Hotline</h4>
             <p><a href="tel:19006868">1900 6868</a></p>
           </div>
           <div className="ct-strip-item">
             <div className="ct-strip-icon blue">✉️</div>
-            <h4>{t.strip_2_title}</h4>
+            <h4>Email</h4>
             <p><a href="mailto:stella@stellashipping.com.vn">stella@stellashipping.com.vn</a></p>
           </div>
           <div className="ct-strip-item">
             <div className="ct-strip-icon green">⚡</div>
-            <h4>{t.strip_3_title}</h4>
-            <p>{t.strip_3_desc}</p>
+            <h4>Phản hồi</h4>
+            <p>Trong vòng 2 giờ làm việc</p>
           </div>
           <div className="ct-strip-item">
             <div className="ct-strip-icon purple">🌍</div>
-            <h4>{t.strip_4_title}</h4>
-            <p>{t.strip_4_desc}</p>
+            <h4>Phạm vi</h4>
+            <p>120+ quốc gia toàn cầu</p>
           </div>
         </div>
       </div>
@@ -509,61 +378,61 @@ export default function Contact() {
 
           {/* ── Form ── */}
           <div className="ct-form-card rv">
-            <h2>{t.form_title}</h2>
-            <p className="ct-form-sub">{t.form_sub}</p>
+            <h2>📋 Gửi yêu cầu cho chúng tôi</h2>
+            <p className="ct-form-sub">Điền thông tin bên dưới — chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.</p>
 
             {sent ? (
               <div className="ct-success">
                 <div className="icon">✅</div>
-                <h3>{t.form_success_title}</h3>
-                <p>{t.form_success_desc}</p>
+                <h3>Gửi thành công!</h3>
+                <p>Chúng tôi đã nhận được yêu cầu và sẽ phản hồi trong vòng 2 giờ làm việc.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
                 <div className="ct-form-row">
                   <div className="ct-form-group">
-                    <label>{t.f_name}</label>
-                    <input name="name" placeholder={t.f_name_ph} value={form.name} onChange={handleChange} required />
+                    <label>Họ và tên *</label>
+                    <input name="name" placeholder="Nguyễn Văn A" value={form.name} onChange={handleChange} required />
                   </div>
                   <div className="ct-form-group">
-                    <label>{t.f_phone}</label>
-                    <input name="phone" placeholder={t.f_phone_ph} value={form.phone} onChange={handleChange} required />
-                  </div>
-                </div>
-
-                <div className="ct-form-row">
-                  <div className="ct-form-group">
-                    <label>{t.f_email}</label>
-                    <input type="email" name="email" placeholder={t.f_email_ph} value={form.email} onChange={handleChange} required />
-                  </div>
-                  <div className="ct-form-group">
-                    <label>{t.f_company}</label>
-                    <input name="company" placeholder={t.f_company_ph} value={form.company} onChange={handleChange} />
+                    <label>Số điện thoại *</label>
+                    <input name="phone" placeholder="0912 345 678" value={form.phone} onChange={handleChange} required />
                   </div>
                 </div>
 
                 <div className="ct-form-row">
                   <div className="ct-form-group">
-                    <label>{t.f_subject}</label>
+                    <label>Email *</label>
+                    <input type="email" name="email" placeholder="email@congty.vn" value={form.email} onChange={handleChange} required />
+                  </div>
+                  <div className="ct-form-group">
+                    <label>Công ty</label>
+                    <input name="company" placeholder="Tên công ty (nếu có)" value={form.company} onChange={handleChange} />
+                  </div>
+                </div>
+
+                <div className="ct-form-row">
+                  <div className="ct-form-group">
+                    <label>Chủ đề yêu cầu</label>
                     <select name="subject" value={form.subject} onChange={handleChange}>
-                      <option value="quote">{t.f_subject_opt1}</option>
-                      <option value="consult">{t.f_subject_opt2}</option>
-                      <option value="partner">{t.f_subject_opt3}</option>
-                      <option value="support">{t.f_subject_opt4}</option>
-                      <option value="other">{t.f_subject_opt5}</option>
+                      <option value="quote">📋 Yêu cầu báo giá</option>
+                      <option value="consult">💬 Tư vấn vận chuyển</option>
+                      <option value="partner">🤝 Hợp tác kinh doanh</option>
+                      <option value="support">🛠️ Hỗ trợ kỹ thuật</option>
+                      <option value="other">📝 Khác</option>
                     </select>
                   </div>
                   <div className="ct-form-group">
-                    <label>{t.f_route}</label>
-                    <input name="origin" placeholder={t.f_route_ph} value={form.origin} onChange={handleChange} />
+                    <label>Tuyến vận chuyển</label>
+                    <input name="origin" placeholder="VD: TP.HCM → Hamburg" value={form.origin} onChange={handleChange} />
                   </div>
                 </div>
 
                 <div className="ct-form-group full" style={{ marginBottom: 16 }}>
-                  <label>{t.f_message}</label>
+                  <label>Nội dung chi tiết *</label>
                   <textarea
                     name="message"
-                    placeholder={t.f_message_ph}
+                    placeholder="Mô tả chi tiết hàng hóa, khối lượng, thời gian mong muốn, yêu cầu đặc biệt..."
                     value={form.message}
                     onChange={handleChange}
                     required
@@ -571,7 +440,7 @@ export default function Contact() {
                 </div>
 
                 <button type="submit" className="ct-submit" disabled={sending}>
-                  {sending ? t.f_btn_sending : t.f_btn_send}
+                  {sending ? '⏳ Đang gửi...' : '🚀 Gửi yêu cầu'}
                 </button>
               </form>
             )}
@@ -582,12 +451,12 @@ export default function Contact() {
 
             {/* Info card */}
             <div className="ct-info-card rv d1">
-              <h3>{t.info_title}</h3>
+              <h3>Thông tin liên hệ</h3>
 
               <div className="ct-info-item">
                 <div className="ct-info-icon">📞</div>
                 <div className="ct-info-text">
-                  <strong>{t.strip_1_title}</strong>
+                  <strong>Hotline</strong>
                   <span><a href="tel:19006868">1900 6868</a> (miễn phí)</span>
                 </div>
               </div>
@@ -595,7 +464,7 @@ export default function Contact() {
               <div className="ct-info-item">
                 <div className="ct-info-icon">✉️</div>
                 <div className="ct-info-text">
-                  <strong>{t.strip_2_title}</strong>
+                  <strong>Email</strong>
                   <span><a href="mailto:stella@stellashipping.com.vn">stella@stellashipping.com.vn</a></span>
                 </div>
               </div>
@@ -603,8 +472,8 @@ export default function Contact() {
               <div className="ct-info-item">
                 <div className="ct-info-icon">📍</div>
                 <div className="ct-info-text">
-                  <strong>{t.info_hq}</strong>
-                  <span>{t.info_hq_addr}</span>
+                  <strong>Trụ sở chính</strong>
+                  <span>Số 26 Đường T2, Khu Dân Cư và Công Viên Phước Thiện ( Khu C), Số 88 Đường Phước Thiện, Phường Long Bình, Thành phố Hồ Chí Minh, Việt Nam</span>
                 </div>
               </div>
 
@@ -619,24 +488,24 @@ export default function Contact() {
 
             {/* Hours card */}
             <div className="ct-hours-card rv d2">
-              <h4>{t.hours_title}</h4>
+              <h4>🕐 Giờ làm việc</h4>
               <div className={`ct-hours-status ${isOpen ? 'open' : 'closed'}`}>
                 <span className="ct-hours-pulse" />
-                {isOpen ? t.hours_open : t.hours_closed}
+                {isOpen ? 'Đang mở cửa' : 'Ngoài giờ làm việc'}
               </div>
-              <div className="ct-hours-row"><span className="day">{t.hours_d1}</span><span className="time">{t.hours_t1}</span></div>
-              <div className="ct-hours-row"><span className="day">{t.hours_d2}</span><span className="time">{t.hours_t2}</span></div>
-              <div className="ct-hours-row"><span className="day">{t.hours_d3}</span><span className="closed">{t.hours_t3}</span></div>
+              <div className="ct-hours-row"><span className="day">Thứ 2 – Thứ 6</span><span className="time">08:00 – 17:30</span></div>
+              <div className="ct-hours-row"><span className="day">Thứ 7</span><span className="time">08:00 – 12:00</span></div>
+              <div className="ct-hours-row"><span className="day">Chủ nhật</span><span className="closed">Nghỉ</span></div>
             </div>
 
             {/* Branch card */}
             <div className="ct-branch-card rv d3">
-              <h4>{t.branch_title}</h4>
+              <h4>📍 Chi nhánh</h4>
               <div className="ct-branch">
                 <div className="ct-branch-pin">🏢</div>
                 <div className="ct-branch-info">
-                  <strong>{t.branch_name}</strong>
-                  <span>{t.info_hq_addr}</span>
+                  <strong>TP. Hồ Chí Minh</strong>
+                  <span>Số 26 Đường T2, Khu Dân Cư và Công Viên Phước Thiện ( Khu C), Số 88 Đường Phước Thiện, Phường Long Bình, Thành phố Hồ Chí Minh, Việt Nam</span>
                   <div className="ct-branch-phone">028 3925 6868</div>
                 </div>
               </div>
@@ -649,9 +518,9 @@ export default function Contact() {
       <section className="ct-map-section">
         <div className="ct-map-inner">
           <div className="ct-map-hdr rv">
-            <div className="kicker">{t.map_kicker}</div>
-            <h2>{t.map_title}</h2>
-            <p>{t.map_desc}</p>
+            <div className="kicker">VỊ TRÍ</div>
+            <h2>Tìm chúng tôi trên bản đồ</h2>
+            <p>Ghé thăm văn phòng để được tư vấn trực tiếp</p>
           </div>
           <div className="ct-map-frame rv d1">
             <iframe
@@ -668,8 +537,8 @@ export default function Contact() {
       {/* ═══════ FAQ ═══════ */}
       <section className="ct-faq-section">
         <div className="ct-faq-hdr rv">
-          <div className="kicker">{t.faq_kicker}</div>
-          <h2>{t.faq_title}</h2>
+          <div className="kicker">CÂU HỎI THƯỜNG GẶP</div>
+          <h2>Bạn cần biết thêm?</h2>
         </div>
         {FAQS.map((faq, i) => (
           <div className={`ct-faq-item rv d${i + 1}`} key={i}>

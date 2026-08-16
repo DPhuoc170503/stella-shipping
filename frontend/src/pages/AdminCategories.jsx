@@ -38,8 +38,8 @@ export default function AdminCategories() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [form, setForm] = useState({ name: '', name_en: '', slug: '', description: '', description_en: '' });
-  
+  const [form, setForm] = useState({ name: '', slug: '', description: '' });
+
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
   useEffect(() => {
@@ -62,33 +62,33 @@ export default function AdminCategories() {
 
   const openCreate = () => {
     setEditingId(null);
-    setForm({ name: '', name_en: '', slug: '', description: '', description_en: '' });
+    setForm({ name: '', slug: '', description: '' });
     setShowModal(true);
   };
 
   const openEdit = (cat) => {
     setEditingId(cat.id);
-    setForm({ name: cat.name, name_en: cat.name_en || '', slug: cat.slug || '', description: cat.description || '', description_en: cat.description_en || '' });
+    setForm({ name: cat.name, slug: cat.slug || '', description: cat.description || '' });
     setShowModal(true);
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
     if (!form.name.trim()) return alert('Tên danh mục không được để trống');
-    
+
     try {
       const method = editingId ? 'PUT' : 'POST';
       const url = editingId ? `${API_URL}/api/categories/${editingId}` : `${API_URL}/api/categories`;
-      
+
       const res = await fetch(url, {
         method,
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         },
         body: JSON.stringify(form)
       });
-      
+
       if (res.ok) {
         fetchCategories(); // Reload list
         setShowModal(false);
@@ -104,9 +104,9 @@ export default function AdminCategories() {
 
   const handleDelete = async (id, name) => {
     if (!window.confirm(`Bạn có chắc chắn muốn xóa danh mục "${name}"?`)) return;
-    
+
     try {
-      const res = await fetch(`${API_URL}/api/categories/${id}`, { 
+      const res = await fetch(`${API_URL}/api/categories/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
       });
@@ -174,46 +174,29 @@ export default function AdminCategories() {
             </div>
             <form className="adm-modal-body" onSubmit={handleSave}>
               <div className="adm-form-group">
-                <label>Tên danh mục (VI) *</label>
-                <input 
-                  value={form.name} 
-                  onChange={e => setForm({...form, name: e.target.value})} 
-                  placeholder="VD: Tin khuyến mãi" 
-                  required 
-                />
-              </div>
-              <div className="adm-form-group">
-                <label>Tên danh mục (EN)</label>
-                <input 
-                  value={form.name_en} 
-                  onChange={e => setForm({...form, name_en: e.target.value})} 
-                  placeholder="VD: Promotion News" 
+                <label>Tên danh mục *</label>
+                <input
+                  value={form.name}
+                  onChange={e => setForm({ ...form, name: e.target.value })}
+                  placeholder="VD: Tin khuyến mãi"
+                  required
                 />
               </div>
               <div className="adm-form-group">
                 <label>Slug (Đường dẫn tĩnh)</label>
-                <input 
-                  value={form.slug} 
-                  onChange={e => setForm({...form, slug: e.target.value})} 
-                  placeholder="VD: tin-khuyen-mai" 
+                <input
+                  value={form.slug}
+                  onChange={e => setForm({ ...form, slug: e.target.value })}
+                  placeholder="VD: tin-khuyen-mai"
                 />
               </div>
               <div className="adm-form-group">
-                <label>Mô tả (VI)</label>
-                <textarea 
-                  value={form.description} 
-                  onChange={e => setForm({...form, description: e.target.value})} 
-                  rows={3} 
-                  placeholder="Mô tả ngắn gọn về danh mục này..." 
-                />
-              </div>
-              <div className="adm-form-group">
-                <label>Mô tả (EN)</label>
-                <textarea 
-                  value={form.description_en} 
-                  onChange={e => setForm({...form, description_en: e.target.value})} 
-                  rows={3} 
-                  placeholder="Mô tả ngắn gọn (Tiếng Anh)..." 
+                <label>Mô tả</label>
+                <textarea
+                  value={form.description}
+                  onChange={e => setForm({ ...form, description: e.target.value })}
+                  rows={3}
+                  placeholder="Mô tả ngắn gọn về danh mục này..."
                 />
               </div>
               <div className="adm-form-footer">

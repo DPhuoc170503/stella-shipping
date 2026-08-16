@@ -13,15 +13,12 @@ const SERVICE_TYPES = [
 
 const EMPTY_FORM = {
   service_type: 'sea_fcl',
-  service_type_en: '',
   route: '',
-  route_en: '',
   unit: '',
   price_from: '',
   currency: 'USD',
   transit_time: '',
   note: '',
-  note_en: '',
   is_active: 1,
 }
 
@@ -154,15 +151,12 @@ export default function AdminPricing() {
     setEditing(r)
     setForm({
       service_type: r.service_type,
-      service_type_en: r.service_type_en || '',
       route: r.route,
-      route_en: r.route_en || '',
       unit: r.unit,
       price_from: r.price_from,
       currency: r.currency,
       transit_time: r.transit_time || '',
       note: r.note || '',
-      note_en: r.note_en || '',
       is_active: r.is_active,
     })
     setShowModal(true)
@@ -300,27 +294,15 @@ export default function AdminPricing() {
               <button className="ap-modal-close" onClick={closeModal}>✕</button>
             </div>
             <div className="ap-modal-body">
-              <div className="ap-field-row">
-                <div className="ap-field">
-                  <label>LOẠI DỊCH VỤ (MÃ) *</label>
-                  <select name="service_type" value={form.service_type} onChange={handleChange}>
-                    {SERVICE_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-                  </select>
-                </div>
-                <div className="ap-field">
-                  <label>TÊN DỊCH VỤ (EN) *</label>
-                  <input name="service_type_en" placeholder="VD: Ocean Freight (FCL)" value={form.service_type_en} onChange={handleChange} />
-                </div>
+              <div className="ap-field">
+                <label>LOẠI DỊCH VỤ *</label>
+                <select name="service_type" value={form.service_type} onChange={handleChange}>
+                  {SERVICE_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+                </select>
               </div>
-              <div className="ap-field-row">
-                <div className="ap-field">
-                  <label>TUYẾN ĐƯỜNG / DỊCH VỤ (VI) *</label>
-                  <input name="route" placeholder="VD: TP.HCM → Shanghai (Trung Quốc)" value={form.route} onChange={handleChange} />
-                </div>
-                <div className="ap-field">
-                  <label>TUYẾN ĐƯỜNG / DỊCH VỤ (EN)</label>
-                  <input name="route_en" placeholder="VD: HCMC → Shanghai (China)" value={form.route_en} onChange={handleChange} />
-                </div>
+              <div className="ap-field">
+                <label>TUYẾN ĐƯỜNG / TÊN DỊCH VỤ *</label>
+                <input name="route" placeholder="VD: TP.HCM → Shanghai (Trung Quốc)" value={form.route} onChange={handleChange} />
               </div>
               <div className="ap-field-row">
                 <div className="ap-field">
@@ -345,15 +327,9 @@ export default function AdminPricing() {
                   </select>
                 </div>
               </div>
-              <div className="ap-field-row">
-                <div className="ap-field">
-                  <label>GHI CHÚ (VI)</label>
-                  <textarea name="note" rows={2} placeholder="Ghi chú về giá, điều kiện áp dụng..." value={form.note} onChange={handleChange} style={{ resize: 'vertical' }} />
-                </div>
-                <div className="ap-field">
-                  <label>GHI CHÚ (EN)</label>
-                  <textarea name="note_en" rows={2} placeholder="Notes, conditions..." value={form.note_en} onChange={handleChange} style={{ resize: 'vertical' }} />
-                </div>
+              <div className="ap-field">
+                <label>GHI CHÚ</label>
+                <textarea name="note" rows={2} placeholder="Ghi chú về giá, điều kiện áp dụng..." value={form.note} onChange={handleChange} style={{ resize: 'vertical' }} />
               </div>
               <div className="ap-field">
                 <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
