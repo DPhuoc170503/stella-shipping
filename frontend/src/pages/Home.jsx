@@ -409,29 +409,29 @@ export default function Home() {
             ) : (
               <form onSubmit={handleSubmit}>
                 <div className="row">
-                  <input name="name" placeholder={i18n.language === 'en' ? 'Full Name *' : 'Họ tên *'} value={quote.name} onChange={handleChange} required />
-                  <input name="company" placeholder={i18n.language === 'en' ? 'Company' : 'Tên công ty'} value={quote.company} onChange={handleChange} />
+                  <input name="name" placeholder={i18n.language === 'en' ? '👤 Full Name *' : '👤 Họ tên *'} value={quote.name} onChange={handleChange} required />
+                  <input name="company" placeholder={i18n.language === 'en' ? '🏢 Company' : '🏢 Tên công ty'} value={quote.company} onChange={handleChange} />
                 </div>
                 <div className="row">
-                  <input name="email" type="email" placeholder={i18n.language === 'en' ? 'Email *' : 'Email *'} value={quote.email} onChange={handleChange} required />
-                  <input name="phone" placeholder={i18n.language === 'en' ? 'Phone' : 'Điện thoại'} value={quote.phone} onChange={handleChange} />
+                  <input name="email" type="email" placeholder={i18n.language === 'en' ? '✉️ Email *' : '✉️ Email *'} value={quote.email} onChange={handleChange} required />
+                  <input name="phone" placeholder={i18n.language === 'en' ? '📞 Phone' : '📞 Điện thoại'} value={quote.phone} onChange={handleChange} />
                 </div>
                 <div className="row">
-                  <input name="origin" placeholder={i18n.language === 'en' ? 'Origin' : 'Nơi đi'} value={quote.origin} onChange={handleChange} />
-                  <input name="destination" placeholder={i18n.language === 'en' ? 'Destination' : 'Nơi đến'} value={quote.destination} onChange={handleChange} />
+                  <input name="origin" placeholder={i18n.language === 'en' ? '📍 Origin' : '📍 Nơi đi'} value={quote.origin} onChange={handleChange} />
+                  <input name="destination" placeholder={i18n.language === 'en' ? '🚩 Destination' : '🚩 Nơi đến'} value={quote.destination} onChange={handleChange} />
                 </div>
                 <div className="row">
                   <select name="service" value={quote.service} onChange={handleChange}>
-                    <option value="sea_fcl">{i18n.language === 'en' ? 'Sea Freight (FCL)' : 'Vận tải biển (FCL)'}</option>
-                    <option value="sea_lcl">{i18n.language === 'en' ? 'Sea Freight (LCL)' : 'Vận tải biển (LCL)'}</option>
-                    <option value="air">{i18n.language === 'en' ? 'Air Freight' : 'Vận tải hàng không'}</option>
-                    <option value="road">{i18n.language === 'en' ? 'Road Freight' : 'Vận tải đường bộ'}</option>
-                    <option value="warehouse">{i18n.language === 'en' ? 'Warehousing' : 'Kho bãi'}</option>
+                    <option value="sea_fcl">{i18n.language === 'en' ? '🚢 Sea Freight (FCL)' : '🚢 Vận tải biển (FCL)'}</option>
+                    <option value="sea_lcl">{i18n.language === 'en' ? '📦 Sea Freight (LCL)' : '📦 Vận tải biển (LCL)'}</option>
+                    <option value="air">{i18n.language === 'en' ? '✈️ Air Freight' : '✈️ Vận tải hàng không'}</option>
+                    <option value="road">{i18n.language === 'en' ? '🚛 Road Freight' : '🚛 Vận tải đường bộ'}</option>
+                    <option value="warehouse">{i18n.language === 'en' ? '🏭 Warehousing' : '🏭 Kho bãi'}</option>
                   </select>
-                  <input name="quantity" placeholder={i18n.language === 'en' ? 'Quantity / Cargo' : 'Số lượng / Hàng hóa'} value={quote.quantity} onChange={handleChange} />
+                  <input name="quantity" placeholder={i18n.language === 'en' ? '⚖️ Quantity / Cargo' : '⚖️ Số lượng / Hàng hóa'} value={quote.quantity} onChange={handleChange} />
                 </div>
                 <div className="row" style={{ marginBottom: 16 }}>
-                  <textarea name="note" placeholder={i18n.language === 'en' ? 'Notes' : 'Ghi chú'} value={quote.note} onChange={handleChange} rows={2} style={{ resize: 'vertical' }} />
+                  <textarea name="note" placeholder={i18n.language === 'en' ? '📝 Notes' : '📝 Ghi chú'} value={quote.note} onChange={handleChange} rows={2} style={{ resize: 'vertical' }} />
                 </div>
                 <button type="submit" className="btn btn-primary" disabled={sending}>
                   {sending ? (i18n.language === 'en' ? 'Sending...' : 'Đang gửi...') : (i18n.language === 'en' ? 'Send Request' : 'Gửi yêu cầu')}

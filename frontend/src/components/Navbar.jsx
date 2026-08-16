@@ -80,9 +80,7 @@ const navLinkCSS = `
 
   .nb-link {
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+    display: inline-block;
     margin: 0 10px;
     padding: 6px 2px;
     font-size: 14.5px;
@@ -258,15 +256,6 @@ export default function Navbar() {
     '/contact': 'nav.contact'
   }
 
-  const iconMap = {
-    '/': '🏠',
-    '/services': '🚢',
-    '/pricing': '💵',
-    '/about': '🏢',
-    '/news': '📰',
-    '/contact': '📬'
-  }
-
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
     axios
@@ -312,8 +301,7 @@ export default function Navbar() {
               end={it.path === '/'}
               onClick={() => setMobileOpen(false)}
             >
-              <span style={{ fontSize: '16px' }}>{iconMap[it.path] || '🔹'}</span>
-              <span>{pathMap[it.path] ? t(pathMap[it.path]) : it.label}</span>
+              {pathMap[it.path] ? t(pathMap[it.path]) : it.label}
             </NavLink>
           ))}
           <div className="nb-lang">
