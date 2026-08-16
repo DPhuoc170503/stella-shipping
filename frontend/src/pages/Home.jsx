@@ -472,7 +472,7 @@ export default function Home() {
               { id: 3, img: '/INTERMODA.jpg', category: 'CÔNG NGHỆ', title: 'Ra mắt Cổng khách hàng 3.0 với AI dự đoán ETA', desc: 'Ứng dụng trí tuệ nhân tạo để dự đoán thời gian đến chính xác đến 95%, giúp khách hàng chủ động lên kế hoạch.', date: '28/07/2024' }
             ]
           ).map((n, i) => (
-            <div key={i} className={`hm-news-card rv d${Math.min(i + 1, 5)}`}>
+            <div key={i} className="hm-news-card">
               <img src={n.img || '/Banner.jpg'} alt={n.title} />
               <div className="hm-news-body">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
