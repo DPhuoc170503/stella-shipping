@@ -26,13 +26,103 @@ function useScrollReveal() {
 
 // removed hardcoded CATEGORIES
 
-const TRENDING = [
-  { title: 'Cước vận tải biển quý 4 dự kiến tăng 20%', views: '12.5K' },
-  { title: 'Top 5 cảng container bận rộn nhất ĐNA', views: '9.8K' },
-  { title: 'Hải quan điện tử: Hướng dẫn từ A-Z', views: '8.2K' },
-  { title: 'So sánh chi phí FCL vs LCL cho SME', views: '7.6K' },
-  { title: 'Stella đạt chứng nhận AEO 2024', views: '6.9K' },
-]
+const t_ui = {
+  vi: {
+    hero_kicker: "TIN TỨC & INSIGHTS",
+    hero_title: "Cập nhật mới nhất từ<br />ngành Logistics",
+    hero_desc: "Phân tích thị trường, xu hướng chuỗi cung ứng, tin tức công ty và kiến thức chuyên ngành từ đội ngũ chuyên gia Stella Shipping.",
+    feat_badge: "⭐ TIÊU ĐIỂM",
+    feat_cat: "CÔNG TY",
+    feat_title: "Stella Shipping - Doanh Nghiệp Logistics Uy Tín Tại Việt Nam",
+    feat_author: "Ban Truyền Thông",
+    feat_date: "25 Thg 08, 2024",
+    feat_time: "5 phút đọc",
+    feat_desc: "Vượt qua các tiêu chí đánh giá khắt khe về năng lực tài chính, uy tín truyền thông, mức độ hài lòng khách hàng và chuyển đổi số.",
+    feat_read: "Đọc bài viết đầy đủ →",
+    read_more: "Đọc tiếp →",
+    empty: "Không tìm thấy bài viết nào phù hợp.",
+    view_all: "Xem tất cả bài viết",
+    load_more: "Xem thêm bài viết",
+    remaining: "còn lại",
+    trend_title: "🔥 Đang thịnh hành",
+    trend_views: "lượt xem",
+    nl_title: "📬 Bản tin hàng tuần",
+    nl_desc: "Nhận phân tích thị trường, cập nhật cước vận tải và insights logistics trực tiếp qua email mỗi thứ Hai.",
+    nl_ph: "Email của bạn...",
+    nl_btn: "Đăng ký miễn phí",
+    cat_title: "📂 Danh mục",
+    link_title: "🔗 Liên kết nhanh",
+    link_1: "Báo cáo thị trường Q3/2024",
+    link_2: "Media Kit & Logo",
+    link_3: "Thông cáo báo chí",
+    link_4: "Liên hệ phòng truyền thông",
+    sub_title: "Không bỏ lỡ tin tức logistics quan trọng",
+    sub_desc: "Tham gia cùng 5.000+ chuyên gia logistics nhận bản tin hàng tuần — phân tích thị trường, xu hướng chuỗi cung ứng và cập nhật cước vận tải mới nhất.",
+    sub_ph: "Nhập email của bạn...",
+    sub_btn: "Đăng ký ngay",
+    tag_1: "📈 Phân tích thị trường",
+    tag_2: "🚢 Cước vận tải",
+    tag_3: "🌱 Logistics xanh",
+    tag_4: "💡 Case studies",
+    thanks: "Cảm ơn bạn đã đăng ký nhận bản tin với email: "
+  },
+  en: {
+    hero_kicker: "NEWS & INSIGHTS",
+    hero_title: "Latest updates from<br />the Logistics industry",
+    hero_desc: "Market analysis, supply chain trends, company news, and industry knowledge from Stella Shipping experts.",
+    feat_badge: "⭐ HIGHLIGHT",
+    feat_cat: "COMPANY",
+    feat_title: "Stella Shipping - Reputable Logistics Enterprise in Vietnam",
+    feat_author: "Comms Dept",
+    feat_date: "Aug 25, 2024",
+    feat_time: "5 min read",
+    feat_desc: "Passing strict evaluation criteria on financial capacity, media reputation, customer satisfaction, and digital transformation.",
+    feat_read: "Read full article →",
+    read_more: "Read more →",
+    empty: "No matching articles found.",
+    view_all: "View all articles",
+    load_more: "Load more articles",
+    remaining: "remaining",
+    trend_title: "🔥 Trending",
+    trend_views: "views",
+    nl_title: "📬 Weekly Newsletter",
+    nl_desc: "Get market analysis, freight rate updates, and logistics insights straight to your inbox every Monday.",
+    nl_ph: "Your email...",
+    nl_btn: "Subscribe for free",
+    cat_title: "📂 Categories",
+    link_title: "🔗 Quick Links",
+    link_1: "Q3/2024 Market Report",
+    link_2: "Media Kit & Logo",
+    link_3: "Press Releases",
+    link_4: "Contact Comms Dept",
+    sub_title: "Don't miss important logistics news",
+    sub_desc: "Join 5,000+ logistics professionals receiving our weekly newsletter — market analysis, supply chain trends, and the latest freight rates.",
+    sub_ph: "Enter your email...",
+    sub_btn: "Subscribe now",
+    tag_1: "📈 Market Analysis",
+    tag_2: "🚢 Freight Rates",
+    tag_3: "🌱 Green Logistics",
+    tag_4: "💡 Case Studies",
+    thanks: "Thank you for subscribing to our newsletter with email: "
+  }
+}
+
+const TRENDING = {
+  vi: [
+    { title: 'Cước vận tải biển quý 4 dự kiến tăng 20%', views: '12.5K' },
+    { title: 'Top 5 cảng container bận rộn nhất ĐNA', views: '9.8K' },
+    { title: 'Hải quan điện tử: Hướng dẫn từ A-Z', views: '8.2K' },
+    { title: 'So sánh chi phí FCL vs LCL cho SME', views: '7.6K' },
+    { title: 'Stella đạt chứng nhận AEO 2024', views: '6.9K' },
+  ],
+  en: [
+    { title: 'Q4 ocean freight rates expected to rise 20%', views: '12.5K' },
+    { title: 'Top 5 busiest container ports in SEA', views: '9.8K' },
+    { title: 'E-Customs: A-Z Guide', views: '8.2K' },
+    { title: 'FCL vs LCL cost comparison for SMEs', views: '7.6K' },
+    { title: 'Stella achieves AEO certification 2024', views: '6.9K' },
+  ]
+}
 
 /* ═══════════════════════════════════════════ CSS ═══════════════════════════════════════════ */
 const newsCSS = `
@@ -173,11 +263,25 @@ export default function News() {
   const { i18n } = useTranslation()
   const pageRef = useScrollReveal()
   const { articles: allArticles } = useArticles()
-  const [categories, setCategories] = useState(['Tất cả'])
-  const [filter, setFilter] = useState('Tất cả')
+  const lang = i18n.language === 'en' ? 'en' : 'vi'
+  const t = t_ui[lang]
+  const trendData = TRENDING[lang]
+
+  const [categories, setCategories] = useState([lang === 'en' ? 'All' : 'Tất cả'])
+  const [filter, setFilter] = useState(lang === 'en' ? 'All' : 'Tất cả')
   const [search, setSearch] = useState('')
   const [email, setEmail] = useState('')
   const [visibleCount, setVisibleCount] = useState(6)
+
+  // Cập nhật 'Tất cả' / 'All' khi đổi ngôn ngữ
+  useEffect(() => {
+    setCategories(prev => {
+      const newCats = [...prev];
+      newCats[0] = lang === 'en' ? 'All' : 'Tất cả';
+      return newCats;
+    });
+    setFilter(prev => (prev === 'Tất cả' || prev === 'All') ? (lang === 'en' ? 'All' : 'Tất cả') : prev);
+  }, [lang])
 
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
@@ -185,8 +289,8 @@ export default function News() {
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          const catNames = data.map(c => c.name)
-          setCategories(['Tất cả', ...catNames])
+          const catNames = data.map(c => lang === 'en' && c.name_en ? c.name_en : c.name)
+          setCategories([lang === 'en' ? 'All' : 'Tất cả', ...catNames])
         }
       })
       .catch(console.error)
@@ -196,21 +300,29 @@ export default function News() {
   const publishedArticles = allArticles.filter(a => a.status === 'published')
 
   const filtered = publishedArticles.filter(a => {
-    const matchCat = filter === 'Tất cả' || a.category === filter
-    const matchSearch = !search || a.title.toLowerCase().includes(search.toLowerCase()) || a.desc.toLowerCase().includes(search.toLowerCase())
+    const aCat = lang === 'en' && a.category_en ? a.category_en : a.category
+    const matchCat = (filter === 'Tất cả' || filter === 'All') || aCat === filter
+    
+    const aTitle = lang === 'en' && a.title_en ? a.title_en : a.title
+    const aDesc = lang === 'en' && a.desc_en ? a.desc_en : a.desc
+    const matchSearch = !search || (aTitle && aTitle.toLowerCase().includes(search.toLowerCase())) || (aDesc && aDesc.toLowerCase().includes(search.toLowerCase()))
+    
     return matchCat && matchSearch
   })
 
   const visible = filtered.slice(0, visibleCount)
 
   const categoryCounts = categories.reduce((acc, cat) => {
-    acc[cat] = cat === 'Tất cả' ? publishedArticles.length : publishedArticles.filter(a => a.category === cat).length
+    acc[cat] = (cat === 'Tất cả' || cat === 'All') ? publishedArticles.length : publishedArticles.filter(a => {
+      const aCat = lang === 'en' && a.category_en ? a.category_en : a.category
+      return aCat === cat
+    }).length
     return acc
   }, {})
 
   const handleSubscribe = (e) => {
     e.preventDefault()
-    alert(`Cảm ơn bạn đã đăng ký nhận bản tin với email: ${email}`)
+    alert(`${t.thanks}${email}`)
     setEmail('')
   }
 
@@ -235,30 +347,29 @@ export default function News() {
 
       {/* ═══════ HERO ═══════ */}
       <section className="nw-hero">
-        <div className="kicker rv">TIN TỨC & INSIGHTS</div>
-        <h1 className="rv d1">Cập nhật mới nhất từ<br />ngành Logistics</h1>
-        <p className="rv d2">Phân tích thị trường, xu hướng chuỗi cung ứng, tin tức công ty và kiến thức chuyên ngành từ đội ngũ chuyên gia Stella Shipping.</p>
-
+        <div className="kicker rv">{t.hero_kicker}</div>
+        <h1 className="rv d1" dangerouslySetInnerHTML={{ __html: t.hero_title }}></h1>
+        <p className="rv d2">{t.hero_desc}</p>
       </section>
 
       {/* ═══════ FEATURED ═══════ */}
       <section className="nw-featured rv su">
         <div className="nw-feat-card">
           <div className="nw-feat-img" style={{ backgroundImage: `url('/Banner.jpg')` }}>
-            <div className="nw-feat-badge">⭐ TIÊU ĐIỂM</div>
+            <div className="nw-feat-badge">{t.feat_badge}</div>
           </div>
           <div className="nw-feat-body">
-            <div className="cat">CÔNG TY</div>
-            <h2>Stella Shipping  Doanh Nghiệp Logistics Uy Tín Tại Việt Nam </h2>
+            <div className="cat">{t.feat_cat}</div>
+            <h2>{t.feat_title}</h2>
             <div className="meta">
-              <span>Ban Truyền Thông</span>
+              <span>{t.feat_author}</span>
               <span className="dot" />
-              <span>25 Thg 08, 2024</span>
+              <span>{t.feat_date}</span>
               <span className="dot" />
-              <span>5 phút đọc</span>
+              <span>{t.feat_time}</span>
             </div>
-            <p>Vượt qua các tiêu chí đánh giá khắt khe về năng lực tài chính, uy tín truyền thông, mức độ hài lòng khách hàng và chuyển đổi số. </p>
-            <Link to="/news/1" className="nw-read-btn">Đọc bài viết đầy đủ →</Link>
+            <p>{t.feat_desc}</p>
+            <Link to="/news/1" className="nw-read-btn">{t.feat_read}</Link>
           </div>
         </div>
       </section>
@@ -281,15 +392,15 @@ export default function News() {
               <img src={a.img} alt={a.title} className="nw-art-img" />
               <div className="nw-art-body">
                 <div className="nw-art-top">
-                  <span className="nw-art-cat">{a.category}</span>
+                  <span className="nw-art-cat">{lang === 'en' && a.category_en ? a.category_en : a.category}</span>
                   <span className="nw-art-date">{a.date}</span>
                   <span className="nw-art-read">📖 {a.readTime}</span>
                 </div>
-                <h3>{i18n.language === 'en' && a.title_en ? a.title_en : a.title}</h3>
-                <p>{i18n.language === 'en' && a.desc_en ? a.desc_en : a.desc}</p>
+                <h3>{lang === 'en' && a.title_en ? a.title_en : a.title}</h3>
+                <p>{lang === 'en' && a.desc_en ? a.desc_en : a.desc}</p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="nw-art-author">✍️ {a.author}</span>
-                  <Link to={`/news/${a.id}`} className="nw-art-link">Đọc tiếp →</Link>
+                  <Link to={`/news/${a.id}`} className="nw-art-link">{t.read_more}</Link>
                 </div>
               </div>
             </article>
@@ -298,15 +409,15 @@ export default function News() {
           {visible.length === 0 && (
             <div style={{ textAlign: 'center', padding: '48px 0', color: '#5a6f82' }}>
               <div style={{ fontSize: 48, marginBottom: 16 }}>📭</div>
-              <p style={{ fontSize: 16 }}>Không tìm thấy bài viết nào phù hợp.</p>
-              <button className="nw-fbtn" onClick={() => { setFilter('Tất cả'); setSearch('') }} style={{ marginTop: 12 }}>Xem tất cả bài viết</button>
+              <p style={{ fontSize: 16 }}>{t.empty}</p>
+              <button className="nw-fbtn" onClick={() => { setFilter(categories[0]); setSearch('') }} style={{ marginTop: 12 }}>{t.view_all}</button>
             </div>
           )}
 
           {visible.length < filtered.length && (
             <div className="nw-load-more rv">
               <button className="nw-load-btn" onClick={() => setVisibleCount(v => v + 3)}>
-                Xem thêm bài viết ({filtered.length - visible.length} còn lại)
+                {t.load_more} ({filtered.length - visible.length} {t.remaining})
               </button>
             </div>
           )}
@@ -316,13 +427,13 @@ export default function News() {
         <aside className="nw-sidebar">
           {/* Trending */}
           <div className="nw-side-card rv">
-            <h3>🔥 Đang thịnh hành</h3>
-            {TRENDING.map((t, i) => (
+            <h3>{t.trend_title}</h3>
+            {trendData.map((item, i) => (
               <div key={i} className="nw-trend-item">
                 <div className="nw-trend-num">{i + 1}</div>
                 <div>
-                  <div className="nw-trend-text">{t.title}</div>
-                  <div className="nw-trend-views">👁️ {t.views} lượt xem</div>
+                  <div className="nw-trend-text">{item.title}</div>
+                  <div className="nw-trend-views">👁️ {item.views} {t.trend_views}</div>
                 </div>
               </div>
             ))}
@@ -330,18 +441,18 @@ export default function News() {
 
           {/* Newsletter */}
           <div className="nw-side-card nw-nl-card rv d1">
-            <h3>📬 Bản tin hàng tuần</h3>
-            <p>Nhận phân tích thị trường, cập nhật cước vận tải và insights logistics trực tiếp qua email mỗi thứ Hai.</p>
+            <h3>{t.nl_title}</h3>
+            <p>{t.nl_desc}</p>
             <form onSubmit={handleSubscribe}>
-              <input className="nw-nl-input" type="email" placeholder="Email của bạn..." required value={email} onChange={e => setEmail(e.target.value)} />
-              <button className="nw-nl-btn" type="submit">Đăng ký miễn phí</button>
+              <input className="nw-nl-input" type="email" placeholder={t.nl_ph} required value={email} onChange={e => setEmail(e.target.value)} />
+              <button className="nw-nl-btn" type="submit">{t.nl_btn}</button>
             </form>
           </div>
 
           {/* Categories */}
           <div className="nw-side-card rv d2">
-            <h3>📂 Danh mục</h3>
-            {categories.filter(c => c !== 'Tất cả').map(c => (
+            <h3>{t.cat_title}</h3>
+            {categories.filter(c => c !== 'Tất cả' && c !== 'All').map(c => (
               <div key={c} className="nw-cat-item" onClick={() => { setFilter(c); setVisibleCount(6) }}>
                 <span>{c}</span>
                 <span className="nw-cat-count">{categoryCounts[c] || 0}</span>
@@ -351,13 +462,13 @@ export default function News() {
 
           {/* Quick links */}
           <div className="nw-side-card rv d3">
-            <h3>🔗 Liên kết nhanh</h3>
+            <h3>{t.link_title}</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
-                { icon: '📊', text: 'Báo cáo thị trường Q3/2024', href: '#report' },
-                { icon: '📥', text: 'Media Kit & Logo', href: '#media' },
-                { icon: '📋', text: 'Thông cáo báo chí', href: '#press' },
-                { icon: '📞', text: 'Liên hệ phòng truyền thông', href: '/contact' },
+                { icon: '📊', text: t.link_1, href: '#report' },
+                { icon: '📥', text: t.link_2, href: '#media' },
+                { icon: '📋', text: t.link_3, href: '#press' },
+                { icon: '📞', text: t.link_4, href: '/contact' },
               ].map((l, i) => (
                 <a key={i} href={l.href} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: '1px solid #f0f3f6', textDecoration: 'none', color: '#0f2b57', fontWeight: 500, fontSize: 14, transition: 'color .2s' }}>
                   <span>{l.icon}</span> {l.text}
@@ -371,17 +482,17 @@ export default function News() {
       {/* ═══════ BOTTOM NEWSLETTER ═══════ */}
       <section className="nw-subscribe rv">
         <div className="nw-sub-inner">
-          <h2>Không bỏ lỡ tin tức logistics quan trọng</h2>
-          <p>Tham gia cùng 5.000+ chuyên gia logistics nhận bản tin hàng tuần — phân tích thị trường, xu hướng chuỗi cung ứng và cập nhật cước vận tải mới nhất.</p>
+          <h2>{t.sub_title}</h2>
+          <p>{t.sub_desc}</p>
           <form className="nw-sub-form" onSubmit={handleSubscribe}>
-            <input type="email" placeholder="Nhập email của bạn..." required value={email} onChange={e => setEmail(e.target.value)} />
-            <button type="submit">Đăng ký ngay</button>
+            <input type="email" placeholder={t.sub_ph} required value={email} onChange={e => setEmail(e.target.value)} />
+            <button type="submit">{t.sub_btn}</button>
           </form>
           <div className="nw-sub-tags">
-            <span className="nw-sub-tag">📈 Phân tích thị trường</span>
-            <span className="nw-sub-tag">🚢 Cước vận tải</span>
-            <span className="nw-sub-tag">🌱 Logistics xanh</span>
-            <span className="nw-sub-tag">💡 Case studies</span>
+            <span className="nw-sub-tag">{t.tag_1}</span>
+            <span className="nw-sub-tag">{t.tag_2}</span>
+            <span className="nw-sub-tag">{t.tag_3}</span>
+            <span className="nw-sub-tag">{t.tag_4}</span>
           </div>
         </div>
       </section>

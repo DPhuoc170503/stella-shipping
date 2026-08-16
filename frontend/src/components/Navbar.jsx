@@ -14,14 +14,21 @@ const FALLBACK_NAV = [
 ]
 
 const navLinkCSS = `
+  .nb-header {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+  }
+
   .nb-shell {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 14px;
     padding: 12px 24px;
-    border-bottom: 1px solid #eee;
-    background: #fff;
     position: relative;
     z-index: 20;
   }
@@ -269,7 +276,7 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 999 }}>
+    <header className="nb-header">
       <style>{navLinkCSS}</style>
       <div className="nb-shell">
         <div className="nb-brand">

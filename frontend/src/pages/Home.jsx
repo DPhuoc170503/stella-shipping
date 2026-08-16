@@ -54,6 +54,105 @@ function AnimNum({ target, suffix = '', label }) {
 }
 
 
+}
+
+const t_ui = {
+  vi: {
+    hero_btn1: "Tính cước ngay",
+    hero_btn2: "Khám phá dịch vụ →",
+    svc_kicker: "DỊCH VỤ CỦA CHÚNG TÔI",
+    svc_title: "Giải pháp logistics toàn diện",
+    svc_desc: "Với năng lực vận hành đa kênh, chúng tôi thiết kế và triển khai giải pháp vận tải tối ưu cho mọi loại hàng hóa trên toàn chuỗi cung ứng.",
+    svc_link: "Tìm hiểu thêm →",
+    why_kicker: "TẠI SAO CHỌN STELLA",
+    why_title: "Lợi thế cạnh tranh vượt trội",
+    why_desc: "Chúng tôi không chỉ vận chuyển hàng hóa — chúng tôi kiến tạo giải pháp giúp doanh nghiệp bạn phát triển.",
+    proc_kicker: "QUY TRÌNH",
+    proc_title: "Vận hành đơn giản, hiệu quả tối đa",
+    proc_desc: "Chỉ cần 4 bước đơn giản để lô hàng của bạn được vận chuyển an toàn đến đích.",
+    ind_kicker: "NGÀNH HÀNG",
+    ind_title: "Phục vụ đa dạng lĩnh vực",
+    ind_desc: "Chúng tôi am hiểu đặc thù từng ngành để đưa ra giải pháp logistics phù hợp nhất.",
+    ind_1: "Sản xuất",
+    ind_2: "Bán lẻ & FMCG",
+    ind_3: "Điện tử & CNTT",
+    ind_4: "Xây dựng",
+    ind_5: "Hóa chất",
+    ind_6: "Thực phẩm",
+    ind_7: "Dệt may & Da giày",
+    ind_8: "Ô tô & Phụ tùng",
+    ind_9: "Dược phẩm",
+    ind_10: "Năng lượng",
+    ind_11: "Gỗ & Nội thất",
+    ind_12: "Nông sản",
+    dig_kicker: "CÔNG NGHỆ SỐ",
+    dig_title: "Cổng khách hàng trực tuyến",
+    dig_desc: "Quản lý toàn bộ lô hàng, chứng từ và báo cáo trên một nền tảng duy nhất — mọi lúc, mọi nơi.",
+    dig_1: "Tracking lô hàng real-time 24/7",
+    dig_2: "Quản lý chứng từ điện tử (B/L, Invoice, Packing List)",
+    dig_3: "Dashboard báo cáo chi phí & hiệu suất",
+    dig_4: "API tích hợp trực tiếp với ERP/WMS",
+    dig_5: "Thông báo tự động qua email & SMS",
+    news_kicker: "TIN TỨC & INSIGHTS",
+    news_title: "Cập nhật mới nhất từ ngành logistics",
+    news_tag: "TIN TỨC",
+    news_read: "Đọc thêm →",
+    part_kicker: "ĐỐI TÁC & CHỨNG CHỈ",
+    part_title: "Đồng hành cùng các tổ chức hàng đầu",
+    cta_title: "Sẵn sàng tối ưu chuỗi cung ứng?",
+    cta_desc: "Liên hệ ngay hôm nay để nhận tư vấn miễn phí và báo giá chi tiết từ đội ngũ chuyên gia logistics Stella Shipping.",
+    cta_btn1: "Yêu cầu tư vấn miễn phí",
+    cta_btn2: "Tính cước vận chuyển"
+  },
+  en: {
+    hero_btn1: "Get Quote",
+    hero_btn2: "Explore Services →",
+    svc_kicker: "OUR SERVICES",
+    svc_title: "Comprehensive Logistics Solutions",
+    svc_desc: "With multi-channel operational capacity, we design and implement optimal transport solutions for all types of goods across the supply chain.",
+    svc_link: "Learn more →",
+    why_kicker: "WHY CHOOSE STELLA",
+    why_title: "Outstanding Competitive Advantages",
+    why_desc: "We don't just transport goods — we create solutions to help your business grow.",
+    proc_kicker: "OUR PROCESS",
+    proc_title: "Simple Operations, Maximum Efficiency",
+    proc_desc: "Just 4 simple steps to safely transport your shipment to its destination.",
+    ind_kicker: "INDUSTRIES",
+    ind_title: "Serving Diverse Sectors",
+    ind_desc: "We understand industry specifics to provide the most suitable logistics solutions.",
+    ind_1: "Manufacturing",
+    ind_2: "Retail & FMCG",
+    ind_3: "Electronics & IT",
+    ind_4: "Construction",
+    ind_5: "Chemicals",
+    ind_6: "Food & Beverage",
+    ind_7: "Textile & Footwear",
+    ind_8: "Automotive",
+    ind_9: "Pharmaceuticals",
+    ind_10: "Energy",
+    ind_11: "Furniture",
+    ind_12: "Agriculture",
+    dig_kicker: "DIGITAL TECHNOLOGY",
+    dig_title: "Online Customer Portal",
+    dig_desc: "Manage all shipments, documents, and reports on a single platform — anytime, anywhere.",
+    dig_1: "24/7 Real-time shipment tracking",
+    dig_2: "Electronic document management (B/L, Invoice, Packing List)",
+    dig_3: "Cost & performance reporting dashboard",
+    dig_4: "Direct API integration with ERP/WMS",
+    dig_5: "Automated email & SMS notifications",
+    news_kicker: "NEWS & INSIGHTS",
+    news_title: "Latest Logistics Industry Updates",
+    news_tag: "NEWS",
+    news_read: "Read more →",
+    part_kicker: "PARTNERS & CERTIFICATES",
+    part_title: "Accompanying Leading Organizations",
+    cta_title: "Ready to optimize your supply chain?",
+    cta_desc: "Contact us today for a free consultation and detailed quote from Stella Shipping's logistics experts.",
+    cta_btn1: "Request Free Consultation",
+    cta_btn2: "Calculate Freight Quote"
+  }
+}
+
 /* ═══════════════════════════════════════════ CSS ═══════════════════════════════════════════ */
 const homeCSS = `
   /* ── Reveal ── */
@@ -273,7 +372,9 @@ const homeCSS = `
 `
 
 export default function Home() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language === 'en' ? 'en' : 'vi'
+  const tui = t_ui[lang]
   const pageRef = useScrollReveal()
   const { articles } = useArticles()
   const [quote, setQuote] = useState({ name: '', email: '', phone: '', origin: '', destination: '', mode: 'sea_fcl', weight: '', type: 'fcl' })
@@ -391,8 +492,8 @@ export default function Home() {
               {s.hero.lead}
             </p>
             <div className="hm-hero-cta rv d3">
-              <a className="btn btn-primary" href="/pricing">Tính cước ngay</a>
-              <a className="btn-ghost" href="/services">Khám phá dịch vụ →</a>
+              <a className="btn btn-primary" href="/pricing">{tui.hero_btn1}</a>
+              <a className="btn-ghost" href="/services">{tui.hero_btn2}</a>
             </div>
           </div>
 
@@ -443,9 +544,9 @@ export default function Home() {
       {/* ═══════════════ 4. DỊCH VỤ CHÍNH ═══════════════ */}
       <section className="hm-section">
         <div className="hm-section-hdr rv">
-          <div className="kicker">DỊCH VỤ CỦA CHÚNG TÔI</div>
-          <h2>Giải pháp logistics toàn diện</h2>
-          <p>Với năng lực vận hành đa kênh, chúng tôi thiết kế và triển khai giải pháp vận tải tối ưu cho mọi loại hàng hóa trên toàn chuỗi cung ứng.</p>
+          <div className="kicker">{tui.svc_kicker}</div>
+          <h2>{tui.svc_title}</h2>
+          <p>{tui.svc_desc}</p>
         </div>
         <div className="hm-svc-grid hm-mobile-slider">
           {s.services.map((svc, i) => (
@@ -455,7 +556,7 @@ export default function Home() {
               <div className="hm-svc-card-body">
                 <h3>{svc.title}</h3>
                 <p>{svc.desc}</p>
-                <a className="hm-svc-link" href={svc.link}>Tìm hiểu thêm →</a>
+                <a className="hm-svc-link" href={svc.link}>{tui.svc_link}</a>
               </div>
             </div>
           ))}
@@ -465,9 +566,9 @@ export default function Home() {
       {/* ═══════════════ 5. TẠI SAO CHỌN CHÚNG TÔI ═══════════════ */}
       <section className="hm-section hm-section-alt">
         <div className="hm-section-hdr rv">
-          <div className="kicker">TẠI SAO CHỌN STELLA</div>
-          <h2>Lợi thế cạnh tranh vượt trội</h2>
-          <p>Chúng tôi không chỉ vận chuyển hàng hóa — chúng tôi kiến tạo giải pháp giúp doanh nghiệp bạn phát triển.</p>
+          <div className="kicker">{tui.why_kicker}</div>
+          <h2>{tui.why_title}</h2>
+          <p>{tui.why_desc}</p>
         </div>
         <div className="hm-why-grid hm-mobile-slider">
           {s.why_choose_us.map((w, i) => (
@@ -483,9 +584,9 @@ export default function Home() {
       {/* ═══════════════ 6. QUY TRÌNH LÀM VIỆC ═══════════════ */}
       <section className="hm-section">
         <div className="hm-section-hdr rv">
-          <div className="kicker">QUY TRÌNH</div>
-          <h2>Vận hành đơn giản, hiệu quả tối đa</h2>
-          <p>Chỉ cần 4 bước đơn giản để lô hàng của bạn được vận chuyển an toàn đến đích.</p>
+          <div className="kicker">{tui.proc_kicker}</div>
+          <h2>{tui.proc_title}</h2>
+          <p>{tui.proc_desc}</p>
         </div>
         <div className="hm-process hm-mobile-slider">
           {s.process.map((step, i) => (
@@ -501,24 +602,24 @@ export default function Home() {
       {/* ═══════════════ 7. NGÀNH HÀNG PHỤC VỤ ═══════════════ */}
       <section className="hm-section hm-section-dark">
         <div className="hm-section-hdr rv">
-          <div className="kicker">NGÀNH HÀNG</div>
-          <h2>Phục vụ đa dạng lĩnh vực</h2>
-          <p>Chúng tôi am hiểu đặc thù từng ngành để đưa ra giải pháp logistics phù hợp nhất.</p>
+          <div className="kicker">{tui.ind_kicker}</div>
+          <h2>{tui.ind_title}</h2>
+          <p>{tui.ind_desc}</p>
         </div>
         <div className="hm-ind-grid hm-mobile-slider">
           {[
-            { icon: '🏭', name: 'Sản xuất' },
-            { icon: '🛒', name: 'Bán lẻ & FMCG' },
-            { icon: '💻', name: 'Điện tử & CNTT' },
-            { icon: '🏗️', name: 'Xây dựng' },
-            { icon: '🧪', name: 'Hóa chất' },
-            { icon: '🥗', name: 'Thực phẩm' },
-            { icon: '👗', name: 'Dệt may & Da giày' },
-            { icon: '🚗', name: 'Ô tô & Phụ tùng' },
-            { icon: '💊', name: 'Dược phẩm' },
-            { icon: '⚡', name: 'Năng lượng' },
-            { icon: '🪵', name: 'Gỗ & Nội thất' },
-            { icon: '🌾', name: 'Nông sản' },
+            { icon: '🏭', name: tui.ind_1 },
+            { icon: '🛒', name: tui.ind_2 },
+            { icon: '💻', name: tui.ind_3 },
+            { icon: '🏗️', name: tui.ind_4 },
+            { icon: '🧪', name: tui.ind_5 },
+            { icon: '🥗', name: tui.ind_6 },
+            { icon: '👗', name: tui.ind_7 },
+            { icon: '🚗', name: tui.ind_8 },
+            { icon: '💊', name: tui.ind_9 },
+            { icon: '⚡', name: tui.ind_10 },
+            { icon: '🪵', name: tui.ind_11 },
+            { icon: '🌾', name: tui.ind_12 },
           ].map((ind, i) => (
             <div key={i} className={`hm-ind-card rv d${Math.min(i + 1, 5)}`}>
               <div className="hm-ind-icon">{ind.icon}</div>
@@ -533,15 +634,15 @@ export default function Home() {
         <div className="hm-promo rv su">
           <div className="hm-promo-img" />
           <div className="hm-promo-content">
-            <div className="kicker">CÔNG NGHỆ SỐ</div>
-            <h2>Cổng khách hàng trực tuyến</h2>
-            <p>Quản lý toàn bộ lô hàng, chứng từ và báo cáo trên một nền tảng duy nhất — mọi lúc, mọi nơi.</p>
+            <div className="kicker">{tui.dig_kicker}</div>
+            <h2>{tui.dig_title}</h2>
+            <p>{tui.dig_desc}</p>
             <ul>
-              <li>Tracking lô hàng real-time 24/7</li>
-              <li>Quản lý chứng từ điện tử (B/L, Invoice, Packing List)</li>
-              <li>Dashboard báo cáo chi phí & hiệu suất</li>
-              <li>API tích hợp trực tiếp với ERP/WMS</li>
-              <li>Thông báo tự động qua email & SMS</li>
+              <li>{tui.dig_1}</li>
+              <li>{tui.dig_2}</li>
+              <li>{tui.dig_3}</li>
+              <li>{tui.dig_4}</li>
+              <li>{tui.dig_5}</li>
             </ul>
           </div>
         </div>
@@ -550,8 +651,8 @@ export default function Home() {
       {/* ═══════════════ 9. TIN TỨC & INSIGHTS ═══════════════ */}
       <section className="hm-section">
         <div className="hm-section-hdr rv">
-          <div className="kicker">TIN TỨC & INSIGHTS</div>
-          <h2>Cập nhật mới nhất từ ngành logistics</h2>
+          <div className="kicker">{tui.news_kicker}</div>
+          <h2>{tui.news_title}</h2>
         </div>
         <div className="hm-news-grid hm-mobile-slider">
           {(articles && articles.filter(a => a.status === 'published').length > 0
@@ -565,10 +666,10 @@ export default function Home() {
             <div key={i} className={`hm-news-card rv d${i + 1}`}>
               <img src={n.img || '/Banner.jpg'} alt={n.title} />
               <div className="hm-news-body">
-                <div className="tag">{n.category || 'TIN TỨC'}</div>
-                <h4>{i18n.language === 'en' && n.title_en ? n.title_en : n.title}</h4>
-                <p>{i18n.language === 'en' && n.desc_en ? n.desc_en : n.desc}</p>
-                <a href={n.id ? `/news/${n.id}` : "/news"}>{i18n.language === 'en' ? 'Read more →' : 'Đọc thêm →'}</a>
+                <div className="tag">{lang === 'en' && n.category_en ? n.category_en : n.category || tui.news_tag}</div>
+                <h4>{lang === 'en' && n.title_en ? n.title_en : n.title}</h4>
+                <p>{lang === 'en' && n.desc_en ? n.desc_en : n.desc}</p>
+                <a href={n.id ? `/news/${n.id}` : "/news"}>{tui.news_read}</a>
               </div>
             </div>
           ))}
@@ -578,8 +679,8 @@ export default function Home() {
       {/* ═══════════════ 11. ĐỐI TÁC ═══════════════ */}
       <section className="hm-section hm-section-alt">
         <div className="hm-section-hdr rv">
-          <div className="kicker">ĐỐI TÁC & CHỨNG CHỈ</div>
-          <h2>Đồng hành cùng các tổ chức hàng đầu</h2>
+          <div className="kicker">{tui.part_kicker}</div>
+          <h2>{tui.part_title}</h2>
         </div>
         <div className="hm-partners rv">
           {[
@@ -603,11 +704,11 @@ export default function Home() {
 
       {/* ═══════════════ 12. CTA BANNER ═══════════════ */}
       <section className="hm-cta-banner">
-        <h2 className="rv">Sẵn sàng tối ưu chuỗi cung ứng?</h2>
-        <p className="rv d1">Liên hệ ngay hôm nay để nhận tư vấn miễn phí và báo giá chi tiết từ đội ngũ chuyên gia logistics Stella Shipping.</p>
+        <h2 className="rv">{tui.cta_title}</h2>
+        <p className="rv d1">{tui.cta_desc}</p>
         <div className="hm-cta-btns rv d2">
-          <a href="/contact" className="cta-w">Yêu cầu tư vấn miễn phí</a>
-          <a href="/pricing" className="cta-o">Tính cước vận chuyển</a>
+          <a href="/contact" className="cta-w">{tui.cta_btn1}</a>
+          <a href="/pricing" className="cta-o">{tui.cta_btn2}</a>
         </div>
       </section>
     </div>

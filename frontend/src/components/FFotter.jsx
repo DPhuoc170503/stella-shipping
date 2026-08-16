@@ -253,9 +253,9 @@ export default function FFotter() {
 
           {/* ── 1. Brand & Newsletter ── */}
           <div>
-            <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <a href="/">
               <img src="/stella-logo.png" alt="Stella Shipping" className="sf-brand-logo" />
-            </Link>
+            </a>
             <span className="sf-brand-tagline">{t('footer.tagline')}</span>
             <p className="sf-brand-desc">
               {t('footer.desc')}

@@ -5,13 +5,149 @@ import SEO from '../components/SEO'
 const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
 
 /* ── Cấu hình tabs dịch vụ ── */
-const TABS = [
-  { key: 'sea_fcl', label: '🚢 FCL', full: 'Vận tải biển (FCL)' },
-  { key: 'sea_lcl', label: '📦 LCL', full: 'Hàng lẻ (LCL)' },
-  { key: 'air', label: '✈️ Hàng không', full: 'Vận tải hàng không' },
-  { key: 'road', label: '🚛 Đường bộ', full: 'Vận tải đường bộ' },
-  { key: 'warehouse', label: '🏭 Kho bãi', full: 'Dịch vụ kho bãi' },
-]
+const TABS = {
+  vi: [
+    { key: 'sea_fcl', label: '🚢 FCL', full: 'Vận tải biển (FCL)' },
+    { key: 'sea_lcl', label: '📦 LCL', full: 'Hàng lẻ (LCL)' },
+    { key: 'air', label: '✈️ Hàng không', full: 'Vận tải hàng không' },
+    { key: 'road', label: '🚛 Đường bộ', full: 'Vận tải đường bộ' },
+    { key: 'warehouse', label: '🏭 Kho bãi', full: 'Dịch vụ kho bãi' },
+  ],
+  en: [
+    { key: 'sea_fcl', label: '🚢 FCL', full: 'Ocean Freight (FCL)' },
+    { key: 'sea_lcl', label: '📦 LCL', full: 'Ocean Freight (LCL)' },
+    { key: 'air', label: '✈️ Air', full: 'Air Freight' },
+    { key: 'road', label: '🚛 Road', full: 'Road Freight' },
+    { key: 'warehouse', label: '🏭 Warehouse', full: 'Warehousing Services' },
+  ]
+}
+
+const t_ui = {
+  vi: {
+    seo_title: "Bảng giá cước vận tải",
+    seo_desc: "Tham khảo bảng giá cước vận tải biển FCL, LCL, vận tải hàng không và dịch vụ kho bãi được cập nhật liên tục.",
+    hero_kicker: "BẢNG GIÁ THAM KHẢO",
+    hero_title: "Cước vận tải & Phí dịch vụ",
+    hero_desc: "Giá cước logistics thay đổi hàng ngày theo thị trường. Chúng tôi cập nhật bảng giá thường xuyên để bạn có thông tin tham khảo chính xác nhất.",
+    badge_1: "🌍 120+ Quốc gia",
+    badge_2: "⚡ Báo giá trong 2 giờ",
+    badge_3: "💰 Giá cạnh tranh nhất",
+    badge_4: "🔄 Cập nhật hàng ngày",
+    warn_title: "Lưu ý quan trọng:",
+    warn_desc: "Bảng giá dưới đây chỉ mang tính",
+    warn_hl: "tham khảo",
+    warn_desc2: "— giá thực tế phụ thuộc vào thời điểm booking, loại hàng, thể tích và các phụ phí phát sinh. Vui lòng",
+    warn_hl2: "yêu cầu báo giá chính xác",
+    warn_desc3: "từ đội ngũ của chúng tôi.",
+    updated: "Cập nhật lần cuối",
+    routes_count: "tuyến",
+    th_route: "Tuyến đường / Dịch vụ",
+    th_unit: "Đơn vị",
+    th_price: "Giá từ",
+    th_time: "Thời gian",
+    th_note: "Ghi chú",
+    empty_data: "Chưa có dữ liệu — đang cập nhật...",
+    req_title: "📋 Yêu cầu báo giá chính xác",
+    req_desc: "Điền thông tin để nhận báo giá chi tiết, chính xác trong vòng 2 giờ làm việc.",
+    succ_title: "Gửi thành công!",
+    succ_desc: "Chúng tôi sẽ phản hồi trong 2 giờ làm việc.",
+    f_name: "HỌ TÊN *",
+    f_name_ph: "Nguyễn Văn A",
+    f_company: "CÔNG TY",
+    f_company_ph: "Tên công ty",
+    f_email: "EMAIL *",
+    f_email_ph: "email@company.com",
+    f_phone: "ĐIỆN THOẠI",
+    f_phone_ph: "0901 234 567",
+    f_origin: "NƠI ĐI",
+    f_origin_ph: "TP.HCM, Việt Nam",
+    f_dest: "NƠI ĐẾN",
+    f_dest_ph: "Rotterdam, Hà Lan",
+    f_service: "LOẠI DỊCH VỤ",
+    f_cargo: "HÀNG HÓA",
+    f_cargo_ph: "VD: 2 cont 40HC hàng điện tử",
+    f_note: "GHI CHÚ",
+    f_note_ph: "Yêu cầu đặc biệt, thời gian dự kiến...",
+    btn_sending: "⏳ Đang gửi...",
+    btn_send: "🚀 Gửi yêu cầu báo giá",
+    info_title: "Lưu ý về bảng giá",
+    i1_title: "Cập nhật hàng ngày",
+    i1_desc: "Giá cước biển, không và đường bộ thay đổi theo thị trường. Bảng giá được đội ngũ cập nhật mỗi ngày làm việc.",
+    i2_title: "Giá chưa bao gồm phụ phí",
+    i2_desc: "Các mức giá hiển thị là giá cước thuần (ocean/air freight). Phụ phí địa phương, THC, DOC fee... tính riêng.",
+    i3_title: "Báo giá chính xác trong 2 giờ",
+    i3_desc: "Điền form bên cạnh để nhận báo giá all-in chính xác nhất, kèm lịch trình tàu/máy bay cụ thể.",
+    sur_title: "⚡ Các phụ phí thường gặp:",
+    sur_1: "THC (Terminal Handling Charge): $60–120 / cont",
+    sur_2: "D/O Fee (Delivery Order): $25–40 / lô hàng",
+    sur_3: "B/L Fee: $30–50 / B/L",
+    sur_4: "Fumigation (kiểm dịch): theo từng lô",
+    sur_5: "Phụ phí nhiên liệu (BAF/FAF): biến động hàng tuần",
+    sur_6: "Phụ phí tắc nghẽn cảng (PSS): theo thông báo hãng tàu"
+  },
+  en: {
+    seo_title: "Freight Rates",
+    seo_desc: "Reference our constantly updated freight rates for FCL, LCL, air freight, and warehousing services.",
+    hero_kicker: "REFERENCE RATES",
+    hero_title: "Freight Rates & Service Fees",
+    hero_desc: "Logistics rates change daily based on the market. We update our price list regularly to provide you with the most accurate reference information.",
+    badge_1: "🌍 120+ Countries",
+    badge_2: "⚡ Quote within 2 hours",
+    badge_3: "💰 Most competitive rates",
+    badge_4: "🔄 Daily updates",
+    warn_title: "Important Note:",
+    warn_desc: "The rates below are for",
+    warn_hl: "reference only",
+    warn_desc2: "— actual rates depend on the booking time, cargo type, volume, and arising surcharges. Please",
+    warn_hl2: "request an accurate quote",
+    warn_desc3: "from our team.",
+    updated: "Last updated",
+    routes_count: "routes",
+    th_route: "Route / Service",
+    th_unit: "Unit",
+    th_price: "Price from",
+    th_time: "Transit Time",
+    th_note: "Note",
+    empty_data: "No data yet — updating...",
+    req_title: "📋 Request Accurate Quote",
+    req_desc: "Fill in the information to receive a detailed, accurate quote within 2 business hours.",
+    succ_title: "Sent Successfully!",
+    succ_desc: "We will respond within 2 business hours.",
+    f_name: "FULL NAME *",
+    f_name_ph: "John Doe",
+    f_company: "COMPANY",
+    f_company_ph: "Company Name",
+    f_email: "EMAIL *",
+    f_email_ph: "email@company.com",
+    f_phone: "PHONE",
+    f_phone_ph: "+1 234 567 890",
+    f_origin: "ORIGIN",
+    f_origin_ph: "HCMC, Vietnam",
+    f_dest: "DESTINATION",
+    f_dest_ph: "Rotterdam, Netherlands",
+    f_service: "SERVICE TYPE",
+    f_cargo: "CARGO",
+    f_cargo_ph: "Ex: 2x40HC electronics",
+    f_note: "NOTE",
+    f_note_ph: "Special requirements, expected timeline...",
+    btn_sending: "⏳ Sending...",
+    btn_send: "🚀 Request Quote",
+    info_title: "Rate Notes",
+    i1_title: "Daily Updates",
+    i1_desc: "Ocean, air, and road freight rates fluctuate with the market. Our team updates the price list every business day.",
+    i2_title: "Rates exclude surcharges",
+    i2_desc: "The displayed rates are pure freight (ocean/air). Local surcharges, THC, DOC fee... are calculated separately.",
+    i3_title: "Accurate quote in 2 hours",
+    i3_desc: "Fill out the form to receive the most accurate all-in quote, including specific vessel/flight schedules.",
+    sur_title: "⚡ Common Surcharges:",
+    sur_1: "THC (Terminal Handling Charge): $60–120 / cont",
+    sur_2: "D/O Fee (Delivery Order): $25–40 / shipment",
+    sur_3: "B/L Fee: $30–50 / B/L",
+    sur_4: "Fumigation: per shipment",
+    sur_5: "Fuel Surcharge (BAF/FAF): weekly fluctuation",
+    sur_6: "Port Congestion Surcharge (PSS): per carrier notice"
+  }
+}
 
 /* ── Format tiền tệ ── */
 function formatPrice(price, currency) {
@@ -207,13 +343,16 @@ function PriceSkeleton() {
 
 export default function Pricing() {
   const { i18n } = useTranslation()
+  const lang = i18n.language === 'en' ? 'en' : 'vi'
+  const t = t_ui[lang]
+  const currentTabs = TABS[lang]
+  
   const [activeTab, setActiveTab] = useState('sea_fcl')
   const [allRates, setAllRates] = useState([])
   const [loading, setLoading] = useState(true)
   const [lastUpdated, setLastUpdated] = useState(null)
   const [form, setForm] = useState({ name: '', company: '', email: '', phone: '', origin: '', destination: '', service: 'sea_fcl', cargo: '', note: '' })
   const [sent, setSent] = useState(false)
-
   const [sending, setSending] = useState(false)
 
   /* ── Load giá từ API ── */
@@ -231,7 +370,7 @@ export default function Pricing() {
   }, [])
 
   const rates = allRates.filter(r => r.service_type === activeTab)
-  const currentTab = TABS.find(t => t.key === activeTab)
+  const currentTab = currentTabs.find(tab => tab.key === activeTab)
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   const handleSubmit = async e => {
@@ -257,20 +396,20 @@ export default function Pricing() {
 
   return (
     <div className="pr-page">
-      <SEO title="Bảng giá cước vận tải" description="Tham khảo bảng giá cước vận tải biển FCL, LCL, vận tải hàng không và dịch vụ kho bãi được cập nhật liên tục." />
+      <SEO title={t.seo_title} description={t.seo_desc} />
       <style>{css}</style>
 
       {/* ═══════ HERO ═══════ */}
       <section className="pr-hero">
         <div className="pr-hero-inner">
-          <div className="pr-kicker">BẢNG GIÁ THAM KHẢO</div>
-          <h1>Cước vận tải & Phí dịch vụ</h1>
-          <p>Giá cước logistics thay đổi hàng ngày theo thị trường. Chúng tôi cập nhật bảng giá thường xuyên để bạn có thông tin tham khảo chính xác nhất.</p>
+          <div className="pr-kicker">{t.hero_kicker}</div>
+          <h1>{t.hero_title}</h1>
+          <p>{t.hero_desc}</p>
           <div className="pr-hero-badges">
-            <span className="pr-badge">🌍 120+ Quốc gia</span>
-            <span className="pr-badge">⚡ Báo giá trong 2 giờ</span>
-            <span className="pr-badge">💰 Giá cạnh tranh nhất</span>
-            <span className="pr-badge">🔄 Cập nhật hàng ngày</span>
+            <span className="pr-badge">{t.badge_1}</span>
+            <span className="pr-badge">{t.badge_2}</span>
+            <span className="pr-badge">{t.badge_3}</span>
+            <span className="pr-badge">{t.badge_4}</span>
           </div>
         </div>
       </section>
@@ -280,10 +419,10 @@ export default function Pricing() {
         <div className="pr-disclaimer">
           <div className="pr-disclaimer-icon">⚠️</div>
           <p>
-            <strong>Lưu ý quan trọng:</strong> Bảng giá dưới đây chỉ mang tính <strong>tham khảo</strong> — giá thực tế phụ thuộc vào thời điểm booking, loại hàng, thể tích và các phụ phí phát sinh. Vui lòng <strong>yêu cầu báo giá chính xác</strong> từ đội ngũ của chúng tôi.
+            <strong>{t.warn_title}</strong> {t.warn_desc} <strong>{t.warn_hl}</strong> {t.warn_desc2} <strong>{t.warn_hl2}</strong> {t.warn_desc3}
           </p>
           <div className="pr-updated">
-            Cập nhật lần cuối
+            {t.updated}
             <span>{formatUpdated(lastUpdated)}</span>
           </div>
         </div>
@@ -294,7 +433,7 @@ export default function Pricing() {
 
         {/* Tabs */}
         <div className="pr-tabs">
-          {TABS.map(tab => (
+          {currentTabs.map(tab => (
             <button
               key={tab.key}
               className={`pr-tab${activeTab === tab.key ? ' active' : ''}`}
@@ -309,25 +448,25 @@ export default function Pricing() {
         <div className="pr-card">
           <div className="pr-card-header">
             <h2>{currentTab?.full}</h2>
-            <span className="count">{loading ? '...' : `${rates.length} tuyến`}</span>
+            <span className="count">{loading ? '...' : `${rates.length} ${t.routes_count}`}</span>
           </div>
           <div className="pr-table-wrap">
             {loading ? <PriceSkeleton /> : (
               <table className="pr-table">
                 <thead>
                   <tr>
-                    <th>Tuyến đường / Dịch vụ</th>
-                    <th>Đơn vị</th>
-                    <th>Giá từ</th>
-                    {activeTab !== 'warehouse' && <th>Thời gian</th>}
-                    <th>Ghi chú</th>
+                    <th>{t.th_route}</th>
+                    <th>{t.th_unit}</th>
+                    <th>{t.th_price}</th>
+                    {activeTab !== 'warehouse' && <th>{t.th_time}</th>}
+                    <th>{t.th_note}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {rates.length === 0 ? (
                     <tr>
                       <td colSpan={5} style={{ textAlign: 'center', padding: 40, color: '#9aabbb' }}>
-                        Chưa có dữ liệu — đang cập nhật...
+                        {t.empty_data}
                       </td>
                     </tr>
                   ) : rates.map(r => (
@@ -361,68 +500,66 @@ export default function Pricing() {
 
             {/* Form báo giá */}
             <div className="pr-cta-card">
-              <h3>📋 Yêu cầu báo giá chính xác</h3>
-              <p>Điền thông tin để nhận báo giá chi tiết, chính xác trong vòng 2 giờ làm việc.</p>
+              <h3>{t.req_title}</h3>
+              <p>{t.req_desc}</p>
               {sent ? (
                 <div style={{ textAlign: 'center', padding: '32px 0' }}>
                   <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
-                  <p style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>Gửi thành công!</p>
-                  <p style={{ color: 'rgba(255,255,255,.7)', margin: '8px 0 0', fontSize: 13 }}>Chúng tôi sẽ phản hồi trong 2 giờ làm việc.</p>
+                  <p style={{ fontSize: 16, fontWeight: 700, margin: 0 }}>{t.succ_title}</p>
+                  <p style={{ color: 'rgba(255,255,255,.7)', margin: '8px 0 0', fontSize: 13 }}>{t.succ_desc}</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
                   <div className="pr-form-row">
                     <div className="pr-form-group">
-                      <label>HỌ TÊN *</label>
-                      <input name="name" placeholder="Nguyễn Văn A" value={form.name} onChange={handleChange} required />
+                      <label>{t.f_name}</label>
+                      <input name="name" placeholder={t.f_name_ph} value={form.name} onChange={handleChange} required />
                     </div>
                     <div className="pr-form-group">
-                      <label>CÔNG TY</label>
-                      <input name="company" placeholder="Tên công ty" value={form.company} onChange={handleChange} />
-                    </div>
-                  </div>
-                  <div className="pr-form-row">
-                    <div className="pr-form-group">
-                      <label>EMAIL *</label>
-                      <input type="email" name="email" placeholder="email@company.com" value={form.email} onChange={handleChange} required />
-                    </div>
-                    <div className="pr-form-group">
-                      <label>ĐIỆN THOẠI</label>
-                      <input name="phone" placeholder="0901 234 567" value={form.phone} onChange={handleChange} />
+                      <label>{t.f_company}</label>
+                      <input name="company" placeholder={t.f_company_ph} value={form.company} onChange={handleChange} />
                     </div>
                   </div>
                   <div className="pr-form-row">
                     <div className="pr-form-group">
-                      <label>NƠI ĐI</label>
-                      <input name="origin" placeholder="TP.HCM, Việt Nam" value={form.origin} onChange={handleChange} />
+                      <label>{t.f_email}</label>
+                      <input type="email" name="email" placeholder={t.f_email_ph} value={form.email} onChange={handleChange} required />
                     </div>
                     <div className="pr-form-group">
-                      <label>NƠI ĐẾN</label>
-                      <input name="destination" placeholder="Rotterdam, Hà Lan" value={form.destination} onChange={handleChange} />
+                      <label>{t.f_phone}</label>
+                      <input name="phone" placeholder={t.f_phone_ph} value={form.phone} onChange={handleChange} />
                     </div>
                   </div>
                   <div className="pr-form-row">
                     <div className="pr-form-group">
-                      <label>LOẠI DỊCH VỤ</label>
+                      <label>{t.f_origin}</label>
+                      <input name="origin" placeholder={t.f_origin_ph} value={form.origin} onChange={handleChange} />
+                    </div>
+                    <div className="pr-form-group">
+                      <label>{t.f_dest}</label>
+                      <input name="destination" placeholder={t.f_dest_ph} value={form.destination} onChange={handleChange} />
+                    </div>
+                  </div>
+                  <div className="pr-form-row">
+                    <div className="pr-form-group">
+                      <label>{t.f_service}</label>
                       <select name="service" value={form.service} onChange={handleChange}>
-                        <option value="sea_fcl">🚢 Vận tải biển FCL</option>
-                        <option value="sea_lcl">📦 Vận tải biển LCL</option>
-                        <option value="air">✈️ Hàng không</option>
-                        <option value="road">🚛 Đường bộ</option>
-                        <option value="warehouse">🏭 Kho bãi</option>
+                        {currentTabs.map(tab => (
+                          <option key={tab.key} value={tab.key}>{tab.label}</option>
+                        ))}
                       </select>
                     </div>
                     <div className="pr-form-group">
-                      <label>HÀNG HÓA</label>
-                      <input name="cargo" placeholder="VD: 2 cont 40HC hàng điện tử" value={form.cargo} onChange={handleChange} />
+                      <label>{t.f_cargo}</label>
+                      <input name="cargo" placeholder={t.f_cargo_ph} value={form.cargo} onChange={handleChange} />
                     </div>
                   </div>
                   <div className="pr-form-group" style={{ marginBottom: 14 }}>
-                    <label>GHI CHÚ</label>
-                    <textarea name="note" placeholder="Yêu cầu đặc biệt, thời gian dự kiến..." value={form.note} onChange={handleChange} rows={2} style={{ resize: 'vertical' }} />
+                    <label>{t.f_note}</label>
+                    <textarea name="note" placeholder={t.f_note_ph} value={form.note} onChange={handleChange} rows={2} style={{ resize: 'vertical' }} />
                   </div>
                   <button type="submit" className="pr-form-submit" disabled={sending}>
-                    {sending ? '⏳ Đang gửi...' : '🚀 Gửi yêu cầu báo giá'}
+                    {sending ? t.btn_sending : t.btn_send}
                   </button>
                 </form>
               )}
@@ -430,37 +567,37 @@ export default function Pricing() {
 
             {/* Info card */}
             <div className="pr-info-card">
-              <h3>Lưu ý về bảng giá</h3>
+              <h3>{t.info_title}</h3>
               <div className="pr-info-item">
                 <div className="pr-info-icon orange">🔄</div>
                 <div className="pr-info-text">
-                  <strong>Cập nhật hàng ngày</strong>
-                  <span>Giá cước biển, không và đường bộ thay đổi theo thị trường. Bảng giá được đội ngũ cập nhật mỗi ngày làm việc.</span>
+                  <strong>{t.i1_title}</strong>
+                  <span>{t.i1_desc}</span>
                 </div>
               </div>
               <div className="pr-info-item">
                 <div className="pr-info-icon blue">💵</div>
                 <div className="pr-info-text">
-                  <strong>Giá chưa bao gồm phụ phí</strong>
-                  <span>Các mức giá hiển thị là giá cước thuần (ocean/air freight). Phụ phí địa phương, THC, DOC fee... tính riêng.</span>
+                  <strong>{t.i2_title}</strong>
+                  <span>{t.i2_desc}</span>
                 </div>
               </div>
               <div className="pr-info-item">
                 <div className="pr-info-icon green">⚡</div>
                 <div className="pr-info-text">
-                  <strong>Báo giá chính xác trong 2 giờ</strong>
-                  <span>Điền form bên cạnh để nhận báo giá all-in chính xác nhất, kèm lịch trình tàu/máy bay cụ thể.</span>
+                  <strong>{t.i3_title}</strong>
+                  <span>{t.i3_desc}</span>
                 </div>
               </div>
               <div className="pr-surcharge">
-                <p>⚡ Các phụ phí thường gặp:</p>
+                <p>{t.sur_title}</p>
                 <ul>
-                  <li>THC (Terminal Handling Charge): $60–120 / cont</li>
-                  <li>D/O Fee (Delivery Order): $25–40 / lô hàng</li>
-                  <li>B/L Fee: $30–50 / B/L</li>
-                  <li>Fumigation (kiểm dịch): theo từng lô</li>
-                  <li>Phụ phí nhiên liệu (BAF/FAF): biến động hàng tuần</li>
-                  <li>Phụ phí tắc nghẽn cảng (PSS): theo thông báo hãng tàu</li>
+                  <li>{t.sur_1}</li>
+                  <li>{t.sur_2}</li>
+                  <li>{t.sur_3}</li>
+                  <li>{t.sur_4}</li>
+                  <li>{t.sur_5}</li>
+                  <li>{t.sur_6}</li>
                 </ul>
               </div>
             </div>
