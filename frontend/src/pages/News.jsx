@@ -1,45 +1,26 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useArticles } from '../context/ArticlesContext'
-import { useTranslation } from 'react-i18next'
 import SEO from '../components/SEO'
-
-/* ─── Scroll-reveal hook ─── */
-function useScrollReveal() {
-  const containerRef = useRef(null)
-  const observe = useCallback(() => {
-    if (!containerRef.current) return
-    const els = containerRef.current.querySelectorAll('.rv')
-    if (!els.length) return
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => {
-        if (e.isIntersecting) { e.target.classList.add('rvd'); io.unobserve(e.target) }
-      }),
-      { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
-    )
-    els.forEach((el) => io.observe(el))
-    return () => io.disconnect()
-  }, [])
-  useEffect(() => { const c = observe(); return c }, [observe])
-  return containerRef
-}
-
-// removed hardcoded CATEGORIES
+import { useTranslation } from 'react-i18next'
 
 const t_ui = {
   vi: {
-    hero_kicker: "TIN TỨC & INSIGHTS",
-    hero_title: "Cập nhật mới nhất từ<br />ngành Logistics",
-    hero_desc: "Phân tích thị trường, xu hướng chuỗi cung ứng, tin tức công ty và kiến thức chuyên ngành từ đội ngũ chuyên gia Stella Shipping.",
+    title: "Tin tức & Kiến thức Logistics",
+    desc: "Cập nhật tin tức thị trường, kiến thức logistics, xuất nhập khẩu và hải quan mới nhất từ Stella Shipping.",
+    kicker: "TIN TỨC & INSIGHTS",
+    hero_h1: "Cập nhật mới nhất từ\nngành Logistics",
+    hero_p: "Phân tích thị trường, xu hướng chuỗi cung ứng, tin tức công ty và kiến thức chuyên ngành từ đội ngũ chuyên gia Stella Shipping.",
     feat_badge: "⭐ TIÊU ĐIỂM",
     feat_cat: "CÔNG TY",
-    feat_title: "Stella Shipping - Doanh Nghiệp Logistics Uy Tín Tại Việt Nam",
-    feat_author: "Ban Truyền Thông",
-    feat_date: "25 Thg 08, 2024",
-    feat_time: "5 phút đọc",
-    feat_desc: "Vượt qua các tiêu chí đánh giá khắt khe về năng lực tài chính, uy tín truyền thông, mức độ hài lòng khách hàng và chuyển đổi số.",
-    feat_read: "Đọc bài viết đầy đủ →",
+    feat_title: "Stella Shipping Doanh Nghiệp Logistics Uy Tín Tại Việt Nam",
+    feat_meta_1: "Ban Truyền Thông",
+    feat_meta_2: "25 Thg 08, 2024",
+    feat_meta_3: "5 phút đọc",
+    feat_p: "Vượt qua các tiêu chí đánh giá khắt khe về năng lực tài chính, uy tín truyền thông, mức độ hài lòng khách hàng và chuyển đổi số.",
+    read_full: "Đọc bài viết đầy đủ →",
     read_more: "Đọc tiếp →",
+    read_time: "phút",
     empty: "Không tìm thấy bài viết nào phù hợp.",
     view_all: "Xem tất cả bài viết",
     load_more: "Xem thêm bài viết",
@@ -64,21 +45,24 @@ const t_ui = {
     tag_2: "🚢 Cước vận tải",
     tag_3: "🌱 Logistics xanh",
     tag_4: "💡 Case studies",
-    thanks: "Cảm ơn bạn đã đăng ký nhận bản tin với email: "
+    all: "Tất cả"
   },
   en: {
-    hero_kicker: "NEWS & INSIGHTS",
-    hero_title: "Latest updates from<br />the Logistics industry",
-    hero_desc: "Market analysis, supply chain trends, company news, and industry knowledge from Stella Shipping experts.",
-    feat_badge: "⭐ HIGHLIGHT",
+    title: "News & Logistics Insights",
+    desc: "Update the latest market news, logistics knowledge, import-export, and customs from Stella Shipping.",
+    kicker: "NEWS & INSIGHTS",
+    hero_h1: "Latest Updates from\nthe Logistics Industry",
+    hero_p: "Market analysis, supply chain trends, company news, and industry knowledge from Stella Shipping experts.",
+    feat_badge: "⭐ SPOTLIGHT",
     feat_cat: "COMPANY",
     feat_title: "Stella Shipping - Reputable Logistics Enterprise in Vietnam",
-    feat_author: "Comms Dept",
-    feat_date: "Aug 25, 2024",
-    feat_time: "5 min read",
-    feat_desc: "Passing strict evaluation criteria on financial capacity, media reputation, customer satisfaction, and digital transformation.",
-    feat_read: "Read full article →",
+    feat_meta_1: "Communications Dept.",
+    feat_meta_2: "Aug 25, 2024",
+    feat_meta_3: "5 min read",
+    feat_p: "Overcoming strict evaluation criteria on financial capacity, media reputation, customer satisfaction, and digital transformation.",
+    read_full: "Read full article →",
     read_more: "Read more →",
+    read_time: "min",
     empty: "No matching articles found.",
     view_all: "View all articles",
     load_more: "Load more articles",
@@ -86,24 +70,24 @@ const t_ui = {
     trend_title: "🔥 Trending",
     trend_views: "views",
     nl_title: "📬 Weekly Newsletter",
-    nl_desc: "Get market analysis, freight rate updates, and logistics insights straight to your inbox every Monday.",
+    nl_desc: "Receive market analysis, freight updates, and logistics insights straight to your inbox every Monday.",
     nl_ph: "Your email...",
     nl_btn: "Subscribe for free",
     cat_title: "📂 Categories",
     link_title: "🔗 Quick Links",
-    link_1: "Q3/2024 Market Report",
+    link_1: "Market Report Q3/2024",
     link_2: "Media Kit & Logo",
-    link_3: "Press Releases",
-    link_4: "Contact Comms Dept",
+    link_3: "Press Release",
+    link_4: "Contact PR Dept.",
     sub_title: "Don't miss important logistics news",
-    sub_desc: "Join 5,000+ logistics professionals receiving our weekly newsletter — market analysis, supply chain trends, and the latest freight rates.",
+    sub_desc: "Join 5,000+ logistics professionals receiving our weekly newsletter — market analysis, supply chain trends, and the latest freight updates.",
     sub_ph: "Enter your email...",
     sub_btn: "Subscribe now",
     tag_1: "📈 Market Analysis",
     tag_2: "🚢 Freight Rates",
     tag_3: "🌱 Green Logistics",
-    tag_4: "💡 Case Studies",
-    thanks: "Thank you for subscribing to our newsletter with email: "
+    tag_4: "💡 Case studies",
+    all: "All"
   }
 }
 
@@ -116,12 +100,32 @@ const TRENDING = {
     { title: 'Stella đạt chứng nhận AEO 2024', views: '6.9K' },
   ],
   en: [
-    { title: 'Q4 ocean freight rates expected to rise 20%', views: '12.5K' },
+    { title: 'Q4 ocean freight rates expected to rise by 20%', views: '12.5K' },
     { title: 'Top 5 busiest container ports in SEA', views: '9.8K' },
     { title: 'E-Customs: A-Z Guide', views: '8.2K' },
     { title: 'FCL vs LCL cost comparison for SMEs', views: '7.6K' },
     { title: 'Stella achieves AEO certification 2024', views: '6.9K' },
   ]
+}
+
+/* ─── Scroll-reveal hook ─── */
+function useScrollReveal() {
+  const containerRef = useRef(null)
+  const observe = useCallback(() => {
+    if (!containerRef.current) return
+    const els = containerRef.current.querySelectorAll('.rv')
+    if (!els.length) return
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('rvd'); io.unobserve(e.target) }
+      }),
+      { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [])
+  useEffect(() => { const c = observe(); return c }, [observe])
+  return containerRef
 }
 
 /* ═══════════════════════════════════════════ CSS ═══════════════════════════════════════════ */
@@ -138,15 +142,8 @@ const newsCSS = `
   .nw-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:600px;height:600px;background:radial-gradient(circle,rgba(243,108,31,.08) 0%,transparent 70%);border-radius:50%}
   .nw-hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;background:radial-gradient(circle,rgba(243,108,31,.05) 0%,transparent 70%);border-radius:50%}
   .nw-hero .kicker{display:inline-block;color:#f36c1f;font-weight:700;letter-spacing:3px;font-size:12px;border:1px solid rgba(243,108,31,.35);padding:5px 16px;border-radius:20px;margin-bottom:16px}
-  .nw-hero h1{font-size:46px;margin:0 0 16px;font-weight:800;position:relative;z-index:1}
+  .nw-hero h1{font-size:46px;margin:0 0 16px;font-weight:800;position:relative;z-index:1;white-space:pre-line;}
   .nw-hero>p{font-size:16px;color:rgba(255,255,255,.75);max-width:620px;margin:0 auto;line-height:1.65;position:relative;z-index:1}
-
-  /* ── Search bar ── */
-  .nw-search{max-width:560px;margin:28px auto 0;position:relative;z-index:1}
-  .nw-search input{width:100%;padding:16px 52px 16px 20px;border:none;border-radius:12px;font-size:15px;background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);transition:all .25s}
-  .nw-search input::placeholder{color:rgba(255,255,255,.5)}
-  .nw-search input:focus{outline:none;background:rgba(255,255,255,.15);border-color:rgba(243,108,31,.5)}
-  .nw-search-icon{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:18px;color:rgba(255,255,255,.5)}
 
   /* ── Featured ── */
   .nw-featured{max-width:1200px;margin:-48px auto 48px;padding:0 24px;position:relative;z-index:2}
@@ -261,27 +258,17 @@ const newsCSS = `
 
 export default function News() {
   const { i18n } = useTranslation()
-  const pageRef = useScrollReveal()
-  const { articles: allArticles } = useArticles()
   const lang = i18n.language === 'en' ? 'en' : 'vi'
   const t = t_ui[lang]
-  const trendData = TRENDING[lang]
 
-  const [categories, setCategories] = useState([lang === 'en' ? 'All' : 'Tất cả'])
-  const [filter, setFilter] = useState(lang === 'en' ? 'All' : 'Tất cả')
-  const [search, setSearch] = useState('')
+  const pageRef = useScrollReveal()
+  const { articles: allArticles } = useArticles()
+  const [categories, setCategories] = useState([t.all])
+  const [filter, setFilter] = useState(t.all)
   const [email, setEmail] = useState('')
   const [visibleCount, setVisibleCount] = useState(6)
 
-  // Cập nhật 'Tất cả' / 'All' khi đổi ngôn ngữ
-  useEffect(() => {
-    setCategories(prev => {
-      const newCats = [...prev];
-      newCats[0] = lang === 'en' ? 'All' : 'Tất cả';
-      return newCats;
-    });
-    setFilter(prev => (prev === 'Tất cả' || prev === 'All') ? (lang === 'en' ? 'All' : 'Tất cả') : prev);
-  }, [lang])
+  const trendData = TRENDING[lang]
 
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
@@ -290,43 +277,36 @@ export default function News() {
       .then(data => {
         if (Array.isArray(data)) {
           const catNames = data.map(c => lang === 'en' && c.name_en ? c.name_en : c.name)
-          setCategories([lang === 'en' ? 'All' : 'Tất cả', ...catNames])
+          setCategories([t.all, ...catNames])
         }
       })
       .catch(console.error)
-  }, [])
+  }, [lang, t.all])
 
-  // Only show published articles on the public News page
   const publishedArticles = allArticles.filter(a => a.status === 'published')
 
   const filtered = publishedArticles.filter(a => {
-    const aCat = lang === 'en' && a.category_en ? a.category_en : a.category
-    const matchCat = (filter === 'Tất cả' || filter === 'All') || aCat === filter
-    
-    const aTitle = lang === 'en' && a.title_en ? a.title_en : a.title
-    const aDesc = lang === 'en' && a.desc_en ? a.desc_en : a.desc
-    const matchSearch = !search || (aTitle && aTitle.toLowerCase().includes(search.toLowerCase())) || (aDesc && aDesc.toLowerCase().includes(search.toLowerCase()))
-    
-    return matchCat && matchSearch
+    const artCat = lang === 'en' && a.category_en ? a.category_en : a.category
+    const matchCat = filter === t.all || artCat === filter
+    return matchCat
   })
 
   const visible = filtered.slice(0, visibleCount)
 
   const categoryCounts = categories.reduce((acc, cat) => {
-    acc[cat] = (cat === 'Tất cả' || cat === 'All') ? publishedArticles.length : publishedArticles.filter(a => {
-      const aCat = lang === 'en' && a.category_en ? a.category_en : a.category
-      return aCat === cat
+    acc[cat] = cat === t.all ? publishedArticles.length : publishedArticles.filter(a => {
+      const artCat = lang === 'en' && a.category_en ? a.category_en : a.category
+      return artCat === cat
     }).length
     return acc
   }, {})
 
   const handleSubscribe = (e) => {
     e.preventDefault()
-    alert(`${t.thanks}${email}`)
+    alert(`Thank you for subscribing: ${email}`)
     setEmail('')
   }
 
-  // ── Fix: reveal các bài viết đã ở trong viewport sau khi filter thay đổi ──
   useEffect(() => {
     if (!pageRef.current) return
     const timer = setTimeout(() => {
@@ -336,20 +316,20 @@ export default function News() {
           el.classList.add('rvd')
         }
       })
-    }, 50) // chờ React render xong
+    }, 50)
     return () => clearTimeout(timer)
-  }, [filter, search, visibleCount, pageRef])
+  }, [filter, visibleCount, pageRef])
 
   return (
     <div ref={pageRef} className="news-page">
-      <SEO title="Tin tức & Kiến thức Logistics" description="Cập nhật tin tức thị trường, kiến thức logistics, xuất nhập khẩu và hải quan mới nhất từ Stella Shipping." />
+      <SEO title={t.title} description={t.desc} />
       <style>{newsCSS}</style>
 
       {/* ═══════ HERO ═══════ */}
       <section className="nw-hero">
-        <div className="kicker rv">{t.hero_kicker}</div>
-        <h1 className="rv d1" dangerouslySetInnerHTML={{ __html: t.hero_title }}></h1>
-        <p className="rv d2">{t.hero_desc}</p>
+        <div className="kicker rv">{t.kicker}</div>
+        <h1 className="rv d1">{t.hero_h1}</h1>
+        <p className="rv d2">{t.hero_p}</p>
       </section>
 
       {/* ═══════ FEATURED ═══════ */}
@@ -362,14 +342,14 @@ export default function News() {
             <div className="cat">{t.feat_cat}</div>
             <h2>{t.feat_title}</h2>
             <div className="meta">
-              <span>{t.feat_author}</span>
+              <span>{t.feat_meta_1}</span>
               <span className="dot" />
-              <span>{t.feat_date}</span>
+              <span>{t.feat_meta_2}</span>
               <span className="dot" />
-              <span>{t.feat_time}</span>
+              <span>{t.feat_meta_3}</span>
             </div>
-            <p>{t.feat_desc}</p>
-            <Link to="/news/1" className="nw-read-btn">{t.feat_read}</Link>
+            <p>{t.feat_p}</p>
+            <Link to="/news/1" className="nw-read-btn">{t.read_full}</Link>
           </div>
         </div>
       </section>
@@ -389,7 +369,7 @@ export default function News() {
         <div className="nw-articles">
           {visible.map((a, i) => (
             <article key={a.id} className={`nw-art rv d${(i % 3) + 1}`}>
-              <img src={a.img} alt={a.title} className="nw-art-img" />
+              <img src={a.img} alt={lang === 'en' && a.title_en ? a.title_en : a.title} className="nw-art-img" />
               <div className="nw-art-body">
                 <div className="nw-art-top">
                   <span className="nw-art-cat">{lang === 'en' && a.category_en ? a.category_en : a.category}</span>
@@ -410,7 +390,7 @@ export default function News() {
             <div style={{ textAlign: 'center', padding: '48px 0', color: '#5a6f82' }}>
               <div style={{ fontSize: 48, marginBottom: 16 }}>📭</div>
               <p style={{ fontSize: 16 }}>{t.empty}</p>
-              <button className="nw-fbtn" onClick={() => { setFilter(categories[0]); setSearch('') }} style={{ marginTop: 12 }}>{t.view_all}</button>
+              <button className="nw-fbtn" onClick={() => { setFilter(t.all); setVisibleCount(6) }} style={{ marginTop: 12 }}>{t.view_all}</button>
             </div>
           )}
 
@@ -452,7 +432,7 @@ export default function News() {
           {/* Categories */}
           <div className="nw-side-card rv d2">
             <h3>{t.cat_title}</h3>
-            {categories.filter(c => c !== 'Tất cả' && c !== 'All').map(c => (
+            {categories.filter(c => c !== t.all).map(c => (
               <div key={c} className="nw-cat-item" onClick={() => { setFilter(c); setVisibleCount(6) }}>
                 <span>{c}</span>
                 <span className="nw-cat-count">{categoryCounts[c] || 0}</span>

@@ -1,52 +1,39 @@
 import React, { useState, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 import SEO from '../components/SEO'
+import { useTranslation } from 'react-i18next'
 
 const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
 
-/* ── Cấu hình tabs dịch vụ ── */
-const TABS = {
-  vi: [
-    { key: 'sea_fcl', label: '🚢 FCL', full: 'Vận tải biển (FCL)' },
-    { key: 'sea_lcl', label: '📦 LCL', full: 'Hàng lẻ (LCL)' },
-    { key: 'air', label: '✈️ Hàng không', full: 'Vận tải hàng không' },
-    { key: 'road', label: '🚛 Đường bộ', full: 'Vận tải đường bộ' },
-    { key: 'warehouse', label: '🏭 Kho bãi', full: 'Dịch vụ kho bãi' },
-  ],
-  en: [
-    { key: 'sea_fcl', label: '🚢 FCL', full: 'Ocean Freight (FCL)' },
-    { key: 'sea_lcl', label: '📦 LCL', full: 'Ocean Freight (LCL)' },
-    { key: 'air', label: '✈️ Air', full: 'Air Freight' },
-    { key: 'road', label: '🚛 Road', full: 'Road Freight' },
-    { key: 'warehouse', label: '🏭 Warehouse', full: 'Warehousing Services' },
-  ]
-}
-
 const t_ui = {
   vi: {
-    seo_title: "Bảng giá cước vận tải",
-    seo_desc: "Tham khảo bảng giá cước vận tải biển FCL, LCL, vận tải hàng không và dịch vụ kho bãi được cập nhật liên tục.",
-    hero_kicker: "BẢNG GIÁ THAM KHẢO",
-    hero_title: "Cước vận tải & Phí dịch vụ",
-    hero_desc: "Giá cước logistics thay đổi hàng ngày theo thị trường. Chúng tôi cập nhật bảng giá thường xuyên để bạn có thông tin tham khảo chính xác nhất.",
-    badge_1: "🌍 120+ Quốc gia",
-    badge_2: "⚡ Báo giá trong 2 giờ",
-    badge_3: "💰 Giá cạnh tranh nhất",
-    badge_4: "🔄 Cập nhật hàng ngày",
-    warn_title: "Lưu ý quan trọng:",
-    warn_desc: "Bảng giá dưới đây chỉ mang tính",
-    warn_hl: "tham khảo",
-    warn_desc2: "— giá thực tế phụ thuộc vào thời điểm booking, loại hàng, thể tích và các phụ phí phát sinh. Vui lòng",
-    warn_hl2: "yêu cầu báo giá chính xác",
-    warn_desc3: "từ đội ngũ của chúng tôi.",
+    title: "Bảng giá cước vận tải",
+    desc: "Tham khảo bảng giá cước vận tải biển FCL, LCL, vận tải hàng không và dịch vụ kho bãi được cập nhật liên tục.",
+    kicker: "BẢNG GIÁ THAM KHẢO",
+    hero_h1: "Cước vận tải & Phí dịch vụ",
+    hero_p: "Giá cước logistics thay đổi hàng ngày theo thị trường. Chúng tôi cập nhật bảng giá thường xuyên để bạn có thông tin tham khảo chính xác nhất.",
+    b1: "🌍 120+ Quốc gia",
+    b2: "⚡ Báo giá trong 2 giờ",
+    b3: "💰 Giá cạnh tranh nhất",
+    b4: "🔄 Cập nhật hàng ngày",
+    disc_warn: "Lưu ý quan trọng:",
+    disc_text: "Bảng giá dưới đây chỉ mang tính tham khảo — giá thực tế phụ thuộc vào thời điểm booking, loại hàng, thể tích và các phụ phí phát sinh. Vui lòng yêu cầu báo giá chính xác từ đội ngũ của chúng tôi.",
     updated: "Cập nhật lần cuối",
-    routes_count: "tuyến",
+    tab_sea_fcl: "🚢 FCL",
+    tab_sea_lcl: "📦 LCL",
+    tab_air: "✈️ Hàng không",
+    tab_road: "🚛 Đường bộ",
+    tab_warehouse: "🏭 Kho bãi",
+    full_sea_fcl: "Vận tải biển (FCL)",
+    full_sea_lcl: "Hàng lẻ (LCL)",
+    full_air: "Vận tải hàng không",
+    full_road: "Vận tải đường bộ",
+    full_warehouse: "Dịch vụ kho bãi",
     th_route: "Tuyến đường / Dịch vụ",
     th_unit: "Đơn vị",
     th_price: "Giá từ",
     th_time: "Thời gian",
     th_note: "Ghi chú",
-    empty_data: "Chưa có dữ liệu — đang cập nhật...",
+    no_data: "Chưa có dữ liệu — đang cập nhật...",
     req_title: "📋 Yêu cầu báo giá chính xác",
     req_desc: "Điền thông tin để nhận báo giá chi tiết, chính xác trong vòng 2 giờ làm việc.",
     succ_title: "Gửi thành công!",
@@ -68,8 +55,8 @@ const t_ui = {
     f_cargo_ph: "VD: 2 cont 40HC hàng điện tử",
     f_note: "GHI CHÚ",
     f_note_ph: "Yêu cầu đặc biệt, thời gian dự kiến...",
-    btn_sending: "⏳ Đang gửi...",
     btn_send: "🚀 Gửi yêu cầu báo giá",
+    btn_sending: "⏳ Đang gửi...",
     info_title: "Lưu ý về bảng giá",
     i1_title: "Cập nhật hàng ngày",
     i1_desc: "Giá cước biển, không và đường bộ thay đổi theo thị trường. Bảng giá được đội ngũ cập nhật mỗi ngày làm việc.",
@@ -86,33 +73,38 @@ const t_ui = {
     sur_6: "Phụ phí tắc nghẽn cảng (PSS): theo thông báo hãng tàu"
   },
   en: {
-    seo_title: "Freight Rates",
-    seo_desc: "Reference our constantly updated freight rates for FCL, LCL, air freight, and warehousing services.",
-    hero_kicker: "REFERENCE RATES",
-    hero_title: "Freight Rates & Service Fees",
-    hero_desc: "Logistics rates change daily based on the market. We update our price list regularly to provide you with the most accurate reference information.",
-    badge_1: "🌍 120+ Countries",
-    badge_2: "⚡ Quote within 2 hours",
-    badge_3: "💰 Most competitive rates",
-    badge_4: "🔄 Daily updates",
-    warn_title: "Important Note:",
-    warn_desc: "The rates below are for",
-    warn_hl: "reference only",
-    warn_desc2: "— actual rates depend on the booking time, cargo type, volume, and arising surcharges. Please",
-    warn_hl2: "request an accurate quote",
-    warn_desc3: "from our team.",
+    title: "Freight Rates",
+    desc: "Reference our continuously updated freight rates for sea (FCL, LCL), air freight, and warehousing services.",
+    kicker: "REFERENCE PRICING",
+    hero_h1: "Freight Rates & Services",
+    hero_p: "Logistics rates fluctuate daily with the market. We update our prices regularly to provide you with the most accurate reference information.",
+    b1: "🌍 120+ Countries",
+    b2: "⚡ Quote in 2 hours",
+    b3: "💰 Most Competitive",
+    b4: "🔄 Daily Updates",
+    disc_warn: "Important Note:",
+    disc_text: "The prices below are for reference only — actual rates depend on booking time, cargo type, volume, and applicable surcharges. Please request an exact quote from our team.",
     updated: "Last updated",
-    routes_count: "routes",
+    tab_sea_fcl: "🚢 FCL",
+    tab_sea_lcl: "📦 LCL",
+    tab_air: "✈️ Air Freight",
+    tab_road: "🚛 Road Freight",
+    tab_warehouse: "🏭 Warehousing",
+    full_sea_fcl: "Sea Freight (FCL)",
+    full_sea_lcl: "Less than Container Load (LCL)",
+    full_air: "Air Freight",
+    full_road: "Road Freight",
+    full_warehouse: "Warehousing Services",
     th_route: "Route / Service",
     th_unit: "Unit",
-    th_price: "Price from",
+    th_price: "From",
     th_time: "Transit Time",
-    th_note: "Note",
-    empty_data: "No data yet — updating...",
-    req_title: "📋 Request Accurate Quote",
-    req_desc: "Fill in the information to receive a detailed, accurate quote within 2 business hours.",
+    th_note: "Notes",
+    no_data: "No data available — updating...",
+    req_title: "📋 Request Exact Quote",
+    req_desc: "Fill in the details to receive an exact, detailed quote within 2 working hours.",
     succ_title: "Sent Successfully!",
-    succ_desc: "We will respond within 2 business hours.",
+    succ_desc: "We will respond within 2 working hours.",
     f_name: "FULL NAME *",
     f_name_ph: "John Doe",
     f_company: "COMPANY",
@@ -128,24 +120,24 @@ const t_ui = {
     f_service: "SERVICE TYPE",
     f_cargo: "CARGO",
     f_cargo_ph: "Ex: 2x40HC electronics",
-    f_note: "NOTE",
-    f_note_ph: "Special requirements, expected timeline...",
+    f_note: "NOTES",
+    f_note_ph: "Special requirements, estimated time...",
+    btn_send: "🚀 Send Quote Request",
     btn_sending: "⏳ Sending...",
-    btn_send: "🚀 Request Quote",
-    info_title: "Rate Notes",
+    info_title: "Pricing Notes",
     i1_title: "Daily Updates",
-    i1_desc: "Ocean, air, and road freight rates fluctuate with the market. Our team updates the price list every business day.",
-    i2_title: "Rates exclude surcharges",
-    i2_desc: "The displayed rates are pure freight (ocean/air). Local surcharges, THC, DOC fee... are calculated separately.",
-    i3_title: "Accurate quote in 2 hours",
-    i3_desc: "Fill out the form to receive the most accurate all-in quote, including specific vessel/flight schedules.",
+    i1_desc: "Sea, air, and road freight rates fluctuate with the market. Our team updates the pricing every working day.",
+    i2_title: "Excluding Surcharges",
+    i2_desc: "The displayed prices are pure freight rates (ocean/air). Local surcharges, THC, DOC fee... are charged separately.",
+    i3_title: "Exact Quote in 2 Hours",
+    i3_desc: "Fill out the form to receive the most accurate all-in quote, along with a specific vessel/flight schedule.",
     sur_title: "⚡ Common Surcharges:",
     sur_1: "THC (Terminal Handling Charge): $60–120 / cont",
     sur_2: "D/O Fee (Delivery Order): $25–40 / shipment",
     sur_3: "B/L Fee: $30–50 / B/L",
     sur_4: "Fumigation: per shipment",
-    sur_5: "Fuel Surcharge (BAF/FAF): weekly fluctuation",
-    sur_6: "Port Congestion Surcharge (PSS): per carrier notice"
+    sur_5: "Bunker Adjustment Factor (BAF/FAF): weekly fluctuation",
+    sur_6: "Peak Season Surcharge (PSS): per carrier notice"
   }
 }
 
@@ -343,10 +335,16 @@ function PriceSkeleton() {
 
 export default function Pricing() {
   const { i18n } = useTranslation()
-  const lang = i18n.language === 'en' ? 'en' : 'vi'
-  const t = t_ui[lang]
-  const currentTabs = TABS[lang]
+  const t = t_ui[i18n.language === 'en' ? 'en' : 'vi']
   
+  const TABS = [
+    { key: 'sea_fcl', label: t.tab_sea_fcl, full: t.full_sea_fcl },
+    { key: 'sea_lcl', label: t.tab_sea_lcl, full: t.full_sea_lcl },
+    { key: 'air', label: t.tab_air, full: t.full_air },
+    { key: 'road', label: t.tab_road, full: t.full_road },
+    { key: 'warehouse', label: t.tab_warehouse, full: t.full_warehouse },
+  ]
+
   const [activeTab, setActiveTab] = useState('sea_fcl')
   const [allRates, setAllRates] = useState([])
   const [loading, setLoading] = useState(true)
@@ -370,7 +368,7 @@ export default function Pricing() {
   }, [])
 
   const rates = allRates.filter(r => r.service_type === activeTab)
-  const currentTab = currentTabs.find(tab => tab.key === activeTab)
+  const currentTab = TABS.find(tab => tab.key === activeTab)
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   const handleSubmit = async e => {
@@ -396,20 +394,20 @@ export default function Pricing() {
 
   return (
     <div className="pr-page">
-      <SEO title={t.seo_title} description={t.seo_desc} />
+      <SEO title={t.title} description={t.desc} />
       <style>{css}</style>
 
       {/* ═══════ HERO ═══════ */}
       <section className="pr-hero">
         <div className="pr-hero-inner">
-          <div className="pr-kicker">{t.hero_kicker}</div>
-          <h1>{t.hero_title}</h1>
-          <p>{t.hero_desc}</p>
+          <div className="pr-kicker">{t.kicker}</div>
+          <h1>{t.hero_h1}</h1>
+          <p>{t.hero_p}</p>
           <div className="pr-hero-badges">
-            <span className="pr-badge">{t.badge_1}</span>
-            <span className="pr-badge">{t.badge_2}</span>
-            <span className="pr-badge">{t.badge_3}</span>
-            <span className="pr-badge">{t.badge_4}</span>
+            <span className="pr-badge">{t.b1}</span>
+            <span className="pr-badge">{t.b2}</span>
+            <span className="pr-badge">{t.b3}</span>
+            <span className="pr-badge">{t.b4}</span>
           </div>
         </div>
       </section>
@@ -419,7 +417,7 @@ export default function Pricing() {
         <div className="pr-disclaimer">
           <div className="pr-disclaimer-icon">⚠️</div>
           <p>
-            <strong>{t.warn_title}</strong> {t.warn_desc} <strong>{t.warn_hl}</strong> {t.warn_desc2} <strong>{t.warn_hl2}</strong> {t.warn_desc3}
+            <strong>{t.disc_warn}</strong> {t.disc_text}
           </p>
           <div className="pr-updated">
             {t.updated}
@@ -433,7 +431,7 @@ export default function Pricing() {
 
         {/* Tabs */}
         <div className="pr-tabs">
-          {currentTabs.map(tab => (
+          {TABS.map(tab => (
             <button
               key={tab.key}
               className={`pr-tab${activeTab === tab.key ? ' active' : ''}`}
@@ -448,7 +446,7 @@ export default function Pricing() {
         <div className="pr-card">
           <div className="pr-card-header">
             <h2>{currentTab?.full}</h2>
-            <span className="count">{loading ? '...' : `${rates.length} ${t.routes_count}`}</span>
+            <span className="count">{loading ? '...' : rates.length}</span>
           </div>
           <div className="pr-table-wrap">
             {loading ? <PriceSkeleton /> : (
@@ -466,7 +464,7 @@ export default function Pricing() {
                   {rates.length === 0 ? (
                     <tr>
                       <td colSpan={5} style={{ textAlign: 'center', padding: 40, color: '#9aabbb' }}>
-                        {t.empty_data}
+                        {t.no_data}
                       </td>
                     </tr>
                   ) : rates.map(r => (
@@ -544,7 +542,7 @@ export default function Pricing() {
                     <div className="pr-form-group">
                       <label>{t.f_service}</label>
                       <select name="service" value={form.service} onChange={handleChange}>
-                        {currentTabs.map(tab => (
+                        {TABS.map(tab => (
                           <option key={tab.key} value={tab.key}>{tab.label}</option>
                         ))}
                       </select>
