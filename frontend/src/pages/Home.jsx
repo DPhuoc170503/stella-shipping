@@ -445,8 +445,36 @@ export default function Home() {
 
 
 
-      {/* ═══════════════ 4. DỊCH VỤ CHÍNH ═══════════════ */}
+      {/* ═══════════════ 9. TIN TỨC & INSIGHTS ═══════════════ */}
       <section className="hm-section">
+        <div className="hm-section-hdr rv">
+          <div className="kicker">TIN TỨC & INSIGHTS</div>
+          <h2>Cập nhật mới nhất từ ngành logistics</h2>
+        </div>
+        <div className="hm-news-grid hm-mobile-slider">
+          {(articles && articles.filter(a => a.status === 'published').length > 0
+            ? articles.filter(a => a.status === 'published').slice(0, 3)
+            : [
+              { id: 1, img: '/Banner.jpg', category: 'NGÀNH', title: 'Xu hướng logistics xanh 2024: Cơ hội và thách thức', desc: 'Phân tích chi tiết về các sáng kiến giảm carbon trong vận tải biển và tác động đến chi phí chuỗi cung ứng.', date: '12/08/2024' },
+              { id: 2, img: '/AirFreight.jpg', category: 'DỊCH VỤ', title: 'Stella mở tuyến air freight trực tiếp TP.HCM – Frankfurt', desc: 'Rút ngắn thời gian transit xuống 2 ngày so với tuyến truyền thống, phục vụ nhu cầu hàng khẩn cấp sang EU.', date: '05/08/2024' },
+              { id: 3, img: '/INTERMODA.jpg', category: 'CÔNG NGHỆ', title: 'Ra mắt Cổng khách hàng 3.0 với AI dự đoán ETA', desc: 'Ứng dụng trí tuệ nhân tạo để dự đoán thời gian đến chính xác đến 95%, giúp khách hàng chủ động lên kế hoạch.', date: '28/07/2024' }
+            ]
+          ).map((n, i) => (
+            <div key={i} className={`hm-news-card rv d${i + 1}`}>
+              <img src={n.img || '/Banner.jpg'} alt={n.title} />
+              <div className="hm-news-body">
+                <div className="tag">{n.category || 'TIN TỨC'}</div>
+                <h4>{n.title}</h4>
+                <p>{n.desc}</p>
+                <a href={n.id ? `/news/${n.id}` : "/news"}>Đọc thêm →</a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══════════════ 4. DỊCH VỤ CHÍNH ═══════════════ */}
+      <section className="hm-section hm-section-alt">
         <div className="hm-section-hdr rv">
           <div className="kicker">DỊCH VỤ CỦA CHÚNG TÔI</div>
           <h2>Giải pháp logistics toàn diện</h2>
@@ -549,34 +577,6 @@ export default function Home() {
               <li>Thông báo tự động qua email & SMS</li>
             </ul>
           </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ 9. TIN TỨC & INSIGHTS ═══════════════ */}
-      <section className="hm-section">
-        <div className="hm-section-hdr rv">
-          <div className="kicker">TIN TỨC & INSIGHTS</div>
-          <h2>Cập nhật mới nhất từ ngành logistics</h2>
-        </div>
-        <div className="hm-news-grid hm-mobile-slider">
-          {(articles && articles.filter(a => a.status === 'published').length > 0
-            ? articles.filter(a => a.status === 'published').slice(0, 3)
-            : [
-              { id: 1, img: '/Banner.jpg', category: 'NGÀNH', title: 'Xu hướng logistics xanh 2024: Cơ hội và thách thức', desc: 'Phân tích chi tiết về các sáng kiến giảm carbon trong vận tải biển và tác động đến chi phí chuỗi cung ứng.', date: '12/08/2024' },
-              { id: 2, img: '/AirFreight.jpg', category: 'DỊCH VỤ', title: 'Stella mở tuyến air freight trực tiếp TP.HCM – Frankfurt', desc: 'Rút ngắn thời gian transit xuống 2 ngày so với tuyến truyền thống, phục vụ nhu cầu hàng khẩn cấp sang EU.', date: '05/08/2024' },
-              { id: 3, img: '/INTERMODA.jpg', category: 'CÔNG NGHỆ', title: 'Ra mắt Cổng khách hàng 3.0 với AI dự đoán ETA', desc: 'Ứng dụng trí tuệ nhân tạo để dự đoán thời gian đến chính xác đến 95%, giúp khách hàng chủ động lên kế hoạch.', date: '28/07/2024' }
-            ]
-          ).map((n, i) => (
-            <div key={i} className={`hm-news-card rv d${i + 1}`}>
-              <img src={n.img || '/Banner.jpg'} alt={n.title} />
-              <div className="hm-news-body">
-                <div className="tag">{n.category || 'TIN TỨC'}</div>
-                <h4>{n.title}</h4>
-                <p>{n.desc}</p>
-                <a href={n.id ? `/news/${n.id}` : "/news"}>Đọc thêm →</a>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
