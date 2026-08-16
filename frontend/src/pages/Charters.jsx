@@ -13,33 +13,119 @@ function useReveal(ref) {
   }, [ref])
 }
 
-const SERVICES = [
-  { icon: '🔍', title: 'Phân tích & Đánh giá chuỗi cung ứng', desc: 'Khảo sát toàn diện supply chain hiện tại: chi phí, thời gian, rủi ro, bottleneck. So sánh benchmark với ngành để xác định cơ hội cải thiện.', result: 'Giảm 15–30% chi phí logistics' },
-  { icon: '🗺️', title: 'Thiết kế mạng lưới phân phối', desc: 'Xác định vị trí kho tối ưu, tuyến vận chuyển hiệu quả, mô hình hub-and-spoke phù hợp nhất cho thị trường mục tiêu.', result: 'Tối ưu network coverage' },
-  { icon: '📈', title: 'Dự báo & Lập kế hoạch nhu cầu', desc: 'Ứng dụng AI/ML phân tích dữ liệu lịch sử, mùa vụ, xu hướng thị trường để dự báo demand chính xác. Giảm tồn kho thừa và hết hàng.', result: 'Chính xác dự báo 85%+' },
-  { icon: '🔄', title: 'Tối ưu hóa quy trình (Process Optimization)', desc: 'Tái cấu trúc quy trình procurement, production planning, order fulfillment. Áp dụng Lean/Six Sigma cho logistics operations.', result: 'Giảm 40% lead time' },
-  { icon: '💻', title: 'Chuyển đổi số SCM', desc: 'Tư vấn triển khai TMS, WMS, ERP integration. Xây dựng control tower và dashboard KPIs cho supply chain visibility.', result: 'Real-time visibility 100%' },
-  { icon: '🌿', title: 'Supply Chain bền vững (Green SCM)', desc: 'Thiết kế chiến lược logistics xanh: giảm carbon footprint, bao bì tái chế, tối ưu tuyến đường giảm phát thải. Tuân thủ EU ETS.', result: 'Giảm 30% CO2 emissions' },
-]
+  }, [ref])
+}
 
-const INDUSTRIES = [
-  { icon: '🏭', name: 'Sản xuất', clients: 'Nhà máy FDI, KCN', focus: 'JIT delivery, raw material planning, production logistics' },
-  { icon: '🛒', name: 'Bán lẻ & FMCG', clients: 'Chuỗi siêu thị, đại lý', focus: 'Demand forecasting, multi-channel fulfillment, promotions planning' },
-  { icon: '📱', name: 'Công nghệ', clients: 'OEM, ODM điện tử', focus: 'Component sourcing, reverse logistics, global procurement' },
-  { icon: '🥫', name: 'F&B & Nông sản', clients: 'Xuất khẩu nông sản', focus: 'Cold chain design, shelf-life optimization, traceability' },
-  { icon: '👗', name: 'Thời trang', clients: 'Brands, OEM may mặc', focus: 'Seasonal planning, fast fashion logistics, returns management' },
-  { icon: '💊', name: 'Dược & Y tế', clients: 'Nhà phân phối dược', focus: 'GDP compliance, temperature mapping, batch tracking' },
-]
+import { useTranslation } from 'react-i18next'
 
-const PROCESS = [
-  { phase: 'Phase 1', title: 'Discovery & Assessment', duration: '2–3 tuần', desc: 'Khảo sát hiện trạng, phỏng vấn stakeholders, thu thập dữ liệu vận hành.' },
-  { phase: 'Phase 2', title: 'Analysis & Benchmarking', duration: '2–4 tuần', desc: 'Phân tích data, so sánh benchmark ngành, xác định pain points và cơ hội.' },
-  { phase: 'Phase 3', title: 'Solution Design', duration: '2–3 tuần', desc: 'Thiết kế giải pháp tối ưu, mô phỏng kịch bản, tính toán ROI.' },
-  { phase: 'Phase 4', title: 'Implementation', duration: '4–12 tuần', desc: 'Triển khai theo roadmap, đào tạo nhân sự, go-live và stabilization.' },
-  { phase: 'Phase 5', title: 'Monitoring & Optimization', duration: 'Liên tục', desc: 'Theo dõi KPIs, điều chỉnh liên tục, báo cáo kết quả định kỳ.' },
-]
+const t_services = {
+  vi: [
+    { icon: '🔍', title: 'Phân tích & Đánh giá chuỗi cung ứng', desc: 'Khảo sát toàn diện supply chain hiện tại: chi phí, thời gian, rủi ro, bottleneck. So sánh benchmark với ngành để xác định cơ hội cải thiện.', result: 'Giảm 15–30% chi phí logistics' },
+    { icon: '🗺️', title: 'Thiết kế mạng lưới phân phối', desc: 'Xác định vị trí kho tối ưu, tuyến vận chuyển hiệu quả, mô hình hub-and-spoke phù hợp nhất cho thị trường mục tiêu.', result: 'Tối ưu network coverage' },
+    { icon: '📈', title: 'Dự báo & Lập kế hoạch nhu cầu', desc: 'Ứng dụng AI/ML phân tích dữ liệu lịch sử, mùa vụ, xu hướng thị trường để dự báo demand chính xác. Giảm tồn kho thừa và hết hàng.', result: 'Chính xác dự báo 85%+' },
+    { icon: '🔄', title: 'Tối ưu hóa quy trình (Process Optimization)', desc: 'Tái cấu trúc quy trình procurement, production planning, order fulfillment. Áp dụng Lean/Six Sigma cho logistics operations.', result: 'Giảm 40% lead time' },
+    { icon: '💻', title: 'Chuyển đổi số SCM', desc: 'Tư vấn triển khai TMS, WMS, ERP integration. Xây dựng control tower và dashboard KPIs cho supply chain visibility.', result: 'Real-time visibility 100%' },
+    { icon: '🌿', title: 'Supply Chain bền vững (Green SCM)', desc: 'Thiết kế chiến lược logistics xanh: giảm carbon footprint, bao bì tái chế, tối ưu tuyến đường giảm phát thải. Tuân thủ EU ETS.', result: 'Giảm 30% CO2 emissions' },
+  ],
+  en: [
+    { icon: '🔍', title: 'Supply Chain Analysis & Assessment', desc: 'Comprehensive survey of current supply chain: cost, time, risk, bottlenecks. Benchmark against the industry to identify improvement opportunities.', result: 'Reduce logistics costs by 15–30%' },
+    { icon: '🗺️', title: 'Distribution Network Design', desc: 'Determine optimal warehouse locations, efficient transport routes, and the most suitable hub-and-spoke model for target markets.', result: 'Optimize network coverage' },
+    { icon: '📈', title: 'Demand Forecasting & Planning', desc: 'Apply AI/ML to analyze historical data, seasonality, and market trends for accurate demand forecasting. Reduce overstock and stockouts.', result: '85%+ forecast accuracy' },
+    { icon: '🔄', title: 'Process Optimization', desc: 'Restructure procurement, production planning, and order fulfillment processes. Apply Lean/Six Sigma to logistics operations.', result: 'Reduce lead time by 40%' },
+    { icon: '💻', title: 'SCM Digital Transformation', desc: 'Consulting on TMS, WMS, and ERP integration. Build control towers and KPI dashboards for supply chain visibility.', result: '100% Real-time visibility' },
+    { icon: '🌿', title: 'Sustainable Supply Chain (Green SCM)', desc: 'Design green logistics strategies: reduce carbon footprint, use recyclable packaging, optimize routes to reduce emissions. EU ETS compliance.', result: 'Reduce CO2 emissions by 30%' },
+  ]
+}
+
+const t_industries = {
+  vi: [
+    { icon: '🏭', name: 'Sản xuất', clients: 'Nhà máy FDI, KCN', focus: 'JIT delivery, raw material planning, production logistics' },
+    { icon: '🛒', name: 'Bán lẻ & FMCG', clients: 'Chuỗi siêu thị, đại lý', focus: 'Demand forecasting, multi-channel fulfillment, promotions planning' },
+    { icon: '📱', name: 'Công nghệ', clients: 'OEM, ODM điện tử', focus: 'Component sourcing, reverse logistics, global procurement' },
+    { icon: '🥫', name: 'F&B & Nông sản', clients: 'Xuất khẩu nông sản', focus: 'Cold chain design, shelf-life optimization, traceability' },
+    { icon: '👗', name: 'Thời trang', clients: 'Brands, OEM may mặc', focus: 'Seasonal planning, fast fashion logistics, returns management' },
+    { icon: '💊', name: 'Dược & Y tế', clients: 'Nhà phân phối dược', focus: 'GDP compliance, temperature mapping, batch tracking' },
+  ],
+  en: [
+    { icon: '🏭', name: 'Manufacturing', clients: 'FDI Factories, Industrial Zones', focus: 'JIT delivery, raw material planning, production logistics' },
+    { icon: '🛒', name: 'Retail & FMCG', clients: 'Supermarket chains, Agencies', focus: 'Demand forecasting, multi-channel fulfillment, promotions planning' },
+    { icon: '📱', name: 'Technology', clients: 'OEM, Electronic ODM', focus: 'Component sourcing, reverse logistics, global procurement' },
+    { icon: '🥫', name: 'F&B & Agriculture', clients: 'Agricultural Exporters', focus: 'Cold chain design, shelf-life optimization, traceability' },
+    { icon: '👗', name: 'Fashion', clients: 'Brands, Apparel OEM', focus: 'Seasonal planning, fast fashion logistics, returns management' },
+    { icon: '💊', name: 'Pharma & Healthcare', clients: 'Pharmaceutical Distributors', focus: 'GDP compliance, temperature mapping, batch tracking' },
+  ]
+}
+
+const t_process = {
+  vi: [
+    { phase: 'Phase 1', title: 'Discovery & Assessment', duration: '2–3 tuần', desc: 'Khảo sát hiện trạng, phỏng vấn stakeholders, thu thập dữ liệu vận hành.' },
+    { phase: 'Phase 2', title: 'Analysis & Benchmarking', duration: '2–4 tuần', desc: 'Phân tích data, so sánh benchmark ngành, xác định pain points và cơ hội.' },
+    { phase: 'Phase 3', title: 'Solution Design', duration: '2–3 tuần', desc: 'Thiết kế giải pháp tối ưu, mô phỏng kịch bản, tính toán ROI.' },
+    { phase: 'Phase 4', title: 'Implementation', duration: '4–12 tuần', desc: 'Triển khai theo roadmap, đào tạo nhân sự, go-live và stabilization.' },
+    { phase: 'Phase 5', title: 'Monitoring & Optimization', duration: 'Liên tục', desc: 'Theo dõi KPIs, điều chỉnh liên tục, báo cáo kết quả định kỳ.' },
+  ],
+  en: [
+    { phase: 'Phase 1', title: 'Discovery & Assessment', duration: '2–3 weeks', desc: 'Survey current state, interview stakeholders, collect operational data.' },
+    { phase: 'Phase 2', title: 'Analysis & Benchmarking', duration: '2–4 weeks', desc: 'Analyze data, benchmark against industry, identify pain points and opportunities.' },
+    { phase: 'Phase 3', title: 'Solution Design', duration: '2–3 weeks', desc: 'Design optimal solutions, simulate scenarios, calculate ROI.' },
+    { phase: 'Phase 4', title: 'Implementation', duration: '4–12 weeks', desc: 'Deploy according to roadmap, train personnel, go-live and stabilization.' },
+    { phase: 'Phase 5', title: 'Monitoring & Optimization', duration: 'Continuous', desc: 'Monitor KPIs, continuous adjustment, periodic result reporting.' },
+  ]
+}
+
+const t_ui = {
+  vi: {
+    back: "← Quay lại Dịch vụ",
+    badge: "SUPPLY CHAIN CONSULTING",
+    title: "Tư vấn",
+    subtitle: "Chuỗi cung ứng",
+    desc: "Phân tích và tối ưu toàn bộ supply chain: lộ trình, chi phí, rủi ro. Thiết kế giải pháp SCM tùy chỉnh cho từng ngành hàng với đội ngũ chuyên gia 10+ năm kinh nghiệm.",
+    stat_1_val: "10+", stat_1_lbl: "Năm kinh nghiệm",
+    stat_2_val: "200+", stat_2_lbl: "Dự án hoàn thành",
+    stat_3_val: "15–30%", stat_3_lbl: "Tiết kiệm chi phí",
+    stat_4_val: "50+", stat_4_lbl: "Khách hàng FDI",
+    svc_kicker: "DỊCH VỤ TƯ VẤN",
+    svc_title: "Giải pháp tối ưu chuỗi cung ứng",
+    ind_kicker: "NGÀNH HÀNG CHUYÊN SÂU",
+    ind_title: "Kinh nghiệm đa ngành",
+    proc_kicker: "PHƯƠNG PHÁP LUẬN",
+    proc_title: "Quy trình tư vấn 5 giai đoạn",
+    cta_title: "Muốn tối ưu chuỗi cung ứng?",
+    cta_desc: "Đặt lịch tư vấn miễn phí 30 phút với chuyên gia SCM của chúng tôi.",
+    cta_btn1: "Đặt lịch tư vấn miễn phí",
+    cta_btn2: "Xem bảng giá →",
+  },
+  en: {
+    back: "← Back to Services",
+    badge: "SUPPLY CHAIN CONSULTING",
+    title: "Supply Chain",
+    subtitle: "Consulting",
+    desc: "Analyze and optimize the entire supply chain: routes, costs, and risks. Design customized SCM solutions for each industry with a team of experts with 10+ years of experience.",
+    stat_1_val: "10+", stat_1_lbl: "Years of Experience",
+    stat_2_val: "200+", stat_2_lbl: "Completed Projects",
+    stat_3_val: "15–30%", stat_3_lbl: "Cost Savings",
+    stat_4_val: "50+", stat_4_lbl: "FDI Clients",
+    svc_kicker: "CONSULTING SERVICES",
+    svc_title: "Optimal Supply Chain Solutions",
+    ind_kicker: "SPECIALIZED INDUSTRIES",
+    ind_title: "Multi-industry Experience",
+    proc_kicker: "METHODOLOGY",
+    proc_title: "5-stage Consulting Process",
+    cta_title: "Want to optimize your supply chain?",
+    cta_desc: "Book a free 30-minute consultation with our SCM experts.",
+    cta_btn1: "Book Free Consultation",
+    cta_btn2: "View Pricing →",
+  }
+}
 
 export default function Charters() {
+  const { i18n } = useTranslation()
+  const lang = i18n.language === 'en' ? 'en' : 'vi'
+  const t = t_ui[lang]
+  const SERVICES = t_services[lang]
+  const INDUSTRIES = t_industries[lang]
+  const PROCESS = t_process[lang]
+
   const pageRef = useRef(null)
   useReveal(pageRef)
   useEffect(() => { window.scrollTo(0, 0) }, [])
@@ -51,21 +137,21 @@ export default function Charters() {
       <section className="ch-hero">
         <div className="ch-hero-overlay" />
         <div className="ch-hero-inner">
-          <Link to="/services" className="ch-back rv">← Quay lại Dịch vụ</Link>
-          <div className="ch-badge rv">SUPPLY CHAIN CONSULTING</div>
-          <h1 className="rv d1">Tư vấn<br /><span>Chuỗi cung ứng</span></h1>
-          <p className="rv d2">Phân tích và tối ưu toàn bộ supply chain: lộ trình, chi phí, rủi ro. Thiết kế giải pháp SCM tùy chỉnh cho từng ngành hàng với đội ngũ chuyên gia 10+ năm kinh nghiệm.</p>
+          <Link to="/services" className="ch-back rv">{t.back}</Link>
+          <div className="ch-badge rv">{t.badge}</div>
+          <h1 className="rv d1">{t.title}<br /><span>{t.subtitle}</span></h1>
+          <p className="rv d2">{t.desc}</p>
           <div className="ch-hero-stats rv d3">
-            <div><strong>10+</strong><span>Năm kinh nghiệm</span></div>
-            <div><strong>200+</strong><span>Dự án hoàn thành</span></div>
-            <div><strong>15–30%</strong><span>Tiết kiệm chi phí</span></div>
-            <div><strong>50+</strong><span>Khách hàng FDI</span></div>
+            <div><strong>{t.stat_1_val}</strong><span>{t.stat_1_lbl}</span></div>
+            <div><strong>{t.stat_2_val}</strong><span>{t.stat_2_lbl}</span></div>
+            <div><strong>{t.stat_3_val}</strong><span>{t.stat_3_lbl}</span></div>
+            <div><strong>{t.stat_4_val}</strong><span>{t.stat_4_lbl}</span></div>
           </div>
         </div>
       </section>
 
       <section className="ch-section">
-        <div className="ch-hdr rv"><div className="kicker">DỊCH VỤ TƯ VẤN</div><h2>Giải pháp tối ưu chuỗi cung ứng</h2></div>
+        <div className="ch-hdr rv"><div className="kicker">{t.svc_kicker}</div><h2>{t.svc_title}</h2></div>
         <div className="ch-svc-grid">
           {SERVICES.map((s, i) => (
             <div key={i} className={`ch-svc-card rv d${(i % 4) + 1}`}>
@@ -79,7 +165,7 @@ export default function Charters() {
       </section>
 
       <section className="ch-section ch-section-alt">
-        <div className="ch-hdr rv"><div className="kicker">NGÀNH HÀNG CHUYÊN SÂU</div><h2>Kinh nghiệm đa ngành</h2></div>
+        <div className="ch-hdr rv"><div className="kicker">{t.ind_kicker}</div><h2>{t.ind_title}</h2></div>
         <div className="ch-ind-grid">
           {INDUSTRIES.map((ind, i) => (
             <div key={i} className={`ch-ind-card rv d${(i % 4) + 1}`}>
@@ -93,7 +179,7 @@ export default function Charters() {
       </section>
 
       <section className="ch-section">
-        <div className="ch-hdr rv"><div className="kicker">PHƯƠNG PHÁP LUẬN</div><h2>Quy trình tư vấn 5 giai đoạn</h2></div>
+        <div className="ch-hdr rv"><div className="kicker">{t.proc_kicker}</div><h2>{t.proc_title}</h2></div>
         <div className="ch-timeline">
           {PROCESS.map((p, i) => (
             <div key={i} className={`ch-tl-item rv d${i + 1}`}>
@@ -109,11 +195,11 @@ export default function Charters() {
       </section>
 
       <section className="ch-cta rv">
-        <h2>Muốn tối ưu chuỗi cung ứng?</h2>
-        <p>Đặt lịch tư vấn miễn phí 30 phút với chuyên gia SCM của chúng tôi.</p>
+        <h2>{t.cta_title}</h2>
+        <p>{t.cta_desc}</p>
         <div className="ch-cta-btns">
-          <Link to="/contact" className="btn btn-primary">Đặt lịch tư vấn miễn phí</Link>
-          <Link to="/pricing" className="ch-cta-ghost">Xem bảng giá →</Link>
+          <Link to="/contact" className="btn btn-primary">{t.cta_btn1}</Link>
+          <Link to="/pricing" className="ch-cta-ghost">{t.cta_btn2}</Link>
         </div>
       </section>
     </div>

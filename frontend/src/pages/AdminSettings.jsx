@@ -5,15 +5,18 @@ export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [lang, setLang] = useState('vi');
 
   useEffect(() => {
     fetchSettings();
-  }, []);
+  }, [lang]);
 
   const fetchSettings = async () => {
     try {
+      setLoading(true);
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-      const res = await fetch(`${API_URL}/api/settings/home_page`);
+      const key = lang === 'en' ? 'home_page_en' : 'home_page';
+      const res = await fetch(`${API_URL}/api/settings/${key}`);
       if (!res.ok) throw new Error('Không thể tải cấu hình');
       let data = await res.json();
       if (typeof data === 'string') {
@@ -31,7 +34,8 @@ export default function AdminSettings() {
     setSaving(true);
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-      const res = await fetch(`${API_URL}/api/settings/home_page`, {
+      const key = lang === 'en' ? 'home_page_en' : 'home_page';
+      const res = await fetch(`${API_URL}/api/settings/${key}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -86,8 +90,14 @@ export default function AdminSettings() {
         .btn-save:disabled { opacity: 0.7; cursor: not-allowed; }
       `}</style>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-        <h2>⚙️ Cài đặt Trang chủ</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <h2>⚙️ Cài đặt Trang chủ</h2>
+          <select value={lang} onChange={e => setLang(e.target.value)} style={{ padding: '8px 12px', borderRadius: 6, border: '1px solid #ddd', fontSize: 14, fontWeight: 'bold' }}>
+            <option value="vi">🇻🇳 Tiếng Việt</option>
+            <option value="en">🇬🇧 Tiếng Anh</option>
+          </select>
+        </div>
         <button className="btn-save" onClick={handleSave} disabled={saving}>
           {saving ? 'Đang lưu...' : '💾 Lưu Thay Đổi'}
         </button>

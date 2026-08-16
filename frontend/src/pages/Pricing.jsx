@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import SEO from '../components/SEO'
 
 const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
@@ -205,6 +206,7 @@ function PriceSkeleton() {
 }
 
 export default function Pricing() {
+  const { i18n } = useTranslation()
   const [activeTab, setActiveTab] = useState('sea_fcl')
   const [allRates, setAllRates] = useState([])
   const [loading, setLoading] = useState(true)
@@ -330,7 +332,7 @@ export default function Pricing() {
                     </tr>
                   ) : rates.map(r => (
                     <tr key={r.id}>
-                      <td><span className="pr-route">{r.route}</span></td>
+                      <td><span className="pr-route">{i18n.language === 'en' && r.route_en ? r.route_en : r.route}</span></td>
                       <td><span className="pr-unit">{r.unit}</span></td>
                       <td>
                         <span className="pr-price">{formatPrice(r.price_from, r.currency)}</span>
@@ -344,7 +346,7 @@ export default function Pricing() {
                           }
                         </td>
                       )}
-                      <td><span className="pr-note">{r.note || '—'}</span></td>
+                      <td><span className="pr-note">{i18n.language === 'en' && r.note_en ? r.note_en : (r.note || '—')}</span></td>
                     </tr>
                   ))}
                 </tbody>

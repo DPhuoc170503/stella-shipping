@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useArticles } from '../context/ArticlesContext'
+import { useTranslation } from 'react-i18next'
 import SEO from '../components/SEO'
 
 /* ─── Scroll-reveal hook ─── */
@@ -169,6 +170,7 @@ const newsCSS = `
 `
 
 export default function News() {
+  const { i18n } = useTranslation()
   const pageRef = useScrollReveal()
   const { articles: allArticles } = useArticles()
   const [categories, setCategories] = useState(['Tất cả'])
@@ -283,8 +285,8 @@ export default function News() {
                   <span className="nw-art-date">{a.date}</span>
                   <span className="nw-art-read">📖 {a.readTime}</span>
                 </div>
-                <h3>{a.title}</h3>
-                <p>{a.desc}</p>
+                <h3>{i18n.language === 'en' && a.title_en ? a.title_en : a.title}</h3>
+                <p>{i18n.language === 'en' && a.desc_en ? a.desc_en : a.desc}</p>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="nw-art-author">✍️ {a.author}</span>
                   <Link to={`/news/${a.id}`} className="nw-art-link">Đọc tiếp →</Link>

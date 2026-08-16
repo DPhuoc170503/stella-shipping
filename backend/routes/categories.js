@@ -16,13 +16,13 @@ router.get('/', async (req, res) => {
 
 // POST new category
 router.post('/', verifyToken, isAdmin, async (req, res) => {
-    const { name, slug, description } = req.body;
+    const { name, name_en, slug, description, description_en } = req.body;
     if (!name) return res.status(400).json({ error: 'Tên danh mục là bắt buộc' });
     
     try {
         const [result] = await db.query(
-            'INSERT INTO categories (name, slug, description) VALUES (?, ?, ?)',
-            [name, slug || '', description || '']
+            'INSERT INTO categories (name, name_en, slug, description, description_en) VALUES (?, ?, ?, ?, ?)',
+            [name, name_en || '', slug || '', description || '', description_en || '']
         );
         const [newCategory] = await db.query('SELECT * FROM categories WHERE id = ?', [result.insertId]);
         res.status(201).json(newCategory[0]);
@@ -35,13 +35,13 @@ router.post('/', verifyToken, isAdmin, async (req, res) => {
 // PUT update category
 router.put('/:id', verifyToken, isAdmin, async (req, res) => {
     const { id } = req.params;
-    const { name, slug, description } = req.body;
+    const { name, name_en, slug, description, description_en } = req.body;
     if (!name) return res.status(400).json({ error: 'Tên danh mục là bắt buộc' });
     
     try {
         const [result] = await db.query(
-            'UPDATE categories SET name = ?, slug = ?, description = ? WHERE id = ?',
-            [name, slug || '', description || '', id]
+            'UPDATE categories SET name = ?, name_en = ?, slug = ?, description = ?, description_en = ? WHERE id = ?',
+            [name, name_en || '', slug || '', description || '', description_en || '', id]
         );
         
         if (result.affectedRows === 0) {

@@ -4,7 +4,7 @@ import { useArticles } from '../context/ArticlesContext'
 const IMAGES = ['/Banner.jpg', '/Shippinglines.jpg', '/AirFreight.jpg', '/INTERMODA.jpg', '/Logictis.jpg', '/OURRANGE.jpg', '/Chacracter.jpg']
 
 const emptyForm = {
-  title: '', desc: '', fullDesc: '', category: '', author: '',
+  title: '', title_en: '', desc: '', desc_en: '', fullDesc: '', fullDesc_en: '', category: '', author: '',
   img: '/Banner.jpg', readTime: '3 phút', status: 'draft'
 }
 
@@ -191,8 +191,11 @@ export default function AdminNews() {
     setEditingId(article.id)
     setForm({
       title: article.title,
+      title_en: article.title_en || '',
       desc: article.desc,
+      desc_en: article.desc_en || '',
       fullDesc: article.fullDesc || '',
+      fullDesc_en: article.fullDesc_en || '',
       category: article.category,
       author: article.author,
       img: article.img,
@@ -356,9 +359,15 @@ export default function AdminNews() {
               <button className="adm-modal-close" onClick={() => setShowEditor(false)}>✕</button>
             </div>
             <form className="adm-modal-body" onSubmit={handleSave}>
-              <div className="adm-form-group">
-                <label>Tiêu đề bài viết *</label>
-                <input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="Nhập tiêu đề bài viết..." required />
+              <div className="adm-form-row">
+                <div className="adm-form-group">
+                  <label>Tiêu đề bài viết (VI) *</label>
+                  <input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} placeholder="Nhập tiêu đề (Tiếng Việt)" required />
+                </div>
+                <div className="adm-form-group">
+                  <label>Tiêu đề bài viết (EN)</label>
+                  <input type="text" value={form.title_en} onChange={e => setForm(f => ({ ...f, title_en: e.target.value }))} placeholder="Nhập tiêu đề (Tiếng Anh)" />
+                </div>
               </div>
 
               <div className="adm-form-row3">
@@ -378,14 +387,26 @@ export default function AdminNews() {
                 </div>
               </div>
 
-              <div className="adm-form-group">
-                <label>Mô tả ngắn *</label>
-                <textarea value={form.desc} onChange={e => setForm(f => ({ ...f, desc: e.target.value }))} placeholder="Mô tả ngắn gọn hiển thị trong danh sách tin tức..." rows={3} required />
+              <div className="adm-form-row">
+                <div className="adm-form-group">
+                  <label>Mô tả ngắn (VI) *</label>
+                  <textarea value={form.desc} onChange={e => setForm(f => ({ ...f, desc: e.target.value }))} placeholder="Mô tả ngắn gọn (Tiếng Việt)..." rows={3} required />
+                </div>
+                <div className="adm-form-group">
+                  <label>Mô tả ngắn (EN)</label>
+                  <textarea value={form.desc_en} onChange={e => setForm(f => ({ ...f, desc_en: e.target.value }))} placeholder="Mô tả ngắn gọn (Tiếng Anh)..." rows={3} />
+                </div>
               </div>
 
-              <div className="adm-form-group">
-                <label>Nội dung chi tiết</label>
-                <textarea value={form.fullDesc} onChange={e => setForm(f => ({ ...f, fullDesc: e.target.value }))} placeholder="Nội dung đầy đủ của bài viết..." rows={6} />
+              <div className="adm-form-row">
+                <div className="adm-form-group">
+                  <label>Nội dung chi tiết (VI)</label>
+                  <textarea value={form.fullDesc} onChange={e => setForm(f => ({ ...f, fullDesc: e.target.value }))} placeholder="Nội dung đầy đủ (Tiếng Việt)..." rows={6} />
+                </div>
+                <div className="adm-form-group">
+                  <label>Nội dung chi tiết (EN)</label>
+                  <textarea value={form.fullDesc_en} onChange={e => setForm(f => ({ ...f, fullDesc_en: e.target.value }))} placeholder="Nội dung đầy đủ (Tiếng Anh)..." rows={6} />
+                </div>
               </div>
 
               <div className="adm-form-group">

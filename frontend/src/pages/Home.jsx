@@ -283,7 +283,8 @@ export default function Home() {
 
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
-    fetch(`${API_URL}/api/settings/home_page`)
+    const key = i18n.language === 'en' ? 'home_page_en' : 'home_page';
+    fetch(`${API_URL}/api/settings/${key}`)
       .then(res => res.json())
       .then(data => {
         let val = data;
@@ -293,7 +294,7 @@ export default function Home() {
         if (!val.error) setSettings(val)
       })
       .catch(console.error)
-  }, [])
+  }, [i18n.language])
 
   // Mảng fallback nếu chưa gọi được API
   const defaultSettings = {
@@ -565,9 +566,9 @@ export default function Home() {
               <img src={n.img || '/Banner.jpg'} alt={n.title} />
               <div className="hm-news-body">
                 <div className="tag">{n.category || 'TIN TỨC'}</div>
-                <h4>{n.title}</h4>
-                <p>{n.desc}</p>
-                <a href={n.id ? `/news/${n.id}` : "/news"}>Đọc thêm →</a>
+                <h4>{i18n.language === 'en' && n.title_en ? n.title_en : n.title}</h4>
+                <p>{i18n.language === 'en' && n.desc_en ? n.desc_en : n.desc}</p>
+                <a href={n.id ? `/news/${n.id}` : "/news"}>{i18n.language === 'en' ? 'Read more →' : 'Đọc thêm →'}</a>
               </div>
             </div>
           ))}

@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useArticles } from '../context/ArticlesContext'
-
+import { useTranslation } from 'react-i18next'
 import SEO from '../components/SEO'
 
 export default function ArticleDetail() {
+  const { i18n } = useTranslation()
   const { id } = useParams()
   const { articles, loading } = useArticles()
   const navigate = useNavigate()
@@ -44,8 +45,8 @@ export default function ArticleDetail() {
   return (
     <div>
       <SEO 
-        title={article.title} 
-        description={article.desc || article.description} 
+        title={i18n.language === 'en' && article.title_en ? article.title_en : article.title} 
+        description={i18n.language === 'en' && article.desc_en ? article.desc_en : (article.desc || article.description)} 
         image={imgUrl} 
         url={`${window.location.origin}/news/${article.id}`} 
       />
@@ -56,7 +57,7 @@ export default function ArticleDetail() {
         <div className="dt-hero-inner">
           <Link to="/news" className="dt-back">← Quay lại Tin tức</Link>
           <div className="dt-cat">{article.category}</div>
-          <h1>{article.title}</h1>
+          <h1>{i18n.language === 'en' && article.title_en ? article.title_en : article.title}</h1>
           <div className="dt-meta">
             <span>✍️ {article.author || 'Stella Shipping'}</span>
             <span className="dot" />
@@ -70,8 +71,8 @@ export default function ArticleDetail() {
       {/* ═══════ BODY ═══════ */}
       <div className="dt-container">
         <div className="dt-content">
-          <p className="dt-lead">{article.desc}</p>
-          <div className="dt-body" dangerouslySetInnerHTML={{ __html: article.fullDesc ? article.fullDesc.replace(/\n/g, '<br/>') : 'Đang cập nhật nội dung...' }} />
+          <p className="dt-lead">{i18n.language === 'en' && article.desc_en ? article.desc_en : article.desc}</p>
+          <div className="dt-body" dangerouslySetInnerHTML={{ __html: (i18n.language === 'en' && article.fullDesc_en ? article.fullDesc_en : article.fullDesc)?.replace(/\n/g, '<br/>') || 'Đang cập nhật nội dung...' }} />
           
           <div className="dt-share">
             <strong>Chia sẻ bài viết:</strong>
@@ -90,7 +91,7 @@ export default function ArticleDetail() {
                   <img src={r.img || '/Banner.jpg'} alt={r.title} />
                   <div className="dt-rc-body">
                     <span className="dt-rc-cat">{r.category}</span>
-                    <h4>{r.title}</h4>
+                    <h4>{i18n.language === 'en' && r.title_en ? r.title_en : r.title}</h4>
                     <span className="dt-rc-date">📅 {r.date || 'Đang cập nhật'}</span>
                   </div>
                 </Link>

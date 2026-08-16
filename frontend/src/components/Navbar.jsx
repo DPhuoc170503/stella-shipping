@@ -301,7 +301,7 @@ export default function Navbar() {
               end={it.path === '/'}
               onClick={() => setMobileOpen(false)}
             >
-              {pathMap[it.path] ? t(pathMap[it.path]) : it.label}
+              {pathMap[it.path] ? t(pathMap[it.path]) : (i18n.language === 'en' && it.label_en ? it.label_en : it.label)}
             </NavLink>
           ))}
           <div className="nb-lang">
