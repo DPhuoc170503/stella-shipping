@@ -230,12 +230,12 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header>
+    <header style={{ position: 'sticky', top: 0, zIndex: 999 }}>
       <style>{navLinkCSS}</style>
       <div className="nb-shell">
         <div className="nb-brand">
           <span className="nb-better">better ways</span>
-          <NavLink to="/" className="nb-logo-wrap" aria-label="home" onClick={() => setMobileOpen(false)}>
+          <NavLink to="/" className="nb-logo-wrap" aria-label="home" onClick={() => { setMobileOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
             <div className="nb-logo-box">
               <img src="/stella-logo.png" alt="Stella Shipping" className="nb-logo" />
               <div className="nb-tag">LOGISTICS · CUSTOMS · FREIGHT</div>

@@ -231,10 +231,34 @@ const homeCSS = `
     .hm-tracking-form .btn-primary{width:100%}
     .hm-tracking-bar{padding:20px 16px;margin-top:-20px}
     .hm-tracking-content h3{font-size:16px}
-    .hm-section{padding:56px 16px}
+    .hm-section{padding:40px 16px}
+    .hm-section-hdr{margin-bottom:28px}
     .hm-section-hdr h2{font-size:28px}
     .hm-cta-banner h2{font-size:27px}
     .hm-cta-banner p{font-size:15px}
+    /* Mobile horizontal slider for cards */
+    .hm-mobile-slider {
+      display: flex !important;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 16px;
+      padding-bottom: 24px;
+      margin-left: -16px;
+      margin-right: -16px;
+      padding-left: 16px;
+      padding-right: 16px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .hm-mobile-slider::-webkit-scrollbar { display: none; }
+    .hm-mobile-slider > * {
+      flex: 0 0 85% !important;
+      scroll-snap-align: center;
+    }
+    .hm-ind-grid.hm-mobile-slider > * {
+      flex: 0 0 45% !important;
+    }
   }
   @media(max-width:600px){
     .hm-why-grid,.hm-stats{grid-template-columns:1fr}
@@ -420,7 +444,7 @@ export default function Home() {
           <h2>Giải pháp logistics toàn diện</h2>
           <p>Với năng lực vận hành đa kênh, chúng tôi thiết kế và triển khai giải pháp vận tải tối ưu cho mọi loại hàng hóa trên toàn chuỗi cung ứng.</p>
         </div>
-        <div className="hm-svc-grid">
+        <div className="hm-svc-grid hm-mobile-slider">
           {s.services.map((svc, i) => (
             <div key={i} className={`hm-svc-card rv d${Math.min(i + 1, 5)}`}>
               <div className="hm-svc-badge">{svc.badge}</div>
@@ -442,7 +466,7 @@ export default function Home() {
           <h2>Lợi thế cạnh tranh vượt trội</h2>
           <p>Chúng tôi không chỉ vận chuyển hàng hóa — chúng tôi kiến tạo giải pháp giúp doanh nghiệp bạn phát triển.</p>
         </div>
-        <div className="hm-why-grid">
+        <div className="hm-why-grid hm-mobile-slider">
           {s.why_choose_us.map((w, i) => (
             <div key={i} className={`hm-why-card rv d${Math.min(i + 1, 5)}`}>
               <div className="hm-why-icon">{w.icon}</div>
@@ -460,7 +484,7 @@ export default function Home() {
           <h2>Vận hành đơn giản, hiệu quả tối đa</h2>
           <p>Chỉ cần 4 bước đơn giản để lô hàng của bạn được vận chuyển an toàn đến đích.</p>
         </div>
-        <div className="hm-process">
+        <div className="hm-process hm-mobile-slider">
           {s.process.map((step, i) => (
             <div key={i} className={`hm-step rv d${i + 1}`}>
               <div className="hm-step-num">{step.num}</div>
@@ -478,7 +502,7 @@ export default function Home() {
           <h2>Phục vụ đa dạng lĩnh vực</h2>
           <p>Chúng tôi am hiểu đặc thù từng ngành để đưa ra giải pháp logistics phù hợp nhất.</p>
         </div>
-        <div className="hm-ind-grid">
+        <div className="hm-ind-grid hm-mobile-slider">
           {[
             { icon: '🏭', name: 'Sản xuất' },
             { icon: '🛒', name: 'Bán lẻ & FMCG' },
@@ -526,7 +550,7 @@ export default function Home() {
           <div className="kicker">TIN TỨC & INSIGHTS</div>
           <h2>Cập nhật mới nhất từ ngành logistics</h2>
         </div>
-        <div className="hm-news-grid">
+        <div className="hm-news-grid hm-mobile-slider">
           {(articles && articles.filter(a => a.status === 'published').length > 0
             ? articles.filter(a => a.status === 'published').slice(0, 3)
             : [
