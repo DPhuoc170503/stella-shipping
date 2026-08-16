@@ -40,7 +40,7 @@ export default function AdminCategories() {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState({ name: '', slug: '', description: '' });
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
 
   useEffect(() => {
     fetchCategories();

@@ -134,7 +134,7 @@ export default function AdminNews() {
   // Categories & Media files
   const [categories, setCategories] = useState([])
   const [mediaFiles, setMediaFiles] = useState([])
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
 
   React.useEffect(() => {
     fetch(`${API_URL}/api/categories`)
@@ -390,7 +390,7 @@ export default function AdminNews() {
 
               <div className="adm-form-group">
                 <label>Ảnh đại diện (Chọn ảnh mẫu hoặc ảnh đã tải lên từ thư viện Media)</label>
-                <input type="text" value={form.img} onChange={e => setForm(f => ({ ...f, img: e.target.value }))} placeholder="Ví dụ: http://localhost:4000/uploads/..." style={{ marginBottom: 12 }} />
+                <input type="text" value={form.img} onChange={e => setForm(f => ({ ...f, img: e.target.value }))} placeholder="Ví dụ: https://stella-shipping.onrender.com/uploads/..." style={{ marginBottom: 12 }} />
                 <div className="adm-img-preview" style={{ maxHeight: 200, overflowY: 'auto', padding: 4, background: '#f8fafc', borderRadius: 8, border: '1px solid #e1e8ef' }}>
                   {[...IMAGES, ...mediaFiles.map(f => `${API_URL}${f.url}`)].map(img => (
                     <img key={img} src={img} alt="" className={`adm-img-opt ${form.img === img ? 'selected' : ''}`} onClick={() => setForm(f => ({ ...f, img }))} />

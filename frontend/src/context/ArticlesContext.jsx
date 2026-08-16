@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
-const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/articles` : 'http://localhost:4000/api/articles'
+const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/articles` : 'https://stella-shipping.onrender.com/api/articles'
 
 const ArticlesContext = createContext(null)
 

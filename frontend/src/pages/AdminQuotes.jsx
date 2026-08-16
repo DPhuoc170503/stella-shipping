@@ -107,7 +107,7 @@ export default function AdminQuotes() {
 
   const fetchQuotes = async () => {
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
       const res = await axios.get(`${API_URL}/api/quotes`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
       });
@@ -125,7 +125,7 @@ export default function AdminQuotes() {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
       await axios.put(`${API_URL}/api/quotes/${id}`, { status: newStatus }, {
         headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` }
       });

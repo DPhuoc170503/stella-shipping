@@ -291,7 +291,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+    const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
     fetch(`${API_URL}/api/settings/home_page`)
       .then(res => res.json())
       .then(data => {
@@ -353,7 +353,7 @@ export default function Home() {
     e.preventDefault()
     setSending(true)
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
       const res = await fetch(`${API_URL}/api/quotes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

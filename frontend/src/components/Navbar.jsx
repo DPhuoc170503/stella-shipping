@@ -257,7 +257,7 @@ export default function Navbar() {
   }
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+    const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
     axios
       .get(`${API_URL}/api/nav`)
       .then((r) => {
@@ -310,7 +310,7 @@ export default function Navbar() {
           </div>
         </nav>
 
-        <a href="tel:0901048137" className="nb-phone">📞 0901048137</a>
+        <a href="tel:0901048137" className="nb-phone">📞 0901 048 137</a>
       </div>
     </header>
   )

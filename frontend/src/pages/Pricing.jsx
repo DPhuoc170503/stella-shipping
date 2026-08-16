@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import SEO from '../components/SEO'
 import { useTranslation } from 'react-i18next'
 
-const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
+const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'https://stella-shipping.onrender.com/api/pricing'
 
 const t_ui = {
   vi: {
@@ -375,7 +375,7 @@ export default function Pricing() {
     e.preventDefault()
     setSending(true)
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
       const res = await fetch(`${API_URL}/api/quotes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -16,7 +16,7 @@ export default function AdminUsers() {
     role: 'Biên tập viên'
   });
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
 
   const fetchUsers = async () => {
     try {

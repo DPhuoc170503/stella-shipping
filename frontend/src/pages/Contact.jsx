@@ -300,7 +300,7 @@ export default function Contact() {
     setSending(true)
     try {
       const subjectNames = { quote: 'Yêu cầu báo giá', consult: 'Tư vấn vận chuyển', partner: 'Hợp tác kinh doanh', support: 'Hỗ trợ kỹ thuật', other: 'Khác' }
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
       const res = await fetch(`${API_URL}/api/quotes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

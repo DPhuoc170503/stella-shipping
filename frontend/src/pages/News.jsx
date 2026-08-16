@@ -271,7 +271,7 @@ export default function News() {
   const trendData = TRENDING[lang]
 
   useEffect(() => {
-    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
+    const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
     fetch(`${API_URL}/api/categories`)
       .then(res => res.json())
       .then(data => {

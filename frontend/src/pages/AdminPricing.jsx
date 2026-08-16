@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 
-const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'http://localhost:4000/api/pricing'
+const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/pricing` : 'https://stella-shipping.onrender.com/api/pricing'
 
 const SERVICE_TYPES = [
   { value: 'sea_fcl', label: '🚢 Biển FCL' },

@@ -324,7 +324,7 @@ export default function FFotter() {
               </div>
               <div className="sf-contact-text">
                 <strong>{t('footer.hotline')}</strong>
-                +84 (28) 3822 xxxx
+                0901 048 137
               </div>
             </div>
 

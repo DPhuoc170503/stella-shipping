@@ -12,7 +12,7 @@ export default function AdminSettings() {
 
   const fetchSettings = async () => {
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
       const res = await fetch(`${API_URL}/api/settings/home_page`);
       if (!res.ok) throw new Error('Không thể tải cấu hình');
       let data = await res.json();
@@ -30,7 +30,7 @@ export default function AdminSettings() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
       const res = await fetch(`${API_URL}/api/settings/home_page`, {
         method: 'PUT',
         headers: {

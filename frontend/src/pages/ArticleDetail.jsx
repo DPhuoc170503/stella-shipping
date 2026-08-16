@@ -38,7 +38,7 @@ export default function ArticleDetail() {
     .filter(a => a.category === article.category && a.id !== article.id)
     .slice(0, 3)
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
   const imgUrl = article.img?.startsWith('/') ? `${API_URL}${article.img}` : article.img;
 
   return (
