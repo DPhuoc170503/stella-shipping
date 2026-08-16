@@ -165,8 +165,9 @@ const homeCSS = `
   .hm-promo-cta:hover{background:#e05a10}
 
   /* ── News/Insights ── */
-  .hm-news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto}
-  .hm-news-card{border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(10,20,40,.05);background:#fff;transition:transform .3s}
+  .hm-news-grid{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:24px;max-width:1200px;margin:0 auto;padding-bottom:16px;scroll-behavior:smooth;scrollbar-width:none;}
+  .hm-news-grid::-webkit-scrollbar { display: none; }
+  .hm-news-card{flex:0 0 calc(33.333% - 16px);border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(10,20,40,.05);background:#fff;transition:transform .3s;scroll-snap-align:start;}
   .hm-news-card:hover{transform:translateY(-5px)}
   .hm-news-card img{width:100%;height:180px;object-fit:cover}
   .hm-news-body{padding:20px}
@@ -281,6 +282,13 @@ export default function Home() {
   const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
   const [settings, setSettings] = useState(null)
+
+  const newsSliderRef = useRef(null)
+  const scrollNews = (dir) => {
+    if (newsSliderRef.current) {
+      newsSliderRef.current.scrollBy({ left: dir * 350, behavior: 'smooth' })
+    }
+  }
 
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
@@ -450,20 +458,29 @@ export default function Home() {
         <div className="hm-section-hdr rv">
           <div className="kicker">TIN TỨC & INSIGHTS</div>
           <h2>Cập nhật mới nhất từ ngành logistics</h2>
+          <div style={{ marginTop: 20, display: 'flex', gap: 10, justifyContent: 'center' }}>
+            <button onClick={() => scrollNews(-1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❮</button>
+            <button onClick={() => scrollNews(1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❯</button>
+          </div>
         </div>
-        <div className="hm-news-grid hm-mobile-slider">
+        <div className="hm-news-grid hm-mobile-slider" ref={newsSliderRef}>
           {(articles && articles.filter(a => a.status === 'published').length > 0
-            ? articles.filter(a => a.status === 'published').slice(0, 3)
+            ? articles.filter(a => a.status === 'published')
             : [
               { id: 1, img: '/Banner.jpg', category: 'NGÀNH', title: 'Xu hướng logistics xanh 2024: Cơ hội và thách thức', desc: 'Phân tích chi tiết về các sáng kiến giảm carbon trong vận tải biển và tác động đến chi phí chuỗi cung ứng.', date: '12/08/2024' },
               { id: 2, img: '/AirFreight.jpg', category: 'DỊCH VỤ', title: 'Stella mở tuyến air freight trực tiếp TP.HCM – Frankfurt', desc: 'Rút ngắn thời gian transit xuống 2 ngày so với tuyến truyền thống, phục vụ nhu cầu hàng khẩn cấp sang EU.', date: '05/08/2024' },
               { id: 3, img: '/INTERMODA.jpg', category: 'CÔNG NGHỆ', title: 'Ra mắt Cổng khách hàng 3.0 với AI dự đoán ETA', desc: 'Ứng dụng trí tuệ nhân tạo để dự đoán thời gian đến chính xác đến 95%, giúp khách hàng chủ động lên kế hoạch.', date: '28/07/2024' }
             ]
           ).map((n, i) => (
-            <div key={i} className={`hm-news-card rv d${i + 1}`}>
+            <div key={i} className={`hm-news-card rv d${Math.min(i + 1, 5)}`}>
               <img src={n.img || '/Banner.jpg'} alt={n.title} />
               <div className="hm-news-body">
-                <div className="tag">{n.category || 'TIN TỨC'}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                  <div className="tag" style={{ marginBottom: 0 }}>{n.category || 'TIN TỨC'}</div>
+                  <div style={{ fontSize: 12, color: '#7b8a9a', fontWeight: 600 }}>
+                    {n.date ? n.date : n.created_at ? new Date(n.created_at).toLocaleDateString('vi-VN') : ''}
+                  </div>
+                </div>
                 <h4>{n.title}</h4>
                 <p>{n.desc}</p>
                 <a href={n.id ? `/news/${n.id}` : "/news"}>Đọc thêm →</a>
