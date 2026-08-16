@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 /* ═══════════════════════════════════════════ CSS ═══════════════════════════════════════════ */
 const footerCSS = `
@@ -227,6 +228,7 @@ const footerCSS = `
 
 /* ═══════════════════════════ Component ═══════════════════════════ */
 export default function FFotter() {
+  const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
@@ -254,65 +256,65 @@ export default function FFotter() {
             <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <img src="/stella-logo.png" alt="Stella Shipping" className="sf-brand-logo" />
             </Link>
-            <span className="sf-brand-tagline">BETTER WAYS</span>
+            <span className="sf-brand-tagline">{t('footer.tagline')}</span>
             <p className="sf-brand-desc">
-              CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ HÀNG HẢI STELLA cung cấp giải pháp logistics tích hợp qua đường biển, hàng không và đường bộ — hỗ trợ chuỗi cung ứng của bạn với sự tin cậy và chuyên môn địa phương.
+              {t('footer.desc')}
             </p>
 
             <div className="sf-newsletter">
-              <h5>📬 Nhận tin mới nhất</h5>
-              <p>Cập nhật xu hướng logistics và ưu đãi hấp dẫn</p>
+              <h5>{t('footer.newsletter_title')}</h5>
+              <p>{t('footer.newsletter_desc')}</p>
               <form className="sf-newsletter-form" onSubmit={handleSubscribe}>
                 <input
                   className="sf-newsletter-input"
                   type="email"
-                  placeholder="Email của bạn..."
+                  placeholder={t('footer.newsletter_placeholder')}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <button className="sf-newsletter-btn" type="submit">Đăng ký</button>
+                <button className="sf-newsletter-btn" type="submit">{t('footer.newsletter_btn')}</button>
               </form>
-              {subscribed && <div className="sf-newsletter-ok">✓ Đăng ký thành công!</div>}
+              {subscribed && <div className="sf-newsletter-ok">{t('footer.newsletter_success')}</div>}
             </div>
           </div>
 
           {/* ── 2. Quick Links ── */}
           <div>
-            <h4 className="sf-col-title">KHÁM PHÁ</h4>
+            <h4 className="sf-col-title">{t('footer.explore')}</h4>
             <ul className="sf-links">
-              <li><Link to="/about">Về chúng tôi <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/services">Dịch vụ <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/pricing">Bảng giá <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/news">Tin tức & Truyền thông <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/contact">Liên hệ <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/about">{t('footer.about_us')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/services">{t('footer.services')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/pricing">{t('footer.pricing')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/news">{t('footer.news_media')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/contact">{t('footer.contact')} <span className="sf-arrow">→</span></Link></li>
             </ul>
           </div>
 
           {/* ── 3. Services ── */}
           <div>
-            <h4 className="sf-col-title">DỊCH VỤ</h4>
+            <h4 className="sf-col-title">{t('footer.services_title')}</h4>
             <ul className="sf-links">
-              <li><Link to="/services/shipping-lines">Vận tải biển <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/services/scheduled-flights">Vận tải hàng không <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/services/intermodal">Vận tải đa phương thức <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/services/logistics">Giải pháp Logistics <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/services/dedicated">Dịch vụ chuyên biệt <span className="sf-arrow">→</span></Link></li>
-              <li><Link to="/services/charters">Thuê tàu & Charter <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/services/shipping-lines">{t('footer.ocean_freight')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/services/scheduled-flights">{t('footer.air_freight')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/services/intermodal">{t('footer.intermodal')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/services/logistics">{t('footer.logistics')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/services/dedicated">{t('footer.dedicated')} <span className="sf-arrow">→</span></Link></li>
+              <li><Link to="/services/charters">{t('footer.chartering')} <span className="sf-arrow">→</span></Link></li>
             </ul>
           </div>
 
           {/* ── 4. Contact & Social ── */}
           <div>
-            <h4 className="sf-col-title">LIÊN HỆ</h4>
+            <h4 className="sf-col-title">{t('footer.contact_title')}</h4>
 
             <div className="sf-contact-item">
               <div className="sf-contact-icon">
                 <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z" /></svg>
               </div>
               <div className="sf-contact-text">
-                <strong>Trụ sở chính</strong>
-                Số 26 Đường T2, Khu Dân Cư và Công Viên Phước Thiện ( Khu C), Số 88 Đường Phước Thiện, Phường Long Bình, Thành phố Hồ Chí Minh, Việt Nam
+                <strong>{t('footer.hq')}</strong>
+                {t('footer.hq_address')}
               </div>
             </div>
 
@@ -321,7 +323,7 @@ export default function FFotter() {
                 <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" /></svg>
               </div>
               <div className="sf-contact-text">
-                <strong>Hotline</strong>
+                <strong>{t('footer.hotline')}</strong>
                 +84 (28) 3822 xxxx
               </div>
             </div>
@@ -331,7 +333,7 @@ export default function FFotter() {
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" /></svg>
               </div>
               <div className="sf-contact-text">
-                <strong>Email</strong>
+                <strong>{t('footer.email')}</strong>
                 stella@stellashipping.com.vn
               </div>
             </div>
@@ -350,16 +352,16 @@ export default function FFotter() {
         <hr className="sf-divider" />
         <div className="sf-bottom">
           <div className="sf-copy">
-            © {new Date().getFullYear()} <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Stella Shipping</Link>. All rights reserved.
+            © {new Date().getFullYear()} <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Stella Shipping</Link>. {t('footer.rights')}
           </div>
           <div className="sf-bottom-links">
-            <a href="#">Chính sách bảo mật</a>
-            <a href="#">Điều khoản sử dụng</a>
-            <a href="#">Cookie</a>
+            <a href="#">{t('footer.privacy')}</a>
+            <a href="#">{t('footer.terms')}</a>
+            <a href="#">{t('footer.cookie')}</a>
           </div>
           <div className="sf-bottom-badge">
             <span className="sf-pulse" />
-            Hệ thống hoạt động bình thường
+            {t('footer.system_status')}
           </div>
         </div>
       </div>

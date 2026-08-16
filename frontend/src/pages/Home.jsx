@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useArticles } from '../context/ArticlesContext'
+import { useTranslation } from 'react-i18next'
 import SEO from '../components/SEO'
 
 /* ─── Scroll-reveal hook (reused) ─── */
@@ -272,6 +273,7 @@ const homeCSS = `
 `
 
 export default function Home() {
+  const { t } = useTranslation()
   const pageRef = useScrollReveal()
   const { articles } = useArticles()
   const [quote, setQuote] = useState({ name: '', email: '', phone: '', origin: '', destination: '', mode: 'sea_fcl', weight: '', type: 'fcl' })
@@ -394,39 +396,39 @@ export default function Home() {
           </div>
 
           <div className="hm-quote rv d2">
-            <h4>💬 Yêu cầu báo giá nhanh</h4>
-            <p className="sub">Nhận báo giá trong vòng 2 giờ làm việc</p>
+            <h4>{t('home.quote_title')}</h4>
+            <p className="sub">{t('home.quote_sub')}</p>
             {sent ? (
               <div style={{ textAlign: 'center', padding: '28px 0' }}>
                 <div style={{ fontSize: 44, marginBottom: 10 }}>✅</div>
-                <p style={{ fontSize: 16, fontWeight: 700, margin: 0, color: '#0f2b57' }}>Gửi thành công!</p>
-                <p style={{ color: '#7b8a9a', margin: '8px 0 0', fontSize: 13 }}>Chúng tôi sẽ phản hồi trong 2 giờ làm việc.</p>
+                <p style={{ fontSize: 16, fontWeight: 700, margin: 0, color: '#0f2b57' }}>{t('home.quote_success_title')}</p>
+                <p style={{ color: '#7b8a9a', margin: '8px 0 0', fontSize: 13 }}>{t('home.quote_success_sub')}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
                 <div className="row">
-                  <input name="name" placeholder="👤 Họ tên *" value={quote.name} onChange={handleChange} required />
-                  <input name="email" type="email" placeholder="✉️ Email *" value={quote.email} onChange={handleChange} required />
+                  <input name="name" placeholder={t('home.form_name')} value={quote.name} onChange={handleChange} required />
+                  <input name="email" type="email" placeholder={t('home.form_email')} value={quote.email} onChange={handleChange} required />
                 </div>
                 <div className="row">
-                  <input name="phone" placeholder="📞 Số điện thoại" value={quote.phone} onChange={handleChange} />
+                  <input name="phone" placeholder={t('home.form_phone')} value={quote.phone} onChange={handleChange} />
                 </div>
                 <div className="row">
-                  <input name="origin" placeholder="🚩 Nơi đi (VD: TP.HCM)" value={quote.origin} onChange={handleChange} />
-                  <input name="destination" placeholder="📍 Nơi đến (VD: Hamburg)" value={quote.destination} onChange={handleChange} />
+                  <input name="origin" placeholder={t('home.form_origin')} value={quote.origin} onChange={handleChange} />
+                  <input name="destination" placeholder={t('home.form_destination')} value={quote.destination} onChange={handleChange} />
                 </div>
                 <div className="row">
                   <select name="mode" value={quote.mode} onChange={handleChange}>
-                    <option value="sea_fcl">🚢 Đường biển (FCL)</option>
-                    <option value="sea_lcl">📦 Đường biển (LCL)</option>
-                    <option value="air">✈️ Hàng không</option>
-                    <option value="road">🚛 Đường bộ</option>
-                    <option value="warehouse">🏭 Kho bãi</option>
+                    <option value="sea_fcl">{t('home.mode_sea_fcl')}</option>
+                    <option value="sea_lcl">{t('home.mode_sea_lcl')}</option>
+                    <option value="air">{t('home.mode_air')}</option>
+                    <option value="road">{t('home.mode_road')}</option>
+                    <option value="warehouse">{t('home.mode_warehouse')}</option>
                   </select>
-                  <input name="weight" placeholder="⚖️ Trọng lượng (kg)" value={quote.weight} onChange={handleChange} />
+                  <input name="weight" placeholder={t('home.form_weight')} value={quote.weight} onChange={handleChange} />
                 </div>
                 <button type="submit" className="btn btn-primary" disabled={sending}>
-                  {sending ? '⏳ Đang gửi...' : '🚀 Gửi yêu cầu báo giá'}
+                  {sending ? t('home.sending') : t('home.send_btn')}
                 </button>
               </form>
             )}

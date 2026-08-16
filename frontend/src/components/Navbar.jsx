@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import axios from 'axios'
 
 /* ── Fallback dùng khi backend không chạy ── */
@@ -210,12 +211,50 @@ const navLinkCSS = `
     .nb-link::after {
       display: none;
     }
+    
+    .nb-lang {
+      margin: 10px 16px;
+      justify-content: flex-start;
+    }
+  }
+
+  .nb-lang {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-left: 10px;
+  }
+  .nb-lang-btn {
+    background: none;
+    border: 1px solid #e8edf3;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #3a4a5c;
+    transition: all 0.2s;
+  }
+  .nb-lang-btn.active {
+    background: #f36c1f;
+    color: white;
+    border-color: #f36c1f;
   }
 `
 
 export default function Navbar() {
+  const { t, i18n } = useTranslation()
   const [items, setItems] = useState(FALLBACK_NAV)
   const [mobileOpen, setMobileOpen] = useState(false)
+
+  const pathMap = {
+    '/': 'nav.home',
+    '/services': 'nav.services',
+    '/pricing': 'nav.pricing',
+    '/about': 'nav.about',
+    '/news': 'nav.news',
+    '/contact': 'nav.contact'
+  }
 
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
@@ -238,7 +277,7 @@ export default function Navbar() {
           <NavLink to="/" className="nb-logo-wrap" aria-label="home" onClick={() => { setMobileOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
             <div className="nb-logo-box">
               <img src="/stella-logo.png" alt="Stella Shipping" className="nb-logo" />
-              <div className="nb-tag">LOGISTICS · CUSTOMS · FREIGHT</div>
+              <div className="nb-tag">{t('nav.tagline')}</div>
             </div>
           </NavLink>
         </div>
@@ -262,9 +301,13 @@ export default function Navbar() {
               end={it.path === '/'}
               onClick={() => setMobileOpen(false)}
             >
-              {it.label}
+              {pathMap[it.path] ? t(pathMap[it.path]) : it.label}
             </NavLink>
           ))}
+          <div className="nb-lang">
+            <button className={`nb-lang-btn ${i18n.language === 'vi' ? 'active' : ''}`} onClick={() => {i18n.changeLanguage('vi'); setMobileOpen(false);}}>VI</button>
+            <button className={`nb-lang-btn ${i18n.language === 'en' ? 'active' : ''}`} onClick={() => {i18n.changeLanguage('en'); setMobileOpen(false);}}>EN</button>
+          </div>
         </nav>
 
         <a href="tel:19006868" className="nb-phone">📞 1900 6868</a>
