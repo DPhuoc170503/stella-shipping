@@ -14,21 +14,14 @@ const FALLBACK_NAV = [
 ]
 
 const navLinkCSS = `
-  .nb-header {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 9999;
-    background: #fff;
-    border-bottom: 1px solid #eee;
-  }
-
   .nb-shell {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 14px;
     padding: 12px 24px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
     position: relative;
     z-index: 20;
   }
@@ -87,7 +80,9 @@ const navLinkCSS = `
 
   .nb-link {
     position: relative;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin: 0 10px;
     padding: 6px 2px;
     font-size: 14.5px;
@@ -263,6 +258,15 @@ export default function Navbar() {
     '/contact': 'nav.contact'
   }
 
+  const iconMap = {
+    '/': '🏠',
+    '/services': '🚢',
+    '/pricing': '💵',
+    '/about': '🏢',
+    '/news': '📰',
+    '/contact': '📬'
+  }
+
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000'
     axios
@@ -276,7 +280,7 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header className="nb-header">
+    <header style={{ position: 'sticky', top: 0, zIndex: 999 }}>
       <style>{navLinkCSS}</style>
       <div className="nb-shell">
         <div className="nb-brand">
@@ -308,16 +312,17 @@ export default function Navbar() {
               end={it.path === '/'}
               onClick={() => setMobileOpen(false)}
             >
-              {pathMap[it.path] ? t(pathMap[it.path]) : (i18n.language === 'en' && it.label_en ? it.label_en : it.label)}
+              <span style={{ fontSize: '16px' }}>{iconMap[it.path] || '🔹'}</span>
+              <span>{pathMap[it.path] ? t(pathMap[it.path]) : it.label}</span>
             </NavLink>
           ))}
           <div className="nb-lang">
-            <button className={`nb-lang-btn ${i18n.language === 'vi' ? 'active' : ''}`} onClick={() => {i18n.changeLanguage('vi'); setMobileOpen(false);}}>VI</button>
-            <button className={`nb-lang-btn ${i18n.language === 'en' ? 'active' : ''}`} onClick={() => {i18n.changeLanguage('en'); setMobileOpen(false);}}>EN</button>
+            <button className={`nb-lang-btn ${i18n.language === 'vi' ? 'active' : ''}`} onClick={() => { i18n.changeLanguage('vi'); setMobileOpen(false); }}>VI</button>
+            <button className={`nb-lang-btn ${i18n.language === 'en' ? 'active' : ''}`} onClick={() => { i18n.changeLanguage('en'); setMobileOpen(false); }}>EN</button>
           </div>
         </nav>
 
-        <a href="tel:19006868" className="nb-phone">📞 1900 6868</a>
+        <a href="tel:19006868" className="nb-phone">📞 0901048137</a>
       </div>
     </header>
   )
