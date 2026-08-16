@@ -18,11 +18,8 @@ router.get('/', async (req, res) => {
     const articles = rows.map(r => ({
       id: r.id,
       title: r.title,
-      title_en: r.title_en || '',
       desc: r.description,
-      desc_en: r.description_en || '',
       fullDesc: r.full_content || '',
-      fullDesc_en: r.full_content_en || '',
       category: r.category,
       author: r.author,
       img: r.img,
@@ -46,11 +43,8 @@ router.get('/:id', async (req, res) => {
     res.json({
       id: r.id,
       title: r.title,
-      title_en: r.title_en || '',
       desc: r.description,
-      desc_en: r.description_en || '',
       fullDesc: r.full_content || '',
-      fullDesc_en: r.full_content_en || '',
       category: r.category,
       author: r.author,
       img: r.img,
@@ -67,19 +61,16 @@ router.get('/:id', async (req, res) => {
 // ─── POST /api/articles ─── tạo bài mới
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { title, title_en, desc, desc_en, fullDesc, fullDesc_en, category, author, img, readTime, status } = req.body;
+    const { title, desc, fullDesc, category, author, img, readTime, status } = req.body;
     if (!title || !desc) return res.status(400).json({ error: 'title và desc là bắt buộc' });
 
     const [result] = await pool.query(
-      `INSERT INTO articles (title, title_en, description, description_en, full_content, full_content_en, category, author, img, read_time, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO articles (title, description, full_content, category, author, img, read_time, status)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
-        title_en || '',
         desc,
-        desc_en || '',
         fullDesc || '',
-        fullDesc_en || '',
         category || 'Công ty',
         author || '',
         img || '/Banner.jpg',
@@ -94,11 +85,8 @@ router.post('/', verifyToken, async (req, res) => {
     res.status(201).json({
       id: r.id,
       title: r.title,
-      title_en: r.title_en || '',
       desc: r.description,
-      desc_en: r.description_en || '',
       fullDesc: r.full_content || '',
-      fullDesc_en: r.full_content_en || '',
       category: r.category,
       author: r.author,
       img: r.img,
@@ -115,7 +103,7 @@ router.post('/', verifyToken, async (req, res) => {
 // ─── PUT /api/articles/:id ─── cập nhật bài
 router.put('/:id', verifyToken, async (req, res) => {
   try {
-    const { title, title_en, desc, desc_en, fullDesc, fullDesc_en, category, author, img, readTime, status } = req.body;
+    const { title, desc, fullDesc, category, author, img, readTime, status } = req.body;
     const { id } = req.params;
 
     const [check] = await pool.query('SELECT id FROM articles WHERE id = ?', [id]);
@@ -124,18 +112,15 @@ router.put('/:id', verifyToken, async (req, res) => {
     await pool.query(
       `UPDATE articles SET
         title = COALESCE(?, title),
-        title_en = COALESCE(?, title_en),
         description = COALESCE(?, description),
-        description_en = COALESCE(?, description_en),
         full_content = COALESCE(?, full_content),
-        full_content_en = COALESCE(?, full_content_en),
         category = COALESCE(?, category),
         author = COALESCE(?, author),
         img = COALESCE(?, img),
         read_time = COALESCE(?, read_time),
         status = COALESCE(?, status)
        WHERE id = ?`,
-      [title, title_en, desc, desc_en, fullDesc, fullDesc_en, category, author, img, readTime, status, id]
+      [title, desc, fullDesc, category, author, img, readTime, status, id]
     );
 
     const [rows] = await pool.query('SELECT * FROM articles WHERE id = ?', [id]);
@@ -143,11 +128,8 @@ router.put('/:id', verifyToken, async (req, res) => {
     res.json({
       id: r.id,
       title: r.title,
-      title_en: r.title_en || '',
       desc: r.description,
-      desc_en: r.description_en || '',
       fullDesc: r.full_content || '',
-      fullDesc_en: r.full_content_en || '',
       category: r.category,
       author: r.author,
       img: r.img,
