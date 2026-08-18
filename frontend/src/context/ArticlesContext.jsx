@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const API = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/articles` : 'https://stella-shipping.onrender.com/api/articles'
 
@@ -9,12 +10,14 @@ export function ArticlesProvider({ children }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
+  const { i18n } = useTranslation();
+
   /* ── Load tất cả bài từ API ── */
   const fetchArticles = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
-      const res = await fetch(API)
+      const res = await fetch(`${API}?lang=${i18n.language}`)
       if (!res.ok) throw new Error('Không thể tải bài viết')
       const data = await res.json()
       setArticles(data)
@@ -24,7 +27,7 @@ export function ArticlesProvider({ children }) {
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [i18n.language])
 
   useEffect(() => {
     fetchArticles()

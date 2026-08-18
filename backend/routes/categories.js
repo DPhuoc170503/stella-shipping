@@ -6,8 +6,14 @@ const { verifyToken, isAdmin } = require('../middleware/auth');
 // GET all categories
 router.get('/', async (req, res) => {
     try {
+        const { lang } = req.query;
         const [rows] = await db.query('SELECT * FROM categories ORDER BY id ASC');
-        res.json(rows);
+        const categories = rows.map(r => ({
+            ...r,
+            name: lang === 'en' ? (r.name_en || r.name) : r.name,
+            description: lang === 'en' ? (r.description_en || r.description) : r.description
+        }));
+        res.json(categories);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Lỗi server khi lấy danh sách danh mục' });
@@ -16,13 +22,13 @@ router.get('/', async (req, res) => {
 
 // POST new category
 router.post('/', verifyToken, isAdmin, async (req, res) => {
-    const { name, slug, description } = req.body;
+    const { name, slug, description, name_en, description_en } = req.body;
     if (!name) return res.status(400).json({ error: 'Tên danh mục là bắt buộc' });
     
     try {
         const [result] = await db.query(
-            'INSERT INTO categories (name, slug, description) VALUES (?, ?, ?)',
-            [name, slug || '', description || '']
+            'INSERT INTO categories (name, slug, description, name_en, description_en) VALUES (?, ?, ?, ?, ?)',
+            [name, slug || '', description || '', name_en || '', description_en || '']
         );
         const [newCategory] = await db.query('SELECT * FROM categories WHERE id = ?', [result.insertId]);
         res.status(201).json(newCategory[0]);
@@ -35,13 +41,13 @@ router.post('/', verifyToken, isAdmin, async (req, res) => {
 // PUT update category
 router.put('/:id', verifyToken, isAdmin, async (req, res) => {
     const { id } = req.params;
-    const { name, slug, description } = req.body;
+    const { name, slug, description, name_en, description_en } = req.body;
     if (!name) return res.status(400).json({ error: 'Tên danh mục là bắt buộc' });
     
     try {
         const [result] = await db.query(
-            'UPDATE categories SET name = ?, slug = ?, description = ? WHERE id = ?',
-            [name, slug || '', description || '', id]
+            'UPDATE categories SET name = ?, slug = ?, description = ?, name_en = ?, description_en = ? WHERE id = ?',
+            [name, slug || '', description || '', name_en || '', description_en || '', id]
         );
         
         if (result.affectedRows === 0) {

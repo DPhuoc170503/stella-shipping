@@ -96,37 +96,79 @@ export default function AdminSettings() {
       {/* Hero Section */}
       <div className="form-section">
         <h3>1. Cấu hình Hero Banner (Phần đầu trang)</h3>
-        <div className="form-group">
-          <label>Eyebrow (Chữ nhỏ phía trên)</label>
-          <input value={settings.hero.eyebrow} onChange={e => handleHeroChange('eyebrow', e.target.value)} />
-        </div>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Tiêu đề Dòng 1</label>
-            <input value={settings.hero.title_line1} onChange={e => handleHeroChange('title_line1', e.target.value)} />
+        
+        <div style={{ display: 'flex', gap: 24, borderBottom: '1px solid #eee', paddingBottom: 16, marginBottom: 16 }}>
+          <div style={{ flex: 1 }}>
+            <h4 style={{ color: '#0f2b57', marginBottom: 16 }}>Tiếng Việt (VI)</h4>
+            <div className="form-group">
+              <label>Eyebrow (Chữ nhỏ phía trên)</label>
+              <input value={settings.hero.eyebrow} onChange={e => handleHeroChange('eyebrow', e.target.value)} />
+            </div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Tiêu đề Dòng 1</label>
+                <input value={settings.hero.title_line1} onChange={e => handleHeroChange('title_line1', e.target.value)} />
+              </div>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Nổi bật Dòng 1</label>
+                <input value={settings.hero.title_hl1} onChange={e => handleHeroChange('title_hl1', e.target.value)} />
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Tiêu đề Dòng 2</label>
+                <input value={settings.hero.title_line2} onChange={e => handleHeroChange('title_line2', e.target.value)} />
+              </div>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Nổi bật Dòng 2</label>
+                <input value={settings.hero.title_hl2} onChange={e => handleHeroChange('title_hl2', e.target.value)} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Tiêu đề Dòng 3</label>
+              <input value={settings.hero.title_line3} onChange={e => handleHeroChange('title_line3', e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label>Đoạn văn mô tả (Lead)</label>
+              <textarea rows={3} value={settings.hero.lead} onChange={e => handleHeroChange('lead', e.target.value)} />
+            </div>
           </div>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Nổi bật Dòng 1</label>
-            <input value={settings.hero.title_hl1} onChange={e => handleHeroChange('title_hl1', e.target.value)} />
+
+          <div style={{ flex: 1 }}>
+            <h4 style={{ color: '#0f2b57', marginBottom: 16 }}>Tiếng Anh (EN)</h4>
+            <div className="form-group">
+              <label>Eyebrow</label>
+              <input value={settings.hero.eyebrow_en || ''} onChange={e => handleHeroChange('eyebrow_en', e.target.value)} />
+            </div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Title Line 1</label>
+                <input value={settings.hero.title_line1_en || ''} onChange={e => handleHeroChange('title_line1_en', e.target.value)} />
+              </div>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Highlight 1</label>
+                <input value={settings.hero.title_hl1_en || ''} onChange={e => handleHeroChange('title_hl1_en', e.target.value)} />
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Title Line 2</label>
+                <input value={settings.hero.title_line2_en || ''} onChange={e => handleHeroChange('title_line2_en', e.target.value)} />
+              </div>
+              <div className="form-group" style={{ flex: 1 }}>
+                <label>Highlight 2</label>
+                <input value={settings.hero.title_hl2_en || ''} onChange={e => handleHeroChange('title_hl2_en', e.target.value)} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Title Line 3</label>
+              <input value={settings.hero.title_line3_en || ''} onChange={e => handleHeroChange('title_line3_en', e.target.value)} />
+            </div>
+            <div className="form-group">
+              <label>Lead Description</label>
+              <textarea rows={3} value={settings.hero.lead_en || ''} onChange={e => handleHeroChange('lead_en', e.target.value)} />
+            </div>
           </div>
-        </div>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Tiêu đề Dòng 2</label>
-            <input value={settings.hero.title_line2} onChange={e => handleHeroChange('title_line2', e.target.value)} />
-          </div>
-          <div className="form-group" style={{ flex: 1 }}>
-            <label>Nổi bật Dòng 2</label>
-            <input value={settings.hero.title_hl2} onChange={e => handleHeroChange('title_hl2', e.target.value)} />
-          </div>
-        </div>
-        <div className="form-group">
-          <label>Tiêu đề Dòng 3</label>
-          <input value={settings.hero.title_line3} onChange={e => handleHeroChange('title_line3', e.target.value)} />
-        </div>
-        <div className="form-group">
-          <label>Đoạn văn mô tả (Lead)</label>
-          <textarea rows={3} value={settings.hero.lead} onChange={e => handleHeroChange('lead', e.target.value)} />
         </div>
       </div>
 
@@ -136,23 +178,47 @@ export default function AdminSettings() {
         {settings.services.map((item, idx) => (
           <div key={idx} className="array-item">
             <h4>Dịch vụ #{idx + 1}</h4>
-            <div style={{ display: 'flex', gap: 12 }}>
-              <div className="form-group" style={{ flex: 1 }}>
-                <label>Tiêu đề</label>
-                <input value={item.title} onChange={e => handleArrayChange('services', idx, 'title', e.target.value)} />
-              </div>
-              <div className="form-group" style={{ flex: 1 }}>
-                <label>Nhãn (Badge)</label>
-                <input value={item.badge} onChange={e => handleArrayChange('services', idx, 'badge', e.target.value)} />
-              </div>
-            </div>
             <div className="form-group">
               <label>Link Ảnh</label>
               <input value={item.img} onChange={e => handleArrayChange('services', idx, 'img', e.target.value)} />
             </div>
-            <div className="form-group">
-              <label>Mô tả ngắn</label>
-              <textarea rows={2} value={item.desc} onChange={e => handleArrayChange('services', idx, 'desc', e.target.value)} />
+            
+            <div style={{ display: 'flex', gap: 24 }}>
+              <div style={{ flex: 1 }}>
+                <h5 style={{ margin: '0 0 10px', color: '#5a6f82' }}>Tiếng Việt</h5>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Tiêu đề</label>
+                    <input value={item.title} onChange={e => handleArrayChange('services', idx, 'title', e.target.value)} />
+                  </div>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Nhãn (Badge)</label>
+                    <input value={item.badge} onChange={e => handleArrayChange('services', idx, 'badge', e.target.value)} />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Mô tả ngắn</label>
+                  <textarea rows={2} value={item.desc} onChange={e => handleArrayChange('services', idx, 'desc', e.target.value)} />
+                </div>
+              </div>
+              
+              <div style={{ flex: 1 }}>
+                <h5 style={{ margin: '0 0 10px', color: '#5a6f82' }}>Tiếng Anh</h5>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Title</label>
+                    <input value={item.title_en || ''} onChange={e => handleArrayChange('services', idx, 'title_en', e.target.value)} />
+                  </div>
+                  <div className="form-group" style={{ flex: 1 }}>
+                    <label>Badge</label>
+                    <input value={item.badge_en || ''} onChange={e => handleArrayChange('services', idx, 'badge_en', e.target.value)} />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Description</label>
+                  <textarea rows={2} value={item.desc_en || ''} onChange={e => handleArrayChange('services', idx, 'desc_en', e.target.value)} />
+                </div>
+              </div>
             </div>
           </div>
         ))}
@@ -163,19 +229,35 @@ export default function AdminSettings() {
         <h3>3. Lợi thế cạnh tranh (8 thẻ)</h3>
         {settings.why_choose_us.map((item, idx) => (
           <div key={idx} className="array-item">
-            <div style={{ display: 'flex', gap: 12 }}>
-              <div className="form-group" style={{ width: 80 }}>
-                <label>Icon</label>
-                <input value={item.icon} onChange={e => handleArrayChange('why_choose_us', idx, 'icon', e.target.value)} />
-              </div>
-              <div className="form-group" style={{ flex: 1 }}>
-                <label>Tiêu đề</label>
-                <input value={item.title} onChange={e => handleArrayChange('why_choose_us', idx, 'title', e.target.value)} />
-              </div>
+            <div className="form-group" style={{ width: 80 }}>
+              <label>Icon</label>
+              <input value={item.icon} onChange={e => handleArrayChange('why_choose_us', idx, 'icon', e.target.value)} />
             </div>
-            <div className="form-group">
-              <label>Mô tả</label>
-              <input value={item.desc} onChange={e => handleArrayChange('why_choose_us', idx, 'desc', e.target.value)} />
+            
+            <div style={{ display: 'flex', gap: 24 }}>
+              <div style={{ flex: 1 }}>
+                <h5 style={{ margin: '0 0 10px', color: '#5a6f82' }}>Tiếng Việt</h5>
+                <div className="form-group">
+                  <label>Tiêu đề</label>
+                  <input value={item.title} onChange={e => handleArrayChange('why_choose_us', idx, 'title', e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Mô tả</label>
+                  <textarea rows={2} value={item.desc} onChange={e => handleArrayChange('why_choose_us', idx, 'desc', e.target.value)} />
+                </div>
+              </div>
+              
+              <div style={{ flex: 1 }}>
+                <h5 style={{ margin: '0 0 10px', color: '#5a6f82' }}>Tiếng Anh</h5>
+                <div className="form-group">
+                  <label>Title</label>
+                  <input value={item.title_en || ''} onChange={e => handleArrayChange('why_choose_us', idx, 'title_en', e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Description</label>
+                  <textarea rows={2} value={item.desc_en || ''} onChange={e => handleArrayChange('why_choose_us', idx, 'desc_en', e.target.value)} />
+                </div>
+              </div>
             </div>
           </div>
         ))}
@@ -186,19 +268,35 @@ export default function AdminSettings() {
         <h3>4. Quy trình làm việc (4 bước)</h3>
         {settings.process.map((item, idx) => (
           <div key={idx} className="array-item">
-            <div style={{ display: 'flex', gap: 12 }}>
-              <div className="form-group" style={{ width: 80 }}>
-                <label>Số</label>
-                <input value={item.num} disabled />
-              </div>
-              <div className="form-group" style={{ flex: 1 }}>
-                <label>Tiêu đề bước</label>
-                <input value={item.title} onChange={e => handleArrayChange('process', idx, 'title', e.target.value)} />
-              </div>
+            <div className="form-group" style={{ width: 80 }}>
+              <label>Số</label>
+              <input value={item.num} disabled />
             </div>
-            <div className="form-group">
-              <label>Mô tả</label>
-              <input value={item.desc} onChange={e => handleArrayChange('process', idx, 'desc', e.target.value)} />
+            
+            <div style={{ display: 'flex', gap: 24 }}>
+              <div style={{ flex: 1 }}>
+                <h5 style={{ margin: '0 0 10px', color: '#5a6f82' }}>Tiếng Việt</h5>
+                <div className="form-group">
+                  <label>Tiêu đề bước</label>
+                  <input value={item.title} onChange={e => handleArrayChange('process', idx, 'title', e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Mô tả</label>
+                  <textarea rows={2} value={item.desc} onChange={e => handleArrayChange('process', idx, 'desc', e.target.value)} />
+                </div>
+              </div>
+              
+              <div style={{ flex: 1 }}>
+                <h5 style={{ margin: '0 0 10px', color: '#5a6f82' }}>Tiếng Anh</h5>
+                <div className="form-group">
+                  <label>Step Title</label>
+                  <input value={item.title_en || ''} onChange={e => handleArrayChange('process', idx, 'title_en', e.target.value)} />
+                </div>
+                <div className="form-group">
+                  <label>Description</label>
+                  <textarea rows={2} value={item.desc_en || ''} onChange={e => handleArrayChange('process', idx, 'desc_en', e.target.value)} />
+                </div>
+              </div>
             </div>
           </div>
         ))}

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 /* ─── Scroll-reveal ─── */
 function useReveal(ref) {
@@ -14,50 +15,246 @@ function useReveal(ref) {
   }, [ref])
 }
 
-/* ═══ DATA ═══ */
-const AIRLINES = [
-  { name: 'Vietnam Airlines Cargo', logo: '🇻🇳', origin: 'Việt Nam', fleet: '100+ máy bay', routes: '60+ điểm đến', desc: 'Hãng hàng không quốc gia Việt Nam với mạng lưới nội địa dày đặc. Belly cargo trên toàn bộ chuyến bay hành khách và freighter chuyên dụng tuyến châu Á – châu Âu.', color: '#00338D' },
-  { name: 'Singapore Airlines Cargo', logo: '🇸🇬', origin: 'Singapore', fleet: '7 freighters', routes: '130+ điểm đến', desc: 'Đội freighter Boeing 747-400F hiện đại. Hub tại Changi Airport — gateway số 1 Đông Nam Á. Dịch vụ Pharma, Perishables và E-commerce chuyên biệt.', color: '#F0AB00' },
-  { name: 'Korean Air Cargo', logo: '🇰🇷', origin: 'Hàn Quốc', fleet: '23 freighters', routes: '120+ điểm đến', desc: 'Top 5 hãng cargo lớn nhất thế giới. Hub Incheon kết nối nhanh Việt Nam – Bắc Mỹ. Kho lạnh đạt chuẩn GDP cho hàng dược phẩm.', color: '#0064D2' },
-  { name: 'Cathay Pacific Cargo', logo: '🇭🇰', origin: 'Hồng Kông', fleet: '18 freighters', routes: '85+ điểm đến', desc: 'Gateway hàng đầu vào thị trường Trung Quốc và Bắc Á. Terminal cargo siêu hiện đại tại HKIA. Chuyên mạnh hàng điện tử, thời trang và luxury.', color: '#004D40' },
-  { name: 'Emirates SkyCargo', logo: '🇦🇪', origin: 'UAE', fleet: '11 freighters + 270 belly', routes: '150+ điểm đến', desc: 'Mạng lưới cargo lớn nhất thế giới. Hub Dubai kết nối 6 châu lục. SkyPharma, SkyFresh, SkyChain — hệ sinh thái sản phẩm chuyên biệt.', color: '#D71A1A' },
-  { name: 'Turkish Cargo', logo: '🇹🇷', origin: 'Thổ Nhĩ Kỳ', fleet: '400+ belly + freighters', routes: '130+ quốc gia', desc: 'Hub Istanbul kết nối châu Á – châu Âu – châu Phi hiệu quả nhất. Tăng trưởng nhanh nhất thế giới về cargo tonnage. Giá cước cạnh tranh.', color: '#E30A17' },
-  { name: 'China Airlines Cargo', logo: '🇹🇼', origin: 'Đài Loan', fleet: '18 freighters', routes: '100+ điểm đến', desc: 'Freighter trực tiếp SGN/HAN – TPE hàng ngày. Transit nhanh qua Đài Bắc đi Mỹ và châu Âu. Kho hàng tự động hóa tại Taoyuan Airport.', color: '#00205B' },
-  { name: 'FedEx Express', logo: '📦', origin: 'Hoa Kỳ', fleet: '680+ máy bay', routes: '220+ quốc gia', desc: 'Express integrator lớn nhất thế giới. Mạng lưới cửa-đến-cửa (door-to-door) nhanh nhất. Hub châu Á tại Quảng Châu. SenseAware tracking IoT real-time.', color: '#4D148C' },
-]
-
-const AIR_SERVICES = [
-  { icon: '✈️', title: 'General Cargo', desc: 'Vận chuyển hàng hóa thông thường bằng đường hàng không. Thời gian transit 1–5 ngày tùy điểm đến. Linh hoạt lịch trình bay hàng tuần.', badge: 'Phổ biến nhất' },
-  { icon: '⚡', title: 'Express / Urgent', desc: 'Dịch vụ chuyển phát nhanh quốc tế. Giao hàng trong 24–72 giờ door-to-door. Ưu tiên bay sớm nhất, tracking real-time.', badge: 'Nhanh nhất' },
-  { icon: '❄️', title: 'Temperature Controlled', desc: 'Vận chuyển hàng nhạy cảm nhiệt độ: dược phẩm, vaccine, mẫu sinh học. Kiểm soát 2–8°C hoặc -20°C. Đạt chuẩn GDP/WHO.', badge: 'Pharma' },
-  { icon: '🥩', title: 'Perishables', desc: 'Thủy hải sản, trái cây, hoa tươi, thực phẩm chế biến. Cool chain từ kho đến sân bay. Thời gian xử lý nhanh tại cảng hàng không.', badge: 'Hàng tươi sống' },
-  { icon: '☣️', title: 'Dangerous Goods (DG)', desc: 'Vận chuyển hàng nguy hiểm theo quy định IATA DGR. Hóa chất, pin lithium, sơn, dung môi. Chuyên viên DG làm tờ khai SHIPER\'s DECLARATION.', badge: 'Chứng chỉ IATA' },
-  { icon: '🏗️', title: 'Project & Charter', desc: 'Thuê nguyên chuyến bay (Full Charter) cho hàng siêu trọng, thiết bị công nghiệp, viện trợ nhân đạo. Boeing 747F, AN-124, IL-76.', badge: 'Đặc biệt' },
-]
-
-const ROUTES = [
-  { from: 'SGN (TP.HCM)', to: 'ICN (Seoul)', transit: '5–6 giờ', freq: 'Hàng ngày', type: 'Direct' },
-  { from: 'SGN (TP.HCM)', to: 'NRT (Tokyo)', transit: '5–6 giờ', freq: 'Hàng ngày', type: 'Direct' },
-  { from: 'SGN (TP.HCM)', to: 'SIN (Singapore)', transit: '2 giờ', freq: 'Hàng ngày', type: 'Direct' },
-  { from: 'SGN (TP.HCM)', to: 'FRA (Frankfurt)', transit: '12–14 giờ', freq: '5 chuyến/tuần', type: 'Direct' },
-  { from: 'SGN (TP.HCM)', to: 'LAX (Los Angeles)', transit: '16–20 giờ', freq: '4 chuyến/tuần', type: '1 stop' },
-  { from: 'SGN (TP.HCM)', to: 'LHR (London)', transit: '13–15 giờ', freq: '3 chuyến/tuần', type: '1 stop' },
-  { from: 'HAN (Hà Nội)', to: 'PVG (Shanghai)', transit: '3–4 giờ', freq: 'Hàng ngày', type: 'Direct' },
-  { from: 'HAN (Hà Nội)', to: 'HKG (Hong Kong)', transit: '2–3 giờ', freq: 'Hàng ngày', type: 'Direct' },
-  { from: 'HAN (Hà Nội)', to: 'CDG (Paris)', transit: '12–14 giờ', freq: '3 chuyến/tuần', type: 'Direct' },
-  { from: 'SGN (TP.HCM)', to: 'DXB (Dubai)', transit: '7–8 giờ', freq: '4 chuyến/tuần', type: 'Direct' },
-]
-
-const ADVANTAGES = [
-  { icon: '⚡', title: 'Tốc độ vượt trội', desc: 'Transit time chỉ vài giờ thay vì vài tuần so với đường biển. Lý tưởng cho hàng gấp, mùa vụ và e-commerce.' },
-  { icon: '🔒', title: 'An toàn tuyệt đối', desc: 'Tỷ lệ hư hỏng/mất mát thấp nhất trong các phương thức vận chuyển. Phù hợp hàng giá trị cao, thiết bị y tế, điện tử.' },
-  { icon: '🌍', title: 'Phủ sóng toàn cầu', desc: 'Kết nối 220+ quốc gia qua mạng lưới 100+ hãng hàng không đối tác. Đến mọi điểm trên thế giới trong 1–5 ngày.' },
-  { icon: '📊', title: 'Tracking chính xác', desc: 'Theo dõi lô hàng real-time từ kho gửi đến kho nhận. Cập nhật trạng thái AWB qua hệ thống Cargo IQ quốc tế.' },
-  { icon: '📋', title: 'Thủ tục trọn gói', desc: 'Làm AWB (Air Waybill), khai hải quan, chứng nhận xuất xứ, hun trùng, kiểm dịch — tất cả trong 1 đầu mối.' },
-  { icon: '💰', title: 'Giá cước linh hoạt', desc: 'Nhiều mức giá: Minimum, Normal, Quantity, Specific Commodity Rate. Contract rate ưu đãi cho khách hàng dài hạn.' },
-]
+const t_ui = {
+  vi: {
+    back: "← Quay lại Dịch vụ",
+    badge: "AIR FREIGHT",
+    hero_h1: "Vận tải hàng không",
+    hero_h1_span: "Nhanh chóng & An toàn",
+    hero_p: "Dịch vụ vận chuyển hàng hóa bằng đường hàng không đến hơn 220 quốc gia. Giải pháp tối ưu cho hàng gấp, hàng giá trị cao, dược phẩm, thủy hải sản và e-commerce — từ booking đến giao hàng tận nơi.",
+    stat_partners: "Hãng hàng không",
+    stat_countries: "Quốc gia",
+    stat_delivery: "Ngày giao hàng",
+    stat_track: "Tracking online",
+    adv_kicker: "TẠI SAO CHỌN HÀNG KHÔNG?",
+    adv_h2: "Ưu điểm vượt trội của vận tải hàng không",
+    adv_p: "Phương thức vận chuyển nhanh nhất, an toàn nhất cho hàng hóa quốc tế.",
+    advs: [
+      { icon: '⚡', title: 'Tốc độ vượt trội', desc: 'Transit time chỉ vài giờ thay vì vài tuần so với đường biển. Lý tưởng cho hàng gấp, mùa vụ và e-commerce.' },
+      { icon: '🔒', title: 'An toàn tuyệt đối', desc: 'Tỷ lệ hư hỏng/mất mát thấp nhất trong các phương thức vận chuyển. Phù hợp hàng giá trị cao, thiết bị y tế, điện tử.' },
+      { icon: '🌍', title: 'Phủ sóng toàn cầu', desc: 'Kết nối 220+ quốc gia qua mạng lưới 100+ hãng hàng không đối tác. Đến mọi điểm trên thế giới trong 1–5 ngày.' },
+      { icon: '📊', title: 'Tracking chính xác', desc: 'Theo dõi lô hàng real-time từ kho gửi đến kho nhận. Cập nhật trạng thái AWB qua hệ thống Cargo IQ quốc tế.' },
+      { icon: '📋', title: 'Thủ tục trọn gói', desc: 'Làm AWB (Air Waybill), khai hải quan, chứng nhận xuất xứ, hun trùng, kiểm dịch — tất cả trong 1 đầu mối.' },
+      { icon: '💰', title: 'Giá cước linh hoạt', desc: 'Nhiều mức giá: Minimum, Normal, Quantity, Specific Commodity Rate. Contract rate ưu đãi cho khách hàng dài hạn.' },
+    ],
+    svc_kicker: "DANH MỤC DỊCH VỤ",
+    svc_h2: "Giải pháp vận tải hàng không đa dạng",
+    svc_p: "Từ hàng thông thường đến hàng đặc biệt — chúng tôi có giải pháp cho mọi nhu cầu.",
+    svcs: [
+      { icon: '✈️', title: 'General Cargo', desc: 'Vận chuyển hàng hóa thông thường bằng đường hàng không. Thời gian transit 1–5 ngày tùy điểm đến. Linh hoạt lịch trình bay hàng tuần.', badge: 'Phổ biến nhất' },
+      { icon: '⚡', title: 'Express / Urgent', desc: 'Dịch vụ chuyển phát nhanh quốc tế. Giao hàng trong 24–72 giờ door-to-door. Ưu tiên bay sớm nhất, tracking real-time.', badge: 'Nhanh nhất' },
+      { icon: '❄️', title: 'Temperature Controlled', desc: 'Vận chuyển hàng nhạy cảm nhiệt độ: dược phẩm, vaccine, mẫu sinh học. Kiểm soát 2–8°C hoặc -20°C. Đạt chuẩn GDP/WHO.', badge: 'Pharma' },
+      { icon: '🥩', title: 'Perishables', desc: 'Thủy hải sản, trái cây, hoa tươi, thực phẩm chế biến. Cool chain từ kho đến sân bay. Thời gian xử lý nhanh tại cảng hàng không.', badge: 'Hàng tươi sống' },
+      { icon: '☣️', title: 'Dangerous Goods (DG)', desc: 'Vận chuyển hàng nguy hiểm theo quy định IATA DGR. Hóa chất, pin lithium, sơn, dung môi. Chuyên viên DG làm tờ khai SHIPER\'s DECLARATION.', badge: 'Chứng chỉ IATA' },
+      { icon: '🏗️', title: 'Project & Charter', desc: 'Thuê nguyên chuyến bay (Full Charter) cho hàng siêu trọng, thiết bị công nghiệp, viện trợ nhân đạo. Boeing 747F, AN-124, IL-76.', badge: 'Đặc biệt' },
+    ],
+    comp_kicker: "SO SÁNH DỊCH VỤ",
+    comp_h2: "Consol vs Direct — Chọn phương án nào?",
+    con_title: "Consolidation",
+    con_sub: "Hàng ghép (gom hàng)",
+    con_list: [
+      { t1: 'Gom nhiều lô hàng nhỏ vào ', s: '1 MAWB', t2: '' },
+      { t1: 'Phù hợp lô hàng ', s: '< 300 kg', t2: '' },
+      { t1: 'Giá cước ', s: 'tiết kiệm hơn', t2: ' 20–40%' },
+      { t1: 'Transit time ', s: 'dài hơn 1–2 ngày', t2: ' (cần gom hàng)' },
+      { t1: 'Xuất hàng theo ', s: 'lịch cố định', t2: ' hàng tuần' },
+      { t1: 'Lý tưởng cho hàng ', s: 'không gấp', t2: ', mẫu hàng, phụ tùng' },
+    ],
+    con_btn: "Xem giá Consol →",
+    dir_title: "Direct Shipment",
+    dir_sub: "Gửi hàng trực tiếp",
+    dir_list: [
+      { t1: 'Gửi trực tiếp, ', s: 'không qua gom hàng', t2: '' },
+      { t1: 'Phù hợp lô hàng ', s: '> 300 kg', t2: ' hoặc hàng gấp' },
+      { t1: 'Transit time ', s: 'ngắn nhất có thể', t2: '' },
+      { t1: 'Chọn hãng bay, ', s: 'chuyến bay cụ thể', t2: '' },
+      { t1: 'Booking ', s: 'ưu tiên', t2: ', xác nhận nhanh' },
+      { t1: 'Lý tưởng cho hàng ', s: 'giá trị cao, gấp, mùa vụ', t2: '' },
+    ],
+    dir_btn: "Xem giá Direct →",
+    carr_kicker: "ĐỐI TÁC HÀNG KHÔNG",
+    carr_h2: "Hợp tác cùng các hãng hàng không hàng đầu",
+    carr_p: "Mạng lưới 100+ hãng hàng không quốc tế đảm bảo lịch bay dày đặc, giá cước cạnh tranh và chỗ hàng (allotment) ổn định.",
+    carrs: [
+      { name: 'Vietnam Airlines Cargo', logo: '🇻🇳', origin: 'Việt Nam', fleet: '100+ máy bay', routes: '60+ điểm đến', desc: 'Hãng hàng không quốc gia Việt Nam với mạng lưới nội địa dày đặc. Belly cargo trên toàn bộ chuyến bay hành khách và freighter chuyên dụng tuyến châu Á – châu Âu.', color: '#00338D' },
+      { name: 'Singapore Airlines Cargo', logo: '🇸🇬', origin: 'Singapore', fleet: '7 freighters', routes: '130+ điểm đến', desc: 'Đội freighter Boeing 747-400F hiện đại. Hub tại Changi Airport — gateway số 1 Đông Nam Á. Dịch vụ Pharma, Perishables và E-commerce chuyên biệt.', color: '#F0AB00' },
+      { name: 'Korean Air Cargo', logo: '🇰🇷', origin: 'Hàn Quốc', fleet: '23 freighters', routes: '120+ điểm đến', desc: 'Top 5 hãng cargo lớn nhất thế giới. Hub Incheon kết nối nhanh Việt Nam – Bắc Mỹ. Kho lạnh đạt chuẩn GDP cho hàng dược phẩm.', color: '#0064D2' },
+      { name: 'Cathay Pacific Cargo', logo: '🇭🇰', origin: 'Hồng Kông', fleet: '18 freighters', routes: '85+ điểm đến', desc: 'Gateway hàng đầu vào thị trường Trung Quốc và Bắc Á. Terminal cargo siêu hiện đại tại HKIA. Chuyên mạnh hàng điện tử, thời trang và luxury.', color: '#004D40' },
+      { name: 'Emirates SkyCargo', logo: '🇦🇪', origin: 'UAE', fleet: '11 freighters + 270 belly', routes: '150+ điểm đến', desc: 'Mạng lưới cargo lớn nhất thế giới. Hub Dubai kết nối 6 châu lục. SkyPharma, SkyFresh, SkyChain — hệ sinh thái sản phẩm chuyên biệt.', color: '#D71A1A' },
+      { name: 'Turkish Cargo', logo: '🇹🇷', origin: 'Thổ Nhĩ Kỳ', fleet: '400+ belly + freighters', routes: '130+ quốc gia', desc: 'Hub Istanbul kết nối châu Á – châu Âu – châu Phi hiệu quả nhất. Tăng trưởng nhanh nhất thế giới về cargo tonnage. Giá cước cạnh tranh.', color: '#E30A17' },
+      { name: 'China Airlines Cargo', logo: '🇹🇼', origin: 'Đài Loan', fleet: '18 freighters', routes: '100+ điểm đến', desc: 'Freighter trực tiếp SGN/HAN – TPE hàng ngày. Transit nhanh qua Đài Bắc đi Mỹ và châu Âu. Kho hàng tự động hóa tại Taoyuan Airport.', color: '#00205B' },
+      { name: 'FedEx Express', logo: '📦', origin: 'Hoa Kỳ', fleet: '680+ máy bay', routes: '220+ quốc gia', desc: 'Express integrator lớn nhất thế giới. Mạng lưới cửa-đến-cửa (door-to-door) nhanh nhất. Hub châu Á tại Quảng Châu. SenseAware tracking IoT real-time.', color: '#4D148C' },
+    ],
+    rt_kicker: "TUYẾN BAY HÀNG HÓA",
+    rt_h2: "Các tuyến bay cargo chính từ Việt Nam",
+    rt_p: "Transit time tính từ cất cánh đến hạ cánh (flight time). Thời gian thực tế bao gồm xử lý hàng tại sân bay.",
+    th_from: "SÂN BAY ĐI",
+    th_to: "SÂN BAY ĐẾN",
+    th_transit: "FLIGHT TIME",
+    th_freq: "TẦN SUẤT",
+    th_type: "LOẠI",
+    routes: [
+      { from: 'SGN (TP.HCM)', to: 'ICN (Seoul)', transit: '5–6 giờ', freq: 'Hàng ngày', type: 'Direct' },
+      { from: 'SGN (TP.HCM)', to: 'NRT (Tokyo)', transit: '5–6 giờ', freq: 'Hàng ngày', type: 'Direct' },
+      { from: 'SGN (TP.HCM)', to: 'SIN (Singapore)', transit: '2 giờ', freq: 'Hàng ngày', type: 'Direct' },
+      { from: 'SGN (TP.HCM)', to: 'FRA (Frankfurt)', transit: '12–14 giờ', freq: '5 chuyến/tuần', type: 'Direct' },
+      { from: 'SGN (TP.HCM)', to: 'LAX (Los Angeles)', transit: '16–20 giờ', freq: '4 chuyến/tuần', type: '1 stop' },
+      { from: 'SGN (TP.HCM)', to: 'LHR (London)', transit: '13–15 giờ', freq: '3 chuyến/tuần', type: '1 stop' },
+      { from: 'HAN (Hà Nội)', to: 'PVG (Shanghai)', transit: '3–4 giờ', freq: 'Hàng ngày', type: 'Direct' },
+      { from: 'HAN (Hà Nội)', to: 'HKG (Hong Kong)', transit: '2–3 giờ', freq: 'Hàng ngày', type: 'Direct' },
+      { from: 'HAN (Hà Nội)', to: 'CDG (Paris)', transit: '12–14 giờ', freq: '3 chuyến/tuần', type: 'Direct' },
+      { from: 'SGN (TP.HCM)', to: 'DXB (Dubai)', transit: '7–8 giờ', freq: '4 chuyến/tuần', type: 'Direct' },
+    ],
+    rt_btn: "Báo giá",
+    st_kicker: "QUY TRÌNH VẬN CHUYỂN",
+    st_h2: "6 bước gửi hàng bằng đường hàng không",
+    steps: [
+      { step: '01', title: 'Yêu cầu báo giá', desc: 'Cung cấp thông tin: tuyến bay, loại hàng, trọng lượng, kích thước. Nhận báo giá trong 1 giờ.' },
+      { step: '02', title: 'Booking chuyến bay', desc: 'Chọn hãng bay, lịch bay phù hợp. Xác nhận booking và allotment trên chuyến bay.' },
+      { step: '03', title: 'Thu gom & Đóng gói', desc: 'Pickup hàng tại kho. Đóng gói, dán nhãn, cân đo theo tiêu chuẩn IATA. Chuẩn bị chứng từ.' },
+      { step: '04', title: 'Khai hải quan xuất', desc: 'Khai báo hải quan điện tử, làm AWB (Air Waybill), giấy phép xuất khẩu, C/O nếu cần.' },
+      { step: '05', title: 'Bay & Tracking', desc: 'Hàng lên máy bay. Theo dõi real-time qua hệ thống Cargo IQ. Nhận thông báo tự động.' },
+      { step: '06', title: 'Thông quan & Giao hàng', desc: 'Customs clearance tại sân bay đích. Giao hàng tận nơi (door delivery) hoặc nhận tại kho.' },
+    ],
+    doc_kicker: "CHỨNG TỪ HÀNG KHÔNG",
+    doc_h2: "Hồ sơ cần chuẩn bị khi gửi hàng Air",
+    doc_p: "Stella Shipping hỗ trợ toàn bộ thủ tục giấy tờ — bạn chỉ cần cung cấp thông tin cơ bản.",
+    docs: [
+      { icon: '📄', title: 'AWB (Air Waybill)', desc: 'Vận đơn hàng không — chứng từ quan trọng nhất. Ghi nhận thông tin người gửi, người nhận, mô tả hàng, trọng lượng và cước phí.' },
+      { icon: '📋', title: 'Commercial Invoice', desc: 'Hóa đơn thương mại thể hiện giá trị lô hàng. Dùng cho mục đích khai hải quan và tính thuế nhập khẩu tại nước đến.' },
+      { icon: '📦', title: 'Packing List', desc: 'Phiếu đóng gói chi tiết số kiện, trọng lượng, kích thước từng kiện. Dùng đối chiếu khi nhận hàng tại đích.' },
+      { icon: '🏛️', title: 'Tờ khai Hải quan', desc: 'Khai báo hải quan điện tử theo hệ thống VNACCS/VCIS. Stella Shipping hỗ trợ khai báo và thông quan nhanh.' },
+      { icon: '🌿', title: 'Giấy phép / Chứng nhận', desc: 'C/O (Certificate of Origin), Health Certificate, Phytosanitary Certificate — tùy yêu cầu nước nhập khẩu.' },
+      { icon: '☣️', title: 'DG Declaration', desc: 'Shipper\'s Declaration for Dangerous Goods theo IATA DGR. Bắt buộc cho hàng nguy hiểm: pin lithium, hóa chất, aerosol.' },
+    ],
+    cta_h2: "Cần gửi hàng bằng đường hàng không?",
+    cta_p: "Liên hệ ngay để nhận báo giá tốt nhất từ 100+ hãng hàng không quốc tế.",
+    cta_btn1: "Nhận báo giá ngay",
+    cta_btn2: "Liên hệ tư vấn →"
+  },
+  en: {
+    back: "← Back to Services",
+    badge: "AIR FREIGHT",
+    hero_h1: "Air Freight",
+    hero_h1_span: "Fast & Secure",
+    hero_p: "Air freight shipping services to over 220 countries. The optimal solution for urgent cargo, high-value goods, pharma, seafood, and e-commerce — from booking to door delivery.",
+    stat_partners: "Airlines",
+    stat_countries: "Countries",
+    stat_delivery: "Delivery Days",
+    stat_track: "Online Tracking",
+    adv_kicker: "WHY CHOOSE AIR FREIGHT?",
+    adv_h2: "Outstanding advantages of air transport",
+    adv_p: "The fastest, most secure transport method for international cargo.",
+    advs: [
+      { icon: '⚡', title: 'Superior Speed', desc: 'Transit time is just hours instead of weeks compared to ocean freight. Ideal for urgent goods, seasonal items, and e-commerce.' },
+      { icon: '🔒', title: 'Absolute Safety', desc: 'Lowest damage/loss rate among all transport modes. Suitable for high-value goods, medical equipment, and electronics.' },
+      { icon: '🌍', title: 'Global Coverage', desc: 'Connects 220+ countries via a network of 100+ partner airlines. Reach any point in the world in 1-5 days.' },
+      { icon: '📊', title: 'Accurate Tracking', desc: 'Real-time cargo tracking from pickup to delivery. AWB status updates via the international Cargo IQ system.' },
+      { icon: '📋', title: 'All-inclusive Procedures', desc: 'Handling AWB, customs clearance, C/O, fumigation, quarantine — all through a single point of contact.' },
+      { icon: '💰', title: 'Flexible Pricing', desc: 'Various rate tiers: Minimum, Normal, Quantity, Specific Commodity Rate. Favorable contract rates for long-term clients.' },
+    ],
+    svc_kicker: "SERVICE PORTFOLIO",
+    svc_h2: "Diverse Air Freight Solutions",
+    svc_p: "From general cargo to special cargo — we have a solution for every need.",
+    svcs: [
+      { icon: '✈️', title: 'General Cargo', desc: 'Standard air freight transportation. Transit time 1-5 days depending on destination. Flexible weekly flight schedules.', badge: 'Most Popular' },
+      { icon: '⚡', title: 'Express / Urgent', desc: 'International express delivery. Door-to-door delivery in 24-72 hours. Earliest flight priority, real-time tracking.', badge: 'Fastest' },
+      { icon: '❄️', title: 'Temperature Controlled', desc: 'Transport for temperature-sensitive goods: pharma, vaccines, bio-samples. Controlled 2-8°C or -20°C. GDP/WHO compliant.', badge: 'Pharma' },
+      { icon: '🥩', title: 'Perishables', desc: 'Seafood, fruits, fresh flowers, processed food. Cool chain from warehouse to airport. Fast handling at airports.', badge: 'Fresh Goods' },
+      { icon: '☣️', title: 'Dangerous Goods (DG)', desc: 'Transporting dangerous goods per IATA DGR. Chemicals, lithium batteries, paint. DG specialists handle SHIPPER\'S DECLARATION.', badge: 'IATA Certified' },
+      { icon: '🏗️', title: 'Project & Charter', desc: 'Full Charter flights for heavy cargo, industrial equipment, humanitarian aid. Boeing 747F, AN-124, IL-76.', badge: 'Special' },
+    ],
+    comp_kicker: "SERVICE COMPARISON",
+    comp_h2: "Consol vs Direct — Which option to choose?",
+    con_title: "Consolidation",
+    con_sub: "Consolidated Cargo",
+    con_list: [
+      { t1: 'Consolidate multiple small shipments into ', s: '1 MAWB', t2: '' },
+      { t1: 'Suitable for shipments ', s: '< 300 kg', t2: '' },
+      { t1: 'Freight rates are ', s: 'more economical', t2: ' by 20-40%' },
+      { t1: 'Transit time is ', s: '1-2 days longer', t2: ' (needs consolidation)' },
+      { t1: 'Departures on ', s: 'fixed schedules', t2: ' weekly' },
+      { t1: 'Ideal for ', s: 'non-urgent', t2: ' goods, samples, spare parts' },
+    ],
+    con_btn: "View Consol Rates →",
+    dir_title: "Direct Shipment",
+    dir_sub: "Direct Cargo",
+    dir_list: [
+      { t1: 'Direct shipping, ', s: 'no consolidation', t2: '' },
+      { t1: 'Suitable for shipments ', s: '> 300 kg', t2: ' or urgent cargo' },
+      { t1: 'Transit time is ', s: 'as short as possible', t2: '' },
+      { t1: 'Choose airline and ', s: 'specific flight', t2: '' },
+      { t1: 'Booking is ', s: 'prioritized', t2: ', fast confirmation' },
+      { t1: 'Ideal for ', s: 'high-value, urgent, seasonal', t2: ' cargo' },
+    ],
+    dir_btn: "View Direct Rates →",
+    carr_kicker: "AIRLINE PARTNERS",
+    carr_h2: "Partnering with Top Airlines",
+    carr_p: "Our network of 100+ international airlines ensures dense flight schedules, competitive rates, and stable cargo allotments.",
+    carrs: [
+      { name: 'Vietnam Airlines Cargo', logo: '🇻🇳', origin: 'Vietnam', fleet: '100+ aircraft', routes: '60+ destinations', desc: 'Vietnam\'s national carrier with a dense domestic network. Belly cargo on all passenger flights and dedicated freighters for Asia-Europe routes.', color: '#00338D' },
+      { name: 'Singapore Airlines Cargo', logo: '🇸🇬', origin: 'Singapore', fleet: '7 freighters', routes: '130+ destinations', desc: 'Modern Boeing 747-400F freighter fleet. Hub at Changi Airport — Southeast Asia\'s #1 gateway. Specialized Pharma, Perishables, and E-commerce services.', color: '#F0AB00' },
+      { name: 'Korean Air Cargo', logo: '🇰🇷', origin: 'South Korea', fleet: '23 freighters', routes: '120+ destinations', desc: 'Top 5 largest cargo airlines globally. Incheon hub connects Vietnam to North America quickly. GDP-certified cold storage for pharma.', color: '#0064D2' },
+      { name: 'Cathay Pacific Cargo', logo: '🇭🇰', origin: 'Hong Kong', fleet: '18 freighters', routes: '85+ destinations', desc: 'Premier gateway to the Chinese and North Asian markets. Ultra-modern cargo terminal at HKIA. Very strong in electronics, fashion, and luxury.', color: '#004D40' },
+      { name: 'Emirates SkyCargo', logo: '🇦🇪', origin: 'UAE', fleet: '11 freighters + 270 belly', routes: '150+ destinations', desc: 'World\'s largest cargo network. Dubai hub connects 6 continents. SkyPharma, SkyFresh, SkyChain — specialized product ecosystem.', color: '#D71A1A' },
+      { name: 'Turkish Cargo', logo: '🇹🇷', origin: 'Turkey', fleet: '400+ belly + freighters', routes: '130+ countries', desc: 'Istanbul hub efficiently connects Asia - Europe - Africa. World\'s fastest-growing in cargo tonnage. Competitive rates.', color: '#E30A17' },
+      { name: 'China Airlines Cargo', logo: '🇹🇼', origin: 'Taiwan', fleet: '18 freighters', routes: '100+ destinations', desc: 'Daily direct freighters SGN/HAN - TPE. Fast transit via Taipei to the US and Europe. Automated cargo warehouse at Taoyuan Airport.', color: '#00205B' },
+      { name: 'FedEx Express', logo: '📦', origin: 'USA', fleet: '680+ aircraft', routes: '220+ countries', desc: 'World\'s largest express integrator. Fastest door-to-door network. Asia hub in Guangzhou. Real-time SenseAware IoT tracking.', color: '#4D148C' },
+    ],
+    rt_kicker: "MAIN CARGO ROUTES",
+    rt_h2: "Major Cargo Routes from Vietnam",
+    rt_p: "Transit time is from takeoff to landing (flight time). Actual time includes cargo handling at the airport.",
+    th_from: "AIRPORT OF DEPARTURE",
+    th_to: "AIRPORT OF ARRIVAL",
+    th_transit: "FLIGHT TIME",
+    th_freq: "FREQUENCY",
+    th_type: "TYPE",
+    routes: [
+      { from: 'SGN (HCMC)', to: 'ICN (Seoul)', transit: '5-6 hours', freq: 'Daily', type: 'Direct' },
+      { from: 'SGN (HCMC)', to: 'NRT (Tokyo)', transit: '5-6 hours', freq: 'Daily', type: 'Direct' },
+      { from: 'SGN (HCMC)', to: 'SIN (Singapore)', transit: '2 hours', freq: 'Daily', type: 'Direct' },
+      { from: 'SGN (HCMC)', to: 'FRA (Frankfurt)', transit: '12-14 hours', freq: '5 flights/week', type: 'Direct' },
+      { from: 'SGN (HCMC)', to: 'LAX (Los Angeles)', transit: '16-20 hours', freq: '4 flights/week', type: '1 stop' },
+      { from: 'SGN (HCMC)', to: 'LHR (London)', transit: '13-15 hours', freq: '3 flights/week', type: '1 stop' },
+      { from: 'HAN (Hanoi)', to: 'PVG (Shanghai)', transit: '3-4 hours', freq: 'Daily', type: 'Direct' },
+      { from: 'HAN (Hanoi)', to: 'HKG (Hong Kong)', transit: '2-3 hours', freq: 'Daily', type: 'Direct' },
+      { from: 'HAN (Hanoi)', to: 'CDG (Paris)', transit: '12-14 hours', freq: '3 flights/week', type: 'Direct' },
+      { from: 'SGN (HCMC)', to: 'DXB (Dubai)', transit: '7-8 hours', freq: '4 flights/week', type: 'Direct' },
+    ],
+    rt_btn: "Quote",
+    st_kicker: "SHIPPING PROCESS",
+    st_h2: "6 Steps for Air Freight Shipping",
+    steps: [
+      { step: '01', title: 'Request a Quote', desc: 'Provide details: flight route, cargo type, weight, dimensions. Get a quote in 1 hour.' },
+      { step: '02', title: 'Flight Booking', desc: 'Select airline and suitable schedule. Confirm booking and allotment on the flight.' },
+      { step: '03', title: 'Collection & Packing', desc: 'Pickup cargo at warehouse. Pack, label, weigh according to IATA standards. Prepare documents.' },
+      { step: '04', title: 'Export Customs', desc: 'E-customs declaration, prepare AWB (Air Waybill), export licenses, C/O if required.' },
+      { step: '05', title: 'Flight & Tracking', desc: 'Cargo loaded onto aircraft. Real-time tracking via Cargo IQ. Receive automatic notifications.' },
+      { step: '06', title: 'Clearance & Delivery', desc: 'Customs clearance at destination airport. Door delivery or warehouse pickup.' },
+    ],
+    doc_kicker: "AIR FREIGHT DOCUMENTS",
+    doc_h2: "Documents Required for Air Freight",
+    doc_p: "Stella Shipping assists with all paperwork — you only need to provide basic information.",
+    docs: [
+      { icon: '📄', title: 'AWB (Air Waybill)', desc: 'The most important document. Records shipper, consignee, cargo description, weight, and freight charges.' },
+      { icon: '📋', title: 'Commercial Invoice', desc: 'Shows the cargo\'s value. Used for customs declaration and calculating import duties at the destination.' },
+      { icon: '📦', title: 'Packing List', desc: 'Details the number of packages, weight, and dimensions of each. Used for cross-checking upon receipt at destination.' },
+      { icon: '🏛️', title: 'Customs Declaration', desc: 'E-customs declaration via VNACCS/VCIS. Stella Shipping assists with fast declaration and clearance.' },
+      { icon: '🌿', title: 'Licenses / Certificates', desc: 'C/O (Certificate of Origin), Health Certificate, Phytosanitary Certificate — depending on the importing country\'s requirements.' },
+      { icon: '☣️', title: 'DG Declaration', desc: 'Shipper\'s Declaration for Dangerous Goods per IATA DGR. Mandatory for dangerous goods: lithium batteries, chemicals, aerosols.' },
+    ],
+    cta_h2: "Need to ship by air freight?",
+    cta_p: "Contact us now for the best quotes from 100+ international airlines.",
+    cta_btn1: "Get a Quote Now",
+    cta_btn2: "Contact for Consultation →"
+  }
+}
 
 export default function ScheduledFlights() {
+  const { i18n } = useTranslation()
+  const lang = i18n.language === 'en' ? 'en' : 'vi'
+  const t = t_ui[lang]
+
   const pageRef = useRef(null)
   useReveal(pageRef)
 
@@ -79,19 +276,15 @@ export default function ScheduledFlights() {
           <div className="af-particle p5" />
         </div>
         <div className="af-hero-inner">
-          <Link to="/services" className="af-back rv">← Quay lại Dịch vụ</Link>
-          <div className="af-hero-badge rv">AIR FREIGHT</div>
-          <h1 className="rv d1">Vận tải hàng không<br /><span>Nhanh chóng & An toàn</span></h1>
-          <p className="rv d2">
-            Dịch vụ vận chuyển hàng hóa bằng đường hàng không đến hơn 220 quốc gia.
-            Giải pháp tối ưu cho hàng gấp, hàng giá trị cao, dược phẩm, thủy hải sản
-            và e-commerce — từ booking đến giao hàng tận nơi.
-          </p>
+          <Link to="/services" className="af-back rv">{t.back}</Link>
+          <div className="af-hero-badge rv">{t.badge}</div>
+          <h1 className="rv d1">{t.hero_h1}<br /><span>{t.hero_h1_span}</span></h1>
+          <p className="rv d2">{t.hero_p}</p>
           <div className="af-hero-stats rv d3">
-            <div><strong>100+</strong><span>Hãng hàng không</span></div>
-            <div><strong>220+</strong><span>Quốc gia</span></div>
-            <div><strong>1–5</strong><span>Ngày giao hàng</span></div>
-            <div><strong>24/7</strong><span>Tracking online</span></div>
+            <div><strong>100+</strong><span>{t.stat_partners}</span></div>
+            <div><strong>220+</strong><span>{t.stat_countries}</span></div>
+            <div><strong>1–5</strong><span>{t.stat_delivery}</span></div>
+            <div><strong>24/7</strong><span>{t.stat_track}</span></div>
           </div>
         </div>
       </section>
@@ -99,12 +292,12 @@ export default function ScheduledFlights() {
       {/* ═══ ƯU ĐIỂM VẬN TẢI HÀNG KHÔNG ═══ */}
       <section className="af-section">
         <div className="af-section-hdr rv">
-          <div className="kicker">TẠI SAO CHỌN HÀNG KHÔNG?</div>
-          <h2>Ưu điểm vượt trội của vận tải hàng không</h2>
-          <p>Phương thức vận chuyển nhanh nhất, an toàn nhất cho hàng hóa quốc tế.</p>
+          <div className="kicker">{t.adv_kicker}</div>
+          <h2>{t.adv_h2}</h2>
+          <p>{t.adv_p}</p>
         </div>
         <div className="af-adv-grid">
-          {ADVANTAGES.map((a, i) => (
+          {t.advs.map((a, i) => (
             <div key={i} className={`af-adv-card rv d${(i % 4) + 1}`}>
               <div className="af-adv-icon">{a.icon}</div>
               <h4>{a.title}</h4>
@@ -117,12 +310,12 @@ export default function ScheduledFlights() {
       {/* ═══ DỊCH VỤ ═══ */}
       <section className="af-section af-section-alt">
         <div className="af-section-hdr rv">
-          <div className="kicker">DANH MỤC DỊCH VỤ</div>
-          <h2>Giải pháp vận tải hàng không đa dạng</h2>
-          <p>Từ hàng thông thường đến hàng đặc biệt — chúng tôi có giải pháp cho mọi nhu cầu.</p>
+          <div className="kicker">{t.svc_kicker}</div>
+          <h2>{t.svc_h2}</h2>
+          <p>{t.svc_p}</p>
         </div>
         <div className="af-svc-grid">
-          {AIR_SERVICES.map((s, i) => (
+          {t.svcs.map((s, i) => (
             <div key={i} className={`af-svc-card rv d${(i % 4) + 1}`}>
               {s.badge && <div className="af-svc-badge">{s.badge}</div>}
               <div className="af-svc-icon">{s.icon}</div>
@@ -136,39 +329,33 @@ export default function ScheduledFlights() {
       {/* ═══ CONSOLIDATION vs DIRECT ═══ */}
       <section className="af-section">
         <div className="af-section-hdr rv">
-          <div className="kicker">SO SÁNH DỊCH VỤ</div>
-          <h2>Consol vs Direct — Chọn phương án nào?</h2>
+          <div className="kicker">{t.comp_kicker}</div>
+          <h2>{t.comp_h2}</h2>
         </div>
         <div className="af-compare rv">
           <div className="af-compare-card">
             <div className="af-cc-header consol">
-              <h3>📦 Consolidation</h3>
-              <p>Hàng ghép (gom hàng)</p>
+              <h3>📦 {t.con_title}</h3>
+              <p>{t.con_sub}</p>
             </div>
             <ul>
-              <li>Gom nhiều lô hàng nhỏ vào <strong>1 MAWB</strong></li>
-              <li>Phù hợp lô hàng <strong>&lt; 300 kg</strong></li>
-              <li>Giá cước <strong>tiết kiệm hơn</strong> 20–40%</li>
-              <li>Transit time <strong>dài hơn 1–2 ngày</strong> (cần gom hàng)</li>
-              <li>Xuất hàng theo <strong>lịch cố định</strong> hàng tuần</li>
-              <li>Lý tưởng cho hàng <strong>không gấp</strong>, mẫu hàng, phụ tùng</li>
+              {t.con_list.map((li, i) => (
+                <li key={i}>{li.t1}{li.s && <strong>{li.s}</strong>}{li.t2}</li>
+              ))}
             </ul>
-            <Link to="/pricing" className="af-cc-cta">Xem giá Consol →</Link>
+            <Link to="/pricing" className="af-cc-cta">{t.con_btn}</Link>
           </div>
           <div className="af-compare-card">
             <div className="af-cc-header direct">
-              <h3>🚀 Direct Shipment</h3>
-              <p>Gửi hàng trực tiếp</p>
+              <h3>🚀 {t.dir_title}</h3>
+              <p>{t.dir_sub}</p>
             </div>
             <ul>
-              <li>Gửi trực tiếp, <strong>không qua gom hàng</strong></li>
-              <li>Phù hợp lô hàng <strong>&gt; 300 kg</strong> hoặc hàng gấp</li>
-              <li>Transit time <strong>ngắn nhất có thể</strong></li>
-              <li>Chọn hãng bay, <strong>chuyến bay cụ thể</strong></li>
-              <li>Booking <strong>ưu tiên</strong>, xác nhận nhanh</li>
-              <li>Lý tưởng cho hàng <strong>giá trị cao, gấp, mùa vụ</strong></li>
+              {t.dir_list.map((li, i) => (
+                <li key={i}>{li.t1}{li.s && <strong>{li.s}</strong>}{li.t2}</li>
+              ))}
             </ul>
-            <Link to="/pricing" className="af-cc-cta">Xem giá Direct →</Link>
+            <Link to="/pricing" className="af-cc-cta">{t.dir_btn}</Link>
           </div>
         </div>
       </section>
@@ -176,12 +363,12 @@ export default function ScheduledFlights() {
       {/* ═══ HÃNG HÀNG KHÔNG ĐỐI TÁC ═══ */}
       <section className="af-section af-section-alt">
         <div className="af-section-hdr rv">
-          <div className="kicker">ĐỐI TÁC HÀNG KHÔNG</div>
-          <h2>Hợp tác cùng các hãng hàng không hàng đầu</h2>
-          <p>Mạng lưới 100+ hãng hàng không quốc tế đảm bảo lịch bay dày đặc, giá cước cạnh tranh và chỗ hàng (allotment) ổn định.</p>
+          <div className="kicker">{t.carr_kicker}</div>
+          <h2>{t.carr_h2}</h2>
+          <p>{t.carr_p}</p>
         </div>
         <div className="af-carrier-grid">
-          {AIRLINES.map((c, i) => (
+          {t.carrs.map((c, i) => (
             <div key={i} className={`af-carrier-card rv d${(i % 4) + 1}`}>
               <div className="af-carrier-logo" style={{ background: c.color }}>{c.logo}</div>
               <div className="af-carrier-body">
@@ -201,31 +388,31 @@ export default function ScheduledFlights() {
       {/* ═══ TUYẾN BAY CHÍNH ═══ */}
       <section className="af-section">
         <div className="af-section-hdr rv">
-          <div className="kicker">TUYẾN BAY HÀNG HÓA</div>
-          <h2>Các tuyến bay cargo chính từ Việt Nam</h2>
-          <p>Transit time tính từ cất cánh đến hạ cánh (flight time). Thời gian thực tế bao gồm xử lý hàng tại sân bay.</p>
+          <div className="kicker">{t.rt_kicker}</div>
+          <h2>{t.rt_h2}</h2>
+          <p>{t.rt_p}</p>
         </div>
         <div className="af-route-table rv">
           <table>
             <thead>
               <tr>
-                <th>SÂN BAY ĐI</th>
-                <th>SÂN BAY ĐẾN</th>
-                <th>FLIGHT TIME</th>
-                <th>TẦN SUẤT</th>
-                <th>LOẠI</th>
+                <th>{t.th_from}</th>
+                <th>{t.th_to}</th>
+                <th>{t.th_transit}</th>
+                <th>{t.th_freq}</th>
+                <th>{t.th_type}</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {ROUTES.map((r, i) => (
+              {t.routes.map((r, i) => (
                 <tr key={i}>
                   <td><strong>🛫 {r.from}</strong></td>
                   <td><strong>🛬 {r.to}</strong></td>
                   <td><span className="af-transit">⏱️ {r.transit}</span></td>
                   <td>{r.freq}</td>
                   <td><span className={`af-type-badge ${r.type === 'Direct' ? 'direct' : 'stop'}`}>{r.type}</span></td>
-                  <td><Link to="/pricing" className="af-route-btn">Báo giá</Link></td>
+                  <td><Link to="/pricing" className="af-route-btn">{t.rt_btn}</Link></td>
                 </tr>
               ))}
             </tbody>
@@ -236,18 +423,11 @@ export default function ScheduledFlights() {
       {/* ═══ QUY TRÌNH ═══ */}
       <section className="af-section af-section-alt">
         <div className="af-section-hdr rv">
-          <div className="kicker">QUY TRÌNH VẬN CHUYỂN</div>
-          <h2>6 bước gửi hàng bằng đường hàng không</h2>
+          <div className="kicker">{t.st_kicker}</div>
+          <h2>{t.st_h2}</h2>
         </div>
         <div className="af-steps">
-          {[
-            { step: '01', title: 'Yêu cầu báo giá', desc: 'Cung cấp thông tin: tuyến bay, loại hàng, trọng lượng, kích thước. Nhận báo giá trong 1 giờ.' },
-            { step: '02', title: 'Booking chuyến bay', desc: 'Chọn hãng bay, lịch bay phù hợp. Xác nhận booking và allotment trên chuyến bay.' },
-            { step: '03', title: 'Thu gom & Đóng gói', desc: 'Pickup hàng tại kho. Đóng gói, dán nhãn, cân đo theo tiêu chuẩn IATA. Chuẩn bị chứng từ.' },
-            { step: '04', title: 'Khai hải quan xuất', desc: 'Khai báo hải quan điện tử, làm AWB (Air Waybill), giấy phép xuất khẩu, C/O nếu cần.' },
-            { step: '05', title: 'Bay & Tracking', desc: 'Hàng lên máy bay. Theo dõi real-time qua hệ thống Cargo IQ. Nhận thông báo tự động.' },
-            { step: '06', title: 'Thông quan & Giao hàng', desc: 'Customs clearance tại sân bay đích. Giao hàng tận nơi (door delivery) hoặc nhận tại kho.' },
-          ].map((s, i) => (
+          {t.steps.map((s, i) => (
             <div key={i} className={`af-step rv d${i + 1}`}>
               <div className="af-step-num">{s.step}</div>
               <div className="af-step-line" />
@@ -261,52 +441,29 @@ export default function ScheduledFlights() {
       {/* ═══ CHỨNG TỪ HÀNG KHÔNG ═══ */}
       <section className="af-section">
         <div className="af-section-hdr rv">
-          <div className="kicker">CHỨNG TỪ HÀNG KHÔNG</div>
-          <h2>Hồ sơ cần chuẩn bị khi gửi hàng Air</h2>
-          <p>Stella Shipping hỗ trợ toàn bộ thủ tục giấy tờ — bạn chỉ cần cung cấp thông tin cơ bản.</p>
+          <div className="kicker">{t.doc_kicker}</div>
+          <h2>{t.doc_h2}</h2>
+          <p>{t.doc_p}</p>
         </div>
         <div className="af-doc-grid rv">
-          <div className="af-doc-card">
-            <div className="af-doc-icon">📄</div>
-            <h4>AWB (Air Waybill)</h4>
-            <p>Vận đơn hàng không — chứng từ quan trọng nhất. Ghi nhận thông tin người gửi, người nhận, mô tả hàng, trọng lượng và cước phí.</p>
-          </div>
-          <div className="af-doc-card">
-            <div className="af-doc-icon">📋</div>
-            <h4>Commercial Invoice</h4>
-            <p>Hóa đơn thương mại thể hiện giá trị lô hàng. Dùng cho mục đích khai hải quan và tính thuế nhập khẩu tại nước đến.</p>
-          </div>
-          <div className="af-doc-card">
-            <div className="af-doc-icon">📦</div>
-            <h4>Packing List</h4>
-            <p>Phiếu đóng gói chi tiết số kiện, trọng lượng, kích thước từng kiện. Dùng đối chiếu khi nhận hàng tại đích.</p>
-          </div>
-          <div className="af-doc-card">
-            <div className="af-doc-icon">🏛️</div>
-            <h4>Tờ khai Hải quan</h4>
-            <p>Khai báo hải quan điện tử theo hệ thống VNACCS/VCIS. Stella Shipping hỗ trợ khai báo và thông quan nhanh.</p>
-          </div>
-          <div className="af-doc-card">
-            <div className="af-doc-icon">🌿</div>
-            <h4>Giấy phép / Chứng nhận</h4>
-            <p>C/O (Certificate of Origin), Health Certificate, Phytosanitary Certificate — tùy yêu cầu nước nhập khẩu.</p>
-          </div>
-          <div className="af-doc-card">
-            <div className="af-doc-icon">☣️</div>
-            <h4>DG Declaration</h4>
-            <p>Shipper's Declaration for Dangerous Goods theo IATA DGR. Bắt buộc cho hàng nguy hiểm: pin lithium, hóa chất, aerosol.</p>
-          </div>
+          {t.docs.map((d, i) => (
+            <div key={i} className="af-doc-card">
+              <div className="af-doc-icon">{d.icon}</div>
+              <h4>{d.title}</h4>
+              <p>{d.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* ═══ CTA ═══ */}
       <section className="af-cta rv">
         <div className="af-cta-inner">
-          <h2>Cần gửi hàng bằng đường hàng không?</h2>
-          <p>Liên hệ ngay để nhận báo giá tốt nhất từ 100+ hãng hàng không quốc tế.</p>
+          <h2>{t.cta_h2}</h2>
+          <p>{t.cta_p}</p>
           <div className="af-cta-btns">
-            <Link to="/pricing" className="btn btn-primary">Nhận báo giá ngay</Link>
-            <Link to="/contact" className="af-cta-ghost">Liên hệ tư vấn →</Link>
+            <Link to="/pricing" className="btn btn-primary">{t.cta_btn1}</Link>
+            <Link to="/contact" className="af-cta-ghost">{t.cta_btn2}</Link>
           </div>
         </div>
       </section>

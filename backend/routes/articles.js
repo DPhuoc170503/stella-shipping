@@ -6,7 +6,7 @@ const { verifyToken } = require('../middleware/auth');
 // ─── GET /api/articles ─── lấy tất cả bài (có thể filter ?status=published)
 router.get('/', async (req, res) => {
   try {
-    const { status } = req.query;
+    const { status, lang } = req.query;
     let sql = 'SELECT * FROM articles ORDER BY created_at DESC';
     const params = [];
     if (status) {
@@ -17,10 +17,14 @@ router.get('/', async (req, res) => {
     // Map DB fields → frontend field names
     const articles = rows.map(r => ({
       id: r.id,
-      title: r.title,
-      desc: r.description,
-      fullDesc: r.full_content || '',
-      category: r.category,
+      title: lang === 'en' ? (r.title_en || r.title) : r.title,
+      title_en: r.title_en,
+      desc_en: r.description_en,
+      fullDesc_en: r.full_content_en,
+      category_en: r.category_en,
+      desc: lang === 'en' ? (r.description_en || r.description) : r.description,
+      fullDesc: lang === 'en' ? (r.full_content_en || r.full_content || '') : (r.full_content || ''),
+      category: lang === 'en' ? (r.category_en || r.category) : r.category,
       author: r.author,
       img: r.img,
       readTime: r.read_time,
@@ -37,15 +41,20 @@ router.get('/', async (req, res) => {
 // ─── GET /api/articles/:id ─── lấy 1 bài
 router.get('/:id', async (req, res) => {
   try {
+    const { lang } = req.query;
     const [rows] = await pool.query('SELECT * FROM articles WHERE id = ?', [req.params.id]);
     if (!rows.length) return res.status(404).json({ error: 'Not found' });
     const r = rows[0];
     res.json({
       id: r.id,
-      title: r.title,
-      desc: r.description,
-      fullDesc: r.full_content || '',
-      category: r.category,
+      title: lang === 'en' ? (r.title_en || r.title) : r.title,
+      title_en: r.title_en,
+      desc_en: r.description_en,
+      fullDesc_en: r.full_content_en,
+      category_en: r.category_en,
+      desc: lang === 'en' ? (r.description_en || r.description) : r.description,
+      fullDesc: lang === 'en' ? (r.full_content_en || r.full_content || '') : (r.full_content || ''),
+      category: lang === 'en' ? (r.category_en || r.category) : r.category,
       author: r.author,
       img: r.img,
       readTime: r.read_time,
@@ -61,12 +70,12 @@ router.get('/:id', async (req, res) => {
 // ─── POST /api/articles ─── tạo bài mới
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { title, desc, fullDesc, category, author, img, readTime, status } = req.body;
+    const { title, desc, fullDesc, category, author, img, readTime, status, title_en, desc_en, fullDesc_en, category_en } = req.body;
     if (!title || !desc) return res.status(400).json({ error: 'title và desc là bắt buộc' });
 
     const [result] = await pool.query(
-      `INSERT INTO articles (title, description, full_content, category, author, img, read_time, status)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO articles (title, description, full_content, category, author, img, read_time, status, title_en, description_en, full_content_en, category_en)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
         desc,
@@ -76,6 +85,10 @@ router.post('/', verifyToken, async (req, res) => {
         img || '/Banner.jpg',
         readTime || '3 phút',
         status || 'draft',
+        title_en || '',
+        desc_en || '',
+        fullDesc_en || '',
+        category_en || ''
       ]
     );
 
@@ -103,7 +116,7 @@ router.post('/', verifyToken, async (req, res) => {
 // ─── PUT /api/articles/:id ─── cập nhật bài
 router.put('/:id', verifyToken, async (req, res) => {
   try {
-    const { title, desc, fullDesc, category, author, img, readTime, status } = req.body;
+    const { title, desc, fullDesc, category, author, img, readTime, status, title_en, desc_en, fullDesc_en, category_en } = req.body;
     const { id } = req.params;
 
     const [check] = await pool.query('SELECT id FROM articles WHERE id = ?', [id]);
@@ -118,9 +131,13 @@ router.put('/:id', verifyToken, async (req, res) => {
         author = COALESCE(?, author),
         img = COALESCE(?, img),
         read_time = COALESCE(?, read_time),
-        status = COALESCE(?, status)
+        status = COALESCE(?, status),
+        title_en = COALESCE(?, title_en),
+        description_en = COALESCE(?, description_en),
+        full_content_en = COALESCE(?, full_content_en),
+        category_en = COALESCE(?, category_en)
        WHERE id = ?`,
-      [title, desc, fullDesc, category, author, img, readTime, status, id]
+      [title, desc, fullDesc, category, author, img, readTime, status, title_en, desc_en, fullDesc_en, category_en, id]
     );
 
     const [rows] = await pool.query('SELECT * FROM articles WHERE id = ?', [id]);

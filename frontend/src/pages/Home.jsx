@@ -84,7 +84,9 @@ const homeCSS = `
   .hm-quote h4{margin:0 0 6px;font-size:18px;color:#0f2b57}
   .hm-quote .sub{color:#7b8a9a;font-size:13px;margin-bottom:16px}
   .hm-quote .row{display:flex;gap:10px;margin-bottom:12px}
-  .hm-quote input,.hm-quote select,.hm-quote textarea{flex:1;min-width:0;padding:12px 14px;border:1px solid #e1e8ef;border-radius:8px;font-size:14px;background:#f8fafc;transition:border-color .2s;box-sizing:border-box;font-family:inherit}
+  .hm-form-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:0;}
+  .hm-form-group label{font-size:12px;font-weight:600;color:#0f2b57;letter-spacing:.5px;text-align:left;}
+  .hm-quote input,.hm-quote select,.hm-quote textarea{width:100%;min-width:0;padding:12px 14px;border:1px solid #e1e8ef;border-radius:8px;font-size:14px;background:#f8fafc;transition:border-color .2s;box-sizing:border-box;font-family:inherit}
   .hm-quote input:focus,.hm-quote select:focus,.hm-quote textarea:focus{outline:none;border-color:#f36c1f}
   .hm-quote .btn-primary{width:100%;margin-top:6px;padding:14px;border-radius:8px;font-size:15px;box-sizing:border-box}
 
@@ -292,7 +294,7 @@ export default function Home() {
 
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
-    fetch(`${API_URL}/api/settings/home_page`)
+    fetch(`${API_URL}/api/settings/home_page?lang=${i18n.language}`)
       .then(res => res.json())
       .then(data => {
         let val = data;
@@ -302,46 +304,161 @@ export default function Home() {
         if (!val.error) setSettings(val)
       })
       .catch(console.error)
-  }, [])
+  }, [i18n.language])
 
-  // Mảng fallback nếu chưa gọi được API
+  const lang = i18n.language === 'en' ? 'en' : 'vi'
+  
+  // Convert flat defaultSettings to match API structure
   const defaultSettings = {
     hero: {
-      eyebrow: "ĐỐI TÁC LOGISTICS TIN CẬY",
-      title_line1: "Vận chuyển ",
-      title_hl1: "an toàn",
-      title_line2: "\nnhanh chóng và ",
-      title_hl2: "toàn diện",
-      title_line3: "\ncho doanh nghiệp của bạn",
-      lead: "Kết nối 120+ quốc gia — giải pháp vận tải biển, hàng không, đường bộ và kho bãi tối ưu chi phí cho chuỗi cung ứng của bạn. Cam kết giao hàng đúng hẹn 98%."
+      eyebrow: "ĐỐI TÁC LOGISTICS TIN CẬY", eyebrow_en: "TRUSTED LOGISTICS PARTNER",
+      title_line1: "Vận chuyển ", title_line1_en: "Safe, ",
+      title_hl1: "an toàn", title_hl1_en: "fast",
+      title_line2: "\nnhanh chóng và ", title_line2_en: "\nand ",
+      title_hl2: "toàn diện", title_hl2_en: "comprehensive",
+      title_line3: "\ncho doanh nghiệp của bạn", title_line3_en: "\ntransport for your business",
+      lead: "Kết nối 120+ quốc gia — giải pháp vận tải biển, hàng không, đường bộ và kho bãi tối ưu chi phí cho chuỗi cung ứng của bạn. Cam kết giao hàng đúng hẹn 98%.",
+      lead_en: "Connecting 120+ countries — cost-optimized sea, air, road freight and warehousing solutions for your supply chain. 98% on-time delivery commitment."
     },
     services: [
-      { img: '/Shippinglines.jpg', badge: 'SHIPPING', title: 'Vận tải biển (FCL & LCL)', desc: 'Booking container tuyến toàn cầu, đàm phán giá cước cạnh tranh với 50+ hãng tàu hàng đầu. Hỗ trợ hàng nguy hiểm, quá khổ, reefer và project cargo.', link: '/services/shipping-lines' },
-      { img: '/AirFreight.jpg', badge: 'AIR FREIGHT', title: 'Vận tải hàng không', desc: 'Giải pháp air freight cho hàng khẩn cấp và giá trị cao. Kết nối 80+ sân bay quốc tế với thời gian transit nhanh nhất thị trường.', link: '/services/scheduled-flights' },
-      { img: '/INTERMODA.jpg', badge: 'INTERMODAL', title: 'Vận tải đa phương thức', desc: 'Kết hợp linh hoạt đường biển – bộ – sắt – hàng không. Tối ưu chi phí và thời gian cho từng tuyến vận chuyển cụ thể.', link: '/services/intermodal' },
-      { img: '/Logictis.jpg', badge: 'LOGISTICS', title: 'Kho bãi & Phân phối', desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Cross-docking, pick-pack, quản lý tồn kho và dịch vụ last-mile delivery.', link: '/services/logistics' },
-      { img: '/OURRANGE.jpg', badge: 'CUSTOMS', title: 'Thủ tục Hải quan', desc: 'Đội ngũ chuyên viên hải quan giàu kinh nghiệm. Tư vấn mã HS, C/O, xử lý hồ sơ XNK. Cam kết thông quan trong 24 giờ.', link: '/services/dedicated' },
-      { img: '/Chacracter.jpg', badge: 'CONSULTING', title: 'Tư vấn chuỗi cung ứng', desc: 'Phân tích và tối ưu toàn bộ supply chain: lộ trình, chi phí, rủi ro. Thiết kế giải pháp SCM tùy chỉnh cho từng ngành hàng.', link: '/services/charters' }
+      { img: '/Shippinglines.jpg', badge: 'SHIPPING', badge_en: 'SHIPPING', title: 'Vận tải biển (FCL & LCL)', title_en: 'Sea Freight (FCL & LCL)', desc: 'Booking container tuyến toàn cầu, đàm phán giá cước cạnh tranh với 50+ hãng tàu hàng đầu. Hỗ trợ hàng nguy hiểm, quá khổ, reefer và project cargo.', desc_en: 'Global route container booking, competitive freight negotiation with 50+ top shipping lines. Support dangerous goods, oversized, reefer and project cargo.', link: '/services/shipping-lines' },
+      { img: '/AirFreight.jpg', badge: 'AIR FREIGHT', badge_en: 'AIR FREIGHT', title: 'Vận tải hàng không', title_en: 'Air Freight', desc: 'Giải pháp air freight cho hàng khẩn cấp và giá trị cao. Kết nối 80+ sân bay quốc tế với thời gian transit nhanh nhất thị trường.', desc_en: 'Air freight solutions for urgent and high-value cargo. Connecting 80+ international airports with the fastest transit time.', link: '/services/scheduled-flights' },
+      { img: '/INTERMODA.jpg', badge: 'INTERMODAL', badge_en: 'INTERMODAL', title: 'Vận tải đa phương thức', title_en: 'Intermodal Transport', desc: 'Kết hợp linh hoạt đường biển – bộ – sắt – hàng không. Tối ưu chi phí và thời gian cho từng tuyến vận chuyển cụ thể.', desc_en: 'Flexible combination of sea - road - rail - air. Optimize cost and time for each specific route.', link: '/services/intermodal' },
+      { img: '/Logictis.jpg', badge: 'LOGISTICS', badge_en: 'LOGISTICS', title: 'Kho bãi & Phân phối', title_en: 'Warehousing & Distribution', desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Cross-docking, pick-pack, quản lý tồn kho và dịch vụ last-mile delivery.', desc_en: '15,000m² warehouse system with modern WMS. Cross-docking, pick-pack, inventory management and last-mile delivery services.', link: '/services/logistics' },
+      { img: '/OURRANGE.jpg', badge: 'CUSTOMS', badge_en: 'CUSTOMS', title: 'Thủ tục Hải quan', title_en: 'Customs Clearance', desc: 'Đội ngũ chuyên viên hải quan giàu kinh nghiệm. Tư vấn mã HS, C/O, xử lý hồ sơ XNK. Cam kết thông quan trong 24 giờ.', desc_en: 'Experienced customs specialists. HS code, C/O consulting, import-export profile handling. 24-hour clearance commitment.', link: '/services/dedicated' },
+      { img: '/Chacracter.jpg', badge: 'CONSULTING', badge_en: 'CONSULTING', title: 'Tư vấn chuỗi cung ứng', title_en: 'Supply Chain Consulting', desc: 'Phân tích và tối ưu toàn bộ supply chain: lộ trình, chi phí, rủi ro. Thiết kế giải pháp SCM tùy chỉnh cho từng ngành hàng.', desc_en: 'Analyze and optimize entire supply chain: routing, cost, risk. Design custom SCM solutions for each industry.', link: '/services/charters' }
     ],
     why_choose_us: [
-      { icon: '🌐', title: 'Mạng lưới toàn cầu', desc: 'Đối tác đại lý tại 120+ quốc gia. Kết nối liền mạch từ cảng xuất đến kho nhận hàng cuối cùng.' },
-      { icon: '💰', title: 'Chi phí tối ưu', desc: 'Hợp đồng dài hạn với hãng tàu & hãng bay. Cam kết giá cước cạnh tranh nhất thị trường.' },
-      { icon: '📊', title: 'Công nghệ hiện đại', desc: 'Cổng khách hàng online, tracking real-time, API tích hợp ERP. Quản lý lô hàng mọi lúc, mọi nơi.' },
-      { icon: '⏰', title: 'Phản hồi nhanh 2h', desc: 'Đội ngũ chuyên viên response trong 2 giờ làm việc. Account Manager riêng cho mỗi khách hàng.' },
-      { icon: '🛡️', title: 'An toàn & Bảo hiểm', desc: 'Bảo hiểm hàng hóa toàn trình. Quy trình đóng gói, xếp dỡ và vận chuyển đạt chuẩn quốc tế.' },
-      { icon: '📋', title: 'Chứng chỉ quốc tế', desc: 'ISO 9001, ISO 14001, AEO, FIATA, IATA. Đảm bảo chất lượng dịch vụ ở tiêu chuẩn cao nhất.' },
-      { icon: '🌱', title: 'Logistics xanh', desc: 'Cam kết Net-Zero 2035. Ưu tiên phương tiện thân thiện môi trường và tối ưu carbon footprint.' },
-      { icon: '🤝', title: 'Đồng hành dài hạn', desc: 'Tư vấn chiến lược SCM, không chỉ xử lý đơn hàng. Mối quan hệ đối tác thay vì giao dịch ngắn hạn.' }
+      { icon: '🌐', title: 'Mạng lưới toàn cầu', title_en: 'Global Network', desc: 'Đối tác đại lý tại 120+ quốc gia. Kết nối liền mạch từ cảng xuất đến kho nhận hàng cuối cùng.', desc_en: 'Agent partners in 120+ countries. Seamless connection from export port to final receiving warehouse.' },
+      { icon: '💰', title: 'Chi phí tối ưu', title_en: 'Optimal Cost', desc: 'Hợp đồng dài hạn với hãng tàu & hãng bay. Cam kết giá cước cạnh tranh nhất thị trường.', desc_en: 'Long-term contracts with shipping lines & airlines. Committed to the most competitive rates.' },
+      { icon: '📊', title: 'Công nghệ hiện đại', title_en: 'Modern Technology', desc: 'Cổng khách hàng online, tracking real-time, API tích hợp ERP. Quản lý lô hàng mọi lúc, mọi nơi.', desc_en: 'Online customer portal, real-time tracking, ERP integrated API. Manage shipments anytime, anywhere.' },
+      { icon: '⏰', title: 'Phản hồi nhanh 2h', title_en: '2h Fast Response', desc: 'Đội ngũ chuyên viên response trong 2 giờ làm việc. Account Manager riêng cho mỗi khách hàng.', desc_en: 'Specialist response within 2 working hours. Dedicated Account Manager for each client.' },
+      { icon: '🛡️', title: 'An toàn & Bảo hiểm', title_en: 'Safety & Insurance', desc: 'Bảo hiểm hàng hóa toàn trình. Quy trình đóng gói, xếp dỡ và vận chuyển đạt chuẩn quốc tế.', desc_en: 'End-to-end cargo insurance. Packaging, loading and transport process meets international standards.' },
+      { icon: '📋', title: 'Chứng chỉ quốc tế', title_en: 'International Certificates', desc: 'ISO 9001, ISO 14001, AEO, FIATA, IATA. Đảm bảo chất lượng dịch vụ ở tiêu chuẩn cao nhất.', desc_en: 'ISO 9001, ISO 14001, AEO, FIATA, IATA. Ensure service quality at the highest standard.' },
+      { icon: '🌱', title: 'Logistics xanh', title_en: 'Green Logistics', desc: 'Cam kết Net-Zero 2035. Ưu tiên phương tiện thân thiện môi trường và tối ưu carbon footprint.', desc_en: 'Net-Zero 2035 commitment. Prioritize eco-friendly vehicles and optimize carbon footprint.' },
+      { icon: '🤝', title: 'Đồng hành dài hạn', title_en: 'Long-term Partnership', desc: 'Tư vấn chiến lược SCM, không chỉ xử lý đơn hàng. Mối quan hệ đối tác thay vì giao dịch ngắn hạn.', desc_en: 'SCM strategy consulting, not just order processing. Partnership over short-term transactions.' }
     ],
     process: [
-      { num: '01', title: 'Yêu cầu báo giá', desc: 'Gửi thông tin lô hàng qua form, email hoặc hotline. Nhận báo giá chi tiết trong 2 giờ.' },
-      { num: '02', title: 'Xác nhận & Booking', "desc": 'Chốt phương án vận chuyển, xác nhận lịch trình và booking slot tàu/máy bay.' },
-      { num: '03', title: 'Vận chuyển & Tracking', "desc": 'Lô hàng được xử lý chuyên nghiệp. Theo dõi real-time qua cổng khách hàng.' },
-      { num: '04', title: 'Giao hàng & Báo cáo', "desc": 'Nhận hàng đúng hẹn. Báo cáo chi tiết về chi phí, thời gian và hiệu suất.' }
+      { num: '01', title: 'Yêu cầu báo giá', title_en: 'Quote Request', desc: 'Gửi thông tin lô hàng qua form, email hoặc hotline. Nhận báo giá chi tiết trong 2 giờ.', desc_en: 'Send shipment details via form, email or hotline. Receive detailed quote in 2 hours.' },
+      { num: '02', title: 'Xác nhận & Booking', title_en: 'Confirm & Booking', desc: 'Chốt phương án vận chuyển, xác nhận lịch trình và booking slot tàu/máy bay.', desc_en: 'Finalize transport plan, confirm schedule and book vessel/flight slot.' },
+      { num: '03', title: 'Vận chuyển & Tracking', title_en: 'Transport & Tracking', desc: 'Lô hàng được xử lý chuyên nghiệp. Theo dõi real-time qua cổng khách hàng.', desc_en: 'Shipment handled professionally. Real-time tracking via customer portal.' },
+      { num: '04', title: 'Giao hàng & Báo cáo', title_en: 'Delivery & Report', desc: 'Nhận hàng đúng hẹn. Báo cáo chi tiết về chi phí, thời gian và hiệu suất.', desc_en: 'On-time delivery. Detailed reporting on cost, time and performance.' }
     ]
   }
 
   const s = settings || defaultSettings;
+  const getF = (obj, field, defObj) => {
+    if (lang === 'en') {
+      if (obj[`${field}_en`]) return obj[`${field}_en`];
+      if (defObj && defObj[`${field}_en`]) return defObj[`${field}_en`];
+    }
+    return obj[field] || (defObj && defObj[field]) || '';
+  }
+
+  const t_ui = {
+    vi: {
+      btn_quote: "Tính cước ngay",
+      btn_explore: "Khám phá dịch vụ →",
+      news_kicker: "TIN TỨC & INSIGHTS",
+      news_h2: "Cập nhật mới nhất từ ngành logistics",
+      news_read_more: "Đọc thêm →",
+      svc_kicker: "DỊCH VỤ CỦA CHÚNG TÔI",
+      svc_h2: "Giải pháp logistics toàn diện",
+      svc_p: "Với năng lực vận hành đa kênh, chúng tôi thiết kế và triển khai giải pháp vận tải tối ưu cho mọi loại hàng hóa trên toàn chuỗi cung ứng.",
+      svc_find_more: "Tìm hiểu thêm →",
+      why_kicker: "TẠI SAO CHỌN STELLA",
+      why_h2: "Lợi thế cạnh tranh vượt trội",
+      why_p: "Chúng tôi không chỉ vận chuyển hàng hóa — chúng tôi kiến tạo giải pháp giúp doanh nghiệp bạn phát triển.",
+      proc_kicker: "QUY TRÌNH",
+      proc_h2: "Vận hành đơn giản, hiệu quả tối đa",
+      proc_p: "Chỉ cần 4 bước đơn giản để lô hàng của bạn được vận chuyển an toàn đến đích.",
+      ind_kicker: "NGÀNH HÀNG",
+      ind_h2: "Phục vụ đa dạng lĩnh vực",
+      ind_p: "Chúng tôi am hiểu đặc thù từng ngành để đưa ra giải pháp logistics phù hợp nhất.",
+      inds: [
+        { icon: '🏭', name: 'Sản xuất' },
+        { icon: '🛒', name: 'Bán lẻ & FMCG' },
+        { icon: '💻', name: 'Điện tử & CNTT' },
+        { icon: '🏗️', name: 'Xây dựng' },
+        { icon: '🧪', name: 'Hóa chất' },
+        { icon: '🥗', name: 'Thực phẩm' },
+        { icon: '👗', name: 'Dệt may & Da giày' },
+        { icon: '🚗', name: 'Ô tô & Phụ tùng' },
+        { icon: '💊', name: 'Dược phẩm' },
+        { icon: '⚡', name: 'Năng lượng' },
+        { icon: '🪵', name: 'Gỗ & Nội thất' },
+        { icon: '🌾', name: 'Nông sản' },
+      ],
+      promo_kicker: "CÔNG NGHỆ SỐ",
+      promo_h2: "Cổng khách hàng trực tuyến",
+      promo_p: "Quản lý toàn bộ lô hàng, chứng từ và báo cáo trên một nền tảng duy nhất — mọi lúc, mọi nơi.",
+      promo_lis: [
+        "Tracking lô hàng real-time 24/7",
+        "Quản lý chứng từ điện tử (B/L, Invoice, Packing List)",
+        "Dashboard báo cáo chi phí & hiệu suất",
+        "API tích hợp trực tiếp với ERP/WMS",
+        "Thông báo tự động qua email & SMS"
+      ],
+      partner_kicker: "ĐỐI TÁC & CHỨNG CHỈ",
+      partner_h2: "Đồng hành cùng các tổ chức hàng đầu",
+      cta_h2: "Sẵn sàng tối ưu chuỗi cung ứng?",
+      cta_p: "Liên hệ ngay hôm nay để nhận tư vấn miễn phí và báo giá chi tiết từ đội ngũ chuyên gia logistics Stella Shipping.",
+      cta_btn1: "Yêu cầu tư vấn miễn phí",
+      cta_btn2: "Tính cước vận chuyển"
+    },
+    en: {
+      btn_quote: "Get Quote Now",
+      btn_explore: "Explore Services →",
+      news_kicker: "NEWS & INSIGHTS",
+      news_h2: "Latest updates from logistics industry",
+      news_read_more: "Read more →",
+      svc_kicker: "OUR SERVICES",
+      svc_h2: "Comprehensive logistics solutions",
+      svc_p: "With multi-channel operational capacity, we design and implement optimal transport solutions for all cargo types across the supply chain.",
+      svc_find_more: "Find out more →",
+      why_kicker: "WHY CHOOSE STELLA",
+      why_h2: "Outstanding competitive advantages",
+      why_p: "We don't just transport goods — we create solutions to help your business grow.",
+      proc_kicker: "PROCESS",
+      proc_h2: "Simple operation, maximum efficiency",
+      proc_p: "Just 4 simple steps to get your cargo transported safely to its destination.",
+      ind_kicker: "INDUSTRIES",
+      ind_h2: "Serving diverse sectors",
+      ind_p: "We understand industry specifics to provide the most suitable logistics solutions.",
+      inds: [
+        { icon: '🏭', name: 'Manufacturing' },
+        { icon: '🛒', name: 'Retail & FMCG' },
+        { icon: '💻', name: 'Electronics & IT' },
+        { icon: '🏗️', name: 'Construction' },
+        { icon: '🧪', name: 'Chemicals' },
+        { icon: '🥗', name: 'Food' },
+        { icon: '👗', name: 'Textile & Footwear' },
+        { icon: '🚗', name: 'Automotive & Parts' },
+        { icon: '💊', name: 'Pharmaceuticals' },
+        { icon: '⚡', name: 'Energy' },
+        { icon: '🪵', name: 'Wood & Furniture' },
+        { icon: '🌾', name: 'Agriculture' },
+      ],
+      promo_kicker: "DIGITAL TECHNOLOGY",
+      promo_h2: "Online Customer Portal",
+      promo_p: "Manage all shipments, documents and reports on a single platform — anytime, anywhere.",
+      promo_lis: [
+        "24/7 real-time shipment tracking",
+        "Electronic document management (B/L, Invoice, Packing List)",
+        "Cost & performance reporting dashboard",
+        "Direct API integration with ERP/WMS",
+        "Automated email & SMS notifications"
+      ],
+      partner_kicker: "PARTNERS & CERTIFICATES",
+      partner_h2: "Partnering with leading organizations",
+      cta_h2: "Ready to optimize your supply chain?",
+      cta_p: "Contact us today to get a free consultation and detailed quote from Stella Shipping's logistics expert team.",
+      cta_btn1: "Request free consultation",
+      cta_btn2: "Calculate freight cost"
+    }
+  }
+
+  const tt = t_ui[lang];
 
 
   function handleChange(e) {
@@ -390,18 +507,18 @@ export default function Home() {
         <div className="hm-hero-bg" />
         <div className="hm-hero-inner">
           <div className="hm-hero-text">
-            <div className="eyebrow rv">{s.hero.eyebrow}</div>
+            <div className="eyebrow rv">{getF(s.hero, 'eyebrow', defaultSettings.hero)}</div>
             <h1 className="rv d1">
-              {s.hero.title_line1} <span className="hl">{s.hero.title_hl1}</span><br />
-              {s.hero.title_line2} <span className="hl">{s.hero.title_hl2}</span><br />
-              {s.hero.title_line3}
+              {getF(s.hero, 'title_line1', defaultSettings.hero)} <span className="hl">{getF(s.hero, 'title_hl1', defaultSettings.hero)}</span><br />
+              {getF(s.hero, 'title_line2', defaultSettings.hero)} <span className="hl">{getF(s.hero, 'title_hl2', defaultSettings.hero)}</span><br />
+              {getF(s.hero, 'title_line3', defaultSettings.hero)}
             </h1>
             <p className="lead rv d2">
-              {s.hero.lead}
+              {getF(s.hero, 'lead', defaultSettings.hero)}
             </p>
             <div className="hm-hero-cta rv d3">
-              <a className="btn btn-primary" href="/pricing">Tính cước ngay</a>
-              <a className="btn-ghost" href="/services">Khám phá dịch vụ →</a>
+              <a className="btn btn-primary" href="/pricing">{tt.btn_quote}</a>
+              <a className="btn-ghost" href="/services">{tt.btn_explore}</a>
             </div>
           </div>
 
@@ -417,29 +534,56 @@ export default function Home() {
             ) : (
               <form onSubmit={handleSubmit}>
                 <div className="row">
-                  <input name="name" placeholder={i18n.language === 'en' ? '👤 Full Name *' : '👤 Họ tên *'} value={quote.name} onChange={handleChange} required />
-                  <input name="company" placeholder={i18n.language === 'en' ? '🏢 Company' : '🏢 Tên công ty'} value={quote.company} onChange={handleChange} />
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '👤 Full Name *' : '👤 Họ tên *'}</label>
+                    <input name="name" placeholder={i18n.language === 'en' ? 'John Doe' : 'Nguyễn Văn A'} value={quote.name} onChange={handleChange} required />
+                  </div>
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '🏢 Company' : '🏢 Tên công ty'}</label>
+                    <input name="company" placeholder={i18n.language === 'en' ? 'Company Name' : 'Tên công ty'} value={quote.company} onChange={handleChange} />
+                  </div>
                 </div>
                 <div className="row">
-                  <input name="email" type="email" placeholder={i18n.language === 'en' ? '✉️ Email *' : '✉️ Email *'} value={quote.email} onChange={handleChange} required />
-                  <input name="phone" placeholder={i18n.language === 'en' ? '📞 Phone' : '📞 Điện thoại'} value={quote.phone} onChange={handleChange} />
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '✉️ Email *' : '✉️ Email *'}</label>
+                    <input name="email" type="email" placeholder={i18n.language === 'en' ? 'email@company.com' : 'email@company.com'} value={quote.email} onChange={handleChange} required />
+                  </div>
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '📞 Phone' : '📞 Điện thoại'}</label>
+                    <input name="phone" placeholder={i18n.language === 'en' ? '+1 234 567 890' : '0901 234 567'} value={quote.phone} onChange={handleChange} />
+                  </div>
                 </div>
                 <div className="row">
-                  <input name="origin" placeholder={i18n.language === 'en' ? '📍 Origin' : '📍 Nơi đi'} value={quote.origin} onChange={handleChange} />
-                  <input name="destination" placeholder={i18n.language === 'en' ? '🚩 Destination' : '🚩 Nơi đến'} value={quote.destination} onChange={handleChange} />
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '📍 Origin' : '📍 Nơi đi'}</label>
+                    <input name="origin" placeholder={i18n.language === 'en' ? 'HCMC, Vietnam' : 'TP.HCM, Việt Nam'} value={quote.origin} onChange={handleChange} />
+                  </div>
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '🚩 Destination' : '🚩 Nơi đến'}</label>
+                    <input name="destination" placeholder={i18n.language === 'en' ? 'Rotterdam, Netherlands' : 'Rotterdam, Hà Lan'} value={quote.destination} onChange={handleChange} />
+                  </div>
                 </div>
                 <div className="row">
-                  <select name="service" value={quote.service} onChange={handleChange}>
-                    <option value="sea_fcl">{i18n.language === 'en' ? '🚢 Sea Freight (FCL)' : '🚢 Vận tải biển (FCL)'}</option>
-                    <option value="sea_lcl">{i18n.language === 'en' ? '📦 Sea Freight (LCL)' : '📦 Vận tải biển (LCL)'}</option>
-                    <option value="air">{i18n.language === 'en' ? '✈️ Air Freight' : '✈️ Vận tải hàng không'}</option>
-                    <option value="road">{i18n.language === 'en' ? '🚛 Road Freight' : '🚛 Vận tải đường bộ'}</option>
-                    <option value="warehouse">{i18n.language === 'en' ? '🏭 Warehousing' : '🏭 Kho bãi'}</option>
-                  </select>
-                  <input name="quantity" placeholder={i18n.language === 'en' ? '⚖️ Quantity / Cargo' : '⚖️ Số lượng / Hàng hóa'} value={quote.quantity} onChange={handleChange} />
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '📦 Service' : '📦 Dịch vụ'}</label>
+                    <select name="service" value={quote.service} onChange={handleChange}>
+                      <option value="sea_fcl">{i18n.language === 'en' ? '🚢 Sea Freight (FCL)' : '🚢 Vận tải biển (FCL)'}</option>
+                      <option value="sea_lcl">{i18n.language === 'en' ? '📦 Sea Freight (LCL)' : '📦 Vận tải biển (LCL)'}</option>
+                      <option value="air">{i18n.language === 'en' ? '✈️ Air Freight' : '✈️ Vận tải hàng không'}</option>
+                      <option value="road">{i18n.language === 'en' ? '🚛 Road Freight' : '🚛 Vận tải đường bộ'}</option>
+                      <option value="warehouse">{i18n.language === 'en' ? '🏭 Warehousing' : '🏭 Kho bãi'}</option>
+                    </select>
+                  </div>
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '⚖️ Quantity / Cargo' : '⚖️ Số lượng / Hàng hóa'}</label>
+                    <input name="quantity" placeholder={i18n.language === 'en' ? 'Ex: 2x40HC electronics' : 'VD: 2 cont 40HC hàng điện tử'} value={quote.quantity} onChange={handleChange} />
+                  </div>
                 </div>
                 <div className="row" style={{ marginBottom: 16 }}>
-                  <textarea name="note" placeholder={i18n.language === 'en' ? '📝 Notes' : '📝 Ghi chú'} value={quote.note} onChange={handleChange} rows={2} style={{ resize: 'vertical' }} />
+                  <div className="hm-form-group">
+                    <label>{i18n.language === 'en' ? '📝 Notes' : '📝 Ghi chú'}</label>
+                    <textarea name="note" placeholder={i18n.language === 'en' ? 'Special requirements, estimated time...' : 'Yêu cầu đặc biệt, thời gian dự kiến...'} value={quote.note} onChange={handleChange} rows={2} style={{ resize: 'vertical' }} />
+                  </div>
                 </div>
                 <button type="submit" className="btn btn-primary" disabled={sending}>
                   {sending ? (i18n.language === 'en' ? 'Sending...' : 'Đang gửi...') : (i18n.language === 'en' ? 'Send Request' : 'Gửi yêu cầu')}
@@ -456,8 +600,8 @@ export default function Home() {
       {/* ═══════════════ 9. TIN TỨC & INSIGHTS ═══════════════ */}
       <section className="hm-section">
         <div className="hm-section-hdr rv">
-          <div className="kicker">TIN TỨC & INSIGHTS</div>
-          <h2>Cập nhật mới nhất từ ngành logistics</h2>
+          <div className="kicker">{tt.news_kicker}</div>
+          <h2>{tt.news_h2}</h2>
           <div style={{ marginTop: 20, display: 'flex', gap: 10, justifyContent: 'center' }}>
             <button onClick={() => scrollNews(-1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❮</button>
             <button onClick={() => scrollNews(1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❯</button>
@@ -483,7 +627,7 @@ export default function Home() {
                 </div>
                 <h4>{n.title}</h4>
                 <p>{n.desc}</p>
-                <a href={n.id ? `/news/${n.id}` : "/news"}>Đọc thêm →</a>
+                <a href={n.id ? `/news/${n.id}` : "/news"}>{tt.news_read_more}</a>
               </div>
             </div>
           ))}
@@ -493,83 +637,79 @@ export default function Home() {
       {/* ═══════════════ 4. DỊCH VỤ CHÍNH ═══════════════ */}
       <section className="hm-section hm-section-alt">
         <div className="hm-section-hdr rv">
-          <div className="kicker">DỊCH VỤ CỦA CHÚNG TÔI</div>
-          <h2>Giải pháp logistics toàn diện</h2>
-          <p>Với năng lực vận hành đa kênh, chúng tôi thiết kế và triển khai giải pháp vận tải tối ưu cho mọi loại hàng hóa trên toàn chuỗi cung ứng.</p>
+          <div className="kicker">{tt.svc_kicker}</div>
+          <h2>{tt.svc_h2}</h2>
+          <p>{tt.svc_p}</p>
         </div>
         <div className="hm-svc-grid hm-mobile-slider">
-          {s.services.map((svc, i) => (
-            <div key={i} className={`hm-svc-card rv d${Math.min(i + 1, 5)}`}>
-              <div className="hm-svc-badge">{svc.badge}</div>
-              <img src={svc.img} alt={svc.title} />
-              <div className="hm-svc-card-body">
-                <h3>{svc.title}</h3>
-                <p>{svc.desc}</p>
-                <a className="hm-svc-link" href={svc.link}>Tìm hiểu thêm →</a>
+          {s.services.map((svc, i) => {
+            const dSvc = defaultSettings.services[i] || {};
+            return (
+              <div key={i} className={`hm-svc-card rv d${Math.min(i + 1, 5)}`}>
+                <div className="hm-svc-badge">{getF(svc, 'badge', dSvc)}</div>
+                <img src={svc.img} alt={getF(svc, 'title', dSvc)} />
+                <div className="hm-svc-card-body">
+                  <h3>{getF(svc, 'title', dSvc)}</h3>
+                  <p>{getF(svc, 'desc', dSvc)}</p>
+                  <a className="hm-svc-link" href={svc.link}>{tt.svc_find_more}</a>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
       {/* ═══════════════ 5. TẠI SAO CHỌN CHÚNG TÔI ═══════════════ */}
       <section className="hm-section hm-section-alt">
         <div className="hm-section-hdr rv">
-          <div className="kicker">TẠI SAO CHỌN STELLA</div>
-          <h2>Lợi thế cạnh tranh vượt trội</h2>
-          <p>Chúng tôi không chỉ vận chuyển hàng hóa — chúng tôi kiến tạo giải pháp giúp doanh nghiệp bạn phát triển.</p>
+          <div className="kicker">{tt.why_kicker}</div>
+          <h2>{tt.why_h2}</h2>
+          <p>{tt.why_p}</p>
         </div>
         <div className="hm-why-grid hm-mobile-slider">
-          {s.why_choose_us.map((w, i) => (
-            <div key={i} className={`hm-why-card rv d${Math.min(i + 1, 5)}`}>
-              <div className="hm-why-icon">{w.icon}</div>
-              <h4>{w.title}</h4>
-              <p>{w.desc}</p>
-            </div>
-          ))}
+          {s.why_choose_us.map((w, i) => {
+            const dWhy = defaultSettings.why_choose_us[i] || {};
+            return (
+              <div key={i} className={`hm-why-card rv d${Math.min(i + 1, 5)}`}>
+                <div className="hm-why-icon">{w.icon}</div>
+                <h4>{getF(w, 'title', dWhy)}</h4>
+                <p>{getF(w, 'desc', dWhy)}</p>
+              </div>
+            )
+          })}
         </div>
       </section>
 
       {/* ═══════════════ 6. QUY TRÌNH LÀM VIỆC ═══════════════ */}
       <section className="hm-section">
         <div className="hm-section-hdr rv">
-          <div className="kicker">QUY TRÌNH</div>
-          <h2>Vận hành đơn giản, hiệu quả tối đa</h2>
-          <p>Chỉ cần 4 bước đơn giản để lô hàng của bạn được vận chuyển an toàn đến đích.</p>
+          <div className="kicker">{tt.proc_kicker}</div>
+          <h2>{tt.proc_h2}</h2>
+          <p>{tt.proc_p}</p>
         </div>
         <div className="hm-process hm-mobile-slider">
-          {s.process.map((step, i) => (
-            <div key={i} className={`hm-step rv d${i + 1}`}>
-              <div className="hm-step-num">{step.num}</div>
-              <h4>{step.title}</h4>
-              <p>{step.desc}</p>
-            </div>
-          ))}
+          {s.process.map((step, i) => {
+            const dStep = defaultSettings.process[i] || {};
+            return (
+              <div key={i} className={`hm-step rv d${i + 1}`}>
+                <div className="hm-step-num">{step.num}</div>
+                <h4>{getF(step, 'title', dStep)}</h4>
+                <p>{getF(step, 'desc', dStep)}</p>
+              </div>
+            )
+          })}
         </div>
       </section>
 
       {/* ═══════════════ 7. NGÀNH HÀNG PHỤC VỤ ═══════════════ */}
       <section className="hm-section hm-section-dark">
         <div className="hm-section-hdr rv">
-          <div className="kicker">NGÀNH HÀNG</div>
-          <h2>Phục vụ đa dạng lĩnh vực</h2>
-          <p>Chúng tôi am hiểu đặc thù từng ngành để đưa ra giải pháp logistics phù hợp nhất.</p>
+          <div className="kicker">{tt.ind_kicker}</div>
+          <h2>{tt.ind_h2}</h2>
+          <p>{tt.ind_p}</p>
         </div>
         <div className="hm-ind-grid hm-mobile-slider">
-          {[
-            { icon: '🏭', name: 'Sản xuất' },
-            { icon: '🛒', name: 'Bán lẻ & FMCG' },
-            { icon: '💻', name: 'Điện tử & CNTT' },
-            { icon: '🏗️', name: 'Xây dựng' },
-            { icon: '🧪', name: 'Hóa chất' },
-            { icon: '🥗', name: 'Thực phẩm' },
-            { icon: '👗', name: 'Dệt may & Da giày' },
-            { icon: '🚗', name: 'Ô tô & Phụ tùng' },
-            { icon: '💊', name: 'Dược phẩm' },
-            { icon: '⚡', name: 'Năng lượng' },
-            { icon: '🪵', name: 'Gỗ & Nội thất' },
-            { icon: '🌾', name: 'Nông sản' },
-          ].map((ind, i) => (
+          {tt.inds.map((ind, i) => (
             <div key={i} className={`hm-ind-card rv d${Math.min(i + 1, 5)}`}>
               <div className="hm-ind-icon">{ind.icon}</div>
               <h4>{ind.name}</h4>
@@ -583,15 +723,11 @@ export default function Home() {
         <div className="hm-promo rv su">
           <div className="hm-promo-img" />
           <div className="hm-promo-content">
-            <div className="kicker">CÔNG NGHỆ SỐ</div>
-            <h2>Cổng khách hàng trực tuyến</h2>
-            <p>Quản lý toàn bộ lô hàng, chứng từ và báo cáo trên một nền tảng duy nhất — mọi lúc, mọi nơi.</p>
+            <div className="kicker">{tt.promo_kicker}</div>
+            <h2>{tt.promo_h2}</h2>
+            <p>{tt.promo_p}</p>
             <ul>
-              <li>Tracking lô hàng real-time 24/7</li>
-              <li>Quản lý chứng từ điện tử (B/L, Invoice, Packing List)</li>
-              <li>Dashboard báo cáo chi phí & hiệu suất</li>
-              <li>API tích hợp trực tiếp với ERP/WMS</li>
-              <li>Thông báo tự động qua email & SMS</li>
+              {tt.promo_lis.map((item, idx) => <li key={idx}>{item}</li>)}
             </ul>
           </div>
         </div>
@@ -600,8 +736,8 @@ export default function Home() {
       {/* ═══════════════ 11. ĐỐI TÁC ═══════════════ */}
       <section className="hm-section hm-section-alt">
         <div className="hm-section-hdr rv">
-          <div className="kicker">ĐỐI TÁC & CHỨNG CHỈ</div>
-          <h2>Đồng hành cùng các tổ chức hàng đầu</h2>
+          <div className="kicker">{tt.partner_kicker}</div>
+          <h2>{tt.partner_h2}</h2>
         </div>
         <div className="hm-partners rv">
           {[
@@ -625,11 +761,11 @@ export default function Home() {
 
       {/* ═══════════════ 12. CTA BANNER ═══════════════ */}
       <section className="hm-cta-banner">
-        <h2 className="rv">Sẵn sàng tối ưu chuỗi cung ứng?</h2>
-        <p className="rv d1">Liên hệ ngay hôm nay để nhận tư vấn miễn phí và báo giá chi tiết từ đội ngũ chuyên gia logistics Stella Shipping.</p>
+        <h2 className="rv">{tt.cta_h2}</h2>
+        <p className="rv d1">{tt.cta_p}</p>
         <div className="hm-cta-btns rv d2">
-          <a href="/contact" className="cta-w">Yêu cầu tư vấn miễn phí</a>
-          <a href="/pricing" className="cta-o">Tính cước vận chuyển</a>
+          <a href="/contact" className="cta-w">{tt.cta_btn1}</a>
+          <a href="/pricing" className="cta-o">{tt.cta_btn2}</a>
         </div>
       </section>
     </div>

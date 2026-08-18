@@ -7,7 +7,19 @@ const { verifyToken } = require('../middleware/auth');
 router.get('/:key', async (req, res) => {
   try {
     const { key } = req.params;
-    const [rows] = await pool.query('SELECT setting_value FROM settings WHERE setting_key = ?', [key]);
+    const { lang } = req.query;
+    let searchKey = key;
+    if (lang === 'en') {
+      searchKey = `${key}_en`;
+    }
+
+    let [rows] = await pool.query('SELECT setting_value FROM settings WHERE setting_key = ?', [searchKey]);
+    
+    // Fallback to default if English setting doesn't exist
+    if (!rows.length && lang === 'en') {
+        [rows] = await pool.query('SELECT setting_value FROM settings WHERE setting_key = ?', [key]);
+    }
+
     if (!rows.length) {
       return res.status(404).json({ error: 'Setting not found' });
     }

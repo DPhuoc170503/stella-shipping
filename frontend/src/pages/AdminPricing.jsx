@@ -14,12 +14,22 @@ const SERVICE_TYPES = [
 const EMPTY_FORM = {
   service_type: 'sea_fcl',
   route: '',
+  origin: '',
+  destination: '',
+  service: '',
   unit: '',
   price_from: '',
   currency: 'USD',
   transit_time: '',
   note: '',
   is_active: 1,
+  service_type_en: '',
+  route_en: '',
+  origin_en: '',
+  destination_en: '',
+  service_en: '',
+  transit_time_en: '',
+  note_en: '',
 }
 
 function formatPrice(price, currency) {
@@ -152,12 +162,22 @@ export default function AdminPricing() {
     setForm({
       service_type: r.service_type,
       route: r.route,
+      origin: r.origin || '',
+      destination: r.destination || '',
+      service: r.service || '',
       unit: r.unit,
       price_from: r.price_from,
       currency: r.currency,
       transit_time: r.transit_time || '',
       note: r.note || '',
       is_active: r.is_active,
+      service_type_en: r.service_type_en || '',
+      route_en: r.route_en || '',
+      origin_en: r.origin_en || '',
+      destination_en: r.destination_en || '',
+      service_en: r.service_en || '',
+      transit_time_en: r.transit_time_en || '',
+      note_en: r.note_en || '',
     })
     setShowModal(true)
   }
@@ -300,9 +320,15 @@ export default function AdminPricing() {
                   {SERVICE_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
                 </select>
               </div>
-              <div className="ap-field">
-                <label>TUYẾN ĐƯỜNG / TÊN DỊCH VỤ *</label>
-                <input name="route" placeholder="VD: TP.HCM → Shanghai (Trung Quốc)" value={form.route} onChange={handleChange} />
+              <div className="ap-field-row">
+                <div className="ap-field">
+                  <label>TUYẾN ĐƯỜNG / TÊN DỊCH VỤ (VI) *</label>
+                  <input name="route" placeholder="VD: TP.HCM → Shanghai (Trung Quốc)" value={form.route} onChange={handleChange} />
+                </div>
+                <div className="ap-field">
+                  <label>TUYẾN ĐƯỜNG / TÊN DỊCH VỤ (EN)</label>
+                  <input name="route_en" placeholder="VD: HCMC → Shanghai (China)" value={form.route_en} onChange={handleChange} />
+                </div>
               </div>
               <div className="ap-field-row">
                 <div className="ap-field">
@@ -310,8 +336,12 @@ export default function AdminPricing() {
                   <input name="unit" placeholder="VD: 20' DC, kg, CBM, pallet/tháng" value={form.unit} onChange={handleChange} />
                 </div>
                 <div className="ap-field">
-                  <label>THỜI GIAN VẬN CHUYỂN</label>
+                  <label>THỜI GIAN VẬN CHUYỂN (VI)</label>
                   <input name="transit_time" placeholder="VD: 14–16 ngày" value={form.transit_time} onChange={handleChange} />
+                </div>
+                <div className="ap-field">
+                  <label>THỜI GIAN VẬN CHUYỂN (EN)</label>
+                  <input name="transit_time_en" placeholder="VD: 14–16 days" value={form.transit_time_en} onChange={handleChange} />
                 </div>
               </div>
               <div className="ap-field-row">
@@ -327,9 +357,15 @@ export default function AdminPricing() {
                   </select>
                 </div>
               </div>
-              <div className="ap-field">
-                <label>GHI CHÚ</label>
-                <textarea name="note" rows={2} placeholder="Ghi chú về giá, điều kiện áp dụng..." value={form.note} onChange={handleChange} style={{ resize: 'vertical' }} />
+              <div className="ap-field-row">
+                <div className="ap-field">
+                  <label>GHI CHÚ (VI)</label>
+                  <textarea name="note" rows={2} placeholder="Ghi chú về giá, điều kiện áp dụng..." value={form.note} onChange={handleChange} style={{ resize: 'vertical' }} />
+                </div>
+                <div className="ap-field">
+                  <label>GHI CHÚ (EN)</label>
+                  <textarea name="note_en" rows={2} placeholder="Pricing notes, conditions..." value={form.note_en} onChange={handleChange} style={{ resize: 'vertical' }} />
+                </div>
               </div>
               <div className="ap-field">
                 <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>

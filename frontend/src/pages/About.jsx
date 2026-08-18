@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useCallback, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 /* ─── Scroll-reveal hook ─── */
 function useScrollReveal() {
@@ -72,6 +73,198 @@ function StatItem({ value, suffix = '', label }) {
     </div>
   )
 }
+
+const t_ui = {
+  vi: {
+    kicker: "VỀ STELLA SHIPPING",
+    hero_h1: "Đối tác Logistics\nĐáng tin cậy \nĐông Nam Á",
+    hero_p: "Hơn 10 năm kết nối chuỗi cung ứng toàn cầu — từ cảng đến kho, từ hải quan tới giao nhận nội địa. Chúng tôi tối ưu chi phí, giảm rủi ro và đảm bảo thời gian giao hàng cho mọi quy mô doanh nghiệp.",
+    btn_contact: "Yêu cầu tư vấn",
+    btn_video: "Xem video giới thiệu ▶",
+    stat_1: "Năm kinh nghiệm",
+    stat_2: "Quốc gia kết nối",
+    stat_3: "Khách hàng tin tưởng",
+    stat_4: "Giao hàng đúng hẹn",
+    mv_kicker: "SỨ MỆNH & TẦM NHÌN",
+    mv_h2: "Kiến tạo chuỗi cung ứng bền vững",
+    mv_p: "Chúng tôi tin rằng logistics không chỉ là vận chuyển hàng hóa — mà là kết nối giá trị, tạo dựng lòng tin và thúc đẩy tăng trưởng cho doanh nghiệp Việt trên bản đồ toàn cầu.",
+    mission_title: "Sứ mệnh",
+    mission_desc: "Cung cấp giải pháp logistics tích hợp, tối ưu chi phí và thời gian cho doanh nghiệp Việt Nam. Chúng tôi cam kết mang đến dịch vụ chuyên nghiệp, minh bạch và đáng tin cậy — giúp khách hàng tập trung vào cốt lõi kinh doanh trong khi chúng tôi quản lý toàn bộ chuỗi cung ứng.",
+    vision_title: "Tầm nhìn",
+    vision_desc: "Trở thành đối tác logistics hàng đầu Đông Nam Á vào năm 2030, tiên phong ứng dụng công nghệ số hóa và phát triển bền vững trong chuỗi cung ứng. Chúng tôi hướng đến xây dựng mạng lưới kết nối liền mạch từ cảng biển đến tay người tiêu dùng.",
+    story_kicker: "CÂU CHUYỆN CỦA CHÚNG TÔI",
+    story_h2: "Từ một văn phòng nhỏ đến mạng lưới toàn cầu",
+    story_p1: "Stella Shipping được thành lập năm 2009 tại TP. Hồ Chí Minh với tầm nhìn đơn giản nhưng táo bạo: giúp doanh nghiệp vừa và nhỏ Việt Nam tiếp cận dịch vụ logistics quốc tế ở tiêu chuẩn cao nhất với chi phí hợp lý.",
+    story_p2: "Sau hơn 15 năm phát triển, chúng tôi đã xây dựng được mạng lưới đối tác vận tải rộng khắp 120+ quốc gia, sở hữu hệ thống kho bãi hiện đại tại các cảng trọng điểm, và đội ngũ hơn 200 chuyên viên giàu kinh nghiệm.",
+    story_l1: "Đội ngũ 200+ chuyên gia logistics quốc tế",
+    story_l2: "Hệ thống kho bãi 15.000m² tại TP.HCM, Hà Nội và Đà Nẵng",
+    story_l3: "Đối tác với 50+ hãng tàu và hãng hàng không quốc tế",
+    story_l4: "Hệ thống tracking real-time và cổng khách hàng trực tuyến",
+    tl_kicker: "CỘT MỐC PHÁT TRIỂN",
+    tl_h2: "Hành trình 10 năm kiến tạo giá trị",
+    tl_p: "Từ những bước đi đầu tiên đến vị thế hàng đầu khu vực — mỗi cột mốc đánh dấu sự nỗ lực không ngừng của đội ngũ Stella Shipping.",
+    tl_list: [
+      { year: '2023', title: 'Thành lập Stella Shipping', desc: 'Khởi đầu với dịch vụ giao nhận nội địa và forwarding cơ bản tại TP.HCM. Đội ngũ ban đầu chỉ 5 người với tầm nhìn lớn.' },
+      { year: '2024', title: 'Mở rộng ra miền Bắc', desc: 'Khai trương văn phòng Hà Nội, bổ sung dịch vụ vận tải biển quốc tế FCL/LCL và xử lý thủ tục hải quan.' },
+      { year: '2025', title: 'Hệ thống kho bãi hiện đại', desc: 'Đầu tư 15.000m² kho bãi với hệ thống quản lý WMS tiên tiến, nâng cao năng lực lưu trữ và cross-docking.' },
+      { year: '2026', title: 'Chuyển đổi số toàn diện', desc: 'Ra mắt cổng khách hàng online, hệ thống tracking real-time và API tích hợp ERP cho doanh nghiệp lớn.' },
+    ],
+    vid_kicker: "VIDEO GIỚI THIỆU",
+    vid_h2: "Khám phá Stella Shipping qua góc nhìn thực tế",
+    vid_p: "Hãy cùng chúng tôi khám phá quy trình vận hành chuyên nghiệp — từ cảng biển đến kho hàng, từ thủ tục hải quan đến giao nhận tận nơi.",
+    vid_watch: "Xem video giới thiệu công ty",
+    cap_kicker: "NĂNG LỰC CỐT LÕI",
+    cap_h2: "Chuyên môn & Dịch vụ toàn diện",
+    cap_p: "Từ vận tải quốc tế đến giao nhận nội địa, chúng tôi cung cấp chuỗi dịch vụ khép kín đáp ứng mọi nhu cầu logistics của doanh nghiệp.",
+    cap_list: [
+      { title: 'Vận tải biển (FCL & LCL)', desc: 'Booking container tuyến toàn cầu, đàm phán giá cước cạnh tranh với 50+ hãng tàu. Hỗ trợ hàng nguy hiểm, quá khổ và reefer.' },
+      { title: 'Vận tải hàng không', desc: 'Dịch vụ air freight cho hàng khẩn cấp, giá trị cao. Kết nối các sân bay quốc tế lớn với thời gian transit nhanh nhất.' },
+      { title: 'Vận tải đa phương thức', desc: 'Kết hợp đường biển – bộ – sắt – hàng không linh hoạt, tối ưu chi phí và thời gian cho từng lô hàng.' },
+      { title: 'Kho bãi & Phân phối', desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Dịch vụ cross-docking, pick-pack, quản lý tồn kho và last-mile delivery.' },
+      { title: 'Thủ tục Hải quan', desc: 'Đội ngũ khai báo hải quan chuyên nghiệp, tư vấn mã HS, C/O, hồ sơ xuất nhập khẩu. Cam kết thông quan trong 24h.' },
+      { title: 'Tư vấn chuỗi cung ứng', desc: 'Phân tích và tối ưu toàn bộ chuỗi cung ứng: lộ trình, chi phí, rủi ro. Giải pháp SCM tùy chỉnh cho từng ngành hàng.' },
+    ],
+    net_kicker: "MẠNG LƯỚI TOÀN CẦU",
+    net_h2: "Kết nối mọi điểm đến trên thế giới",
+    net_p: "Với mạng lưới đại lý và đối tác vận tải rộng khắp, chúng tôi đảm bảo hàng hóa của bạn đến đúng nơi, đúng lúc.",
+    net_list: [
+      { title: 'Châu Á – Thái Bình Dương', desc: 'Trung Quốc, Nhật Bản, Hàn Quốc, Singapore, Thái Lan, Malaysia, Indonesia, Úc' },
+      { title: 'Châu Âu', desc: 'Đức, Pháp, Hà Lan, Anh, Ý, Tây Ban Nha, Ba Lan, Thổ Nhĩ Kỳ' },
+      { title: 'Châu Mỹ', desc: 'Hoa Kỳ, Canada, Mexico, Brazil, Chile, Colombia' },
+      { title: 'Trung Đông & Châu Phi', desc: 'UAE, Ả Rập Saudi, Nam Phi, Kenya, Ai Cập, Nigeria' },
+    ],
+    val_kicker: "GIÁ TRỊ CỐT LÕI",
+    val_h2: "Nguyên tắc dẫn dắt mọi hoạt động",
+    val_list: [
+      { title: 'Uy tín & Minh bạch', desc: 'Cam kết báo giá rõ ràng, không phát sinh chi phí ẩn. Hệ thống tracking minh bạch 24/7.' },
+      { title: 'Tốc độ & Hiệu quả', desc: 'Quy trình chuẩn hóa, response time dưới 2 giờ. Tối ưu thời gian transit cho từng tuyến.' },
+      { title: 'Phát triển bền vững', desc: 'Cam kết Net-Zero 2035. Ưu tiên giải pháp xanh, giảm carbon footprint trong vận tải.' },
+      { title: 'Đồng hành cùng khách hàng', desc: 'Mỗi khách hàng đều có Account Manager riêng. Hỗ trợ tư vấn chiến lược chuỗi cung ứng dài hạn.' },
+    ],
+    cert_kicker: "CHỨNG CHỈ & ĐỐI TÁC",
+    cert_h2: "Được chứng nhận bởi các tổ chức uy tín",
+    cert_p: "Chất lượng dịch vụ của chúng tôi được kiểm chứng và công nhận bởi các tiêu chuẩn quốc tế hàng đầu.",
+    cert_list: [
+      'ISO 9001:2015\nQuản lý chất lượng',
+      'ISO 14001:2015\nQuản lý môi trường',
+      'AEO\nDoanh nghiệp ưu tiên',
+      'FIATA\nHiệp hội Giao nhận QT',
+      'IATA\nĐại lý hàng không',
+      'WCA\nMạng lưới Logistics TG'
+    ],
+    cs_kicker: "CASE STUDY",
+    cs_h2: "Câu chuyện thành công cùng khách hàng",
+    cs_title: "Giảm 20% chi phí & rút ngắn 2 ngày giao hàng",
+    cs_client: "Khách hàng:",
+    cs_client_v: "Doanh nghiệp sản xuất linh kiện điện tử xuất khẩu sang châu Âu, xử lý trung bình 120 container/tháng.",
+    cs_challenge: "Thách thức:",
+    cs_challenge_v: "Chi phí logistics chiếm 18% giá thành sản phẩm, lead time kéo dài 28 ngày, thường xuyên phát sinh phí lưu container và trễ hải quan.",
+    cs_solution: "Giải pháp Stella:",
+    cs_sol_1: "Tối ưu lộ trình vận chuyển, chuyển sang gom hàng LCL cho lô nhỏ",
+    cs_sol_2: "Đàm phán hợp đồng dài hạn với 3 hãng tàu, giảm đơn giá 15%",
+    cs_sol_3: "Triển khai hệ thống hải quan điện tử, thời gian thông quan từ 3 ngày xuống 8 giờ",
+    cs_sol_4: "Tích hợp API tracking vào hệ thống ERP của khách hàng",
+    cta_h2: "Sẵn sàng tối ưu chuỗi cung ứng của bạn?",
+    cta_p: "Liên hệ ngay hôm nay để nhận tư vấn miễn phí từ đội ngũ chuyên gia logistics của Stella Shipping.",
+    cta_btn1: "Yêu cầu tư vấn miễn phí",
+    cta_btn2: "Tính cước vận chuyển"
+  },
+  en: {
+    kicker: "ABOUT STELLA SHIPPING",
+    hero_h1: "Reliable Logistics\nPartner in\nSoutheast Asia",
+    hero_p: "Over 10 years of connecting global supply chains — from ports to warehouses, customs to domestic delivery. We optimize costs, reduce risks, and ensure delivery times for businesses of all sizes.",
+    btn_contact: "Request Consultation",
+    btn_video: "Watch intro video ▶",
+    stat_1: "Years of Experience",
+    stat_2: "Connected Countries",
+    stat_3: "Trusted Clients",
+    stat_4: "On-time Delivery",
+    mv_kicker: "MISSION & VISION",
+    mv_h2: "Creating Sustainable Supply Chains",
+    mv_p: "We believe that logistics is not just about transporting goods — it's about connecting values, building trust, and driving growth for Vietnamese enterprises on the global map.",
+    mission_title: "Mission",
+    mission_desc: "Providing integrated logistics solutions, optimizing costs and time for Vietnamese enterprises. We are committed to delivering professional, transparent, and reliable services — allowing clients to focus on their core business while we manage the entire supply chain.",
+    vision_title: "Vision",
+    vision_desc: "To become the leading logistics partner in Southeast Asia by 2030, pioneering the application of digital technology and sustainable development in the supply chain. We aim to build a seamless connection network from seaports to consumers.",
+    story_kicker: "OUR STORY",
+    story_h2: "From a small office to a global network",
+    story_p1: "Stella Shipping was established in 2009 in Ho Chi Minh City with a simple but bold vision: to help Vietnamese SMEs access international logistics services at the highest standards with reasonable costs.",
+    story_p2: "After more than 15 years of development, we have built a transportation partner network covering 120+ countries, owning modern warehouse systems at key ports, and a team of over 200 experienced experts.",
+    story_l1: "A team of 200+ international logistics experts",
+    story_l2: "15,000m² warehouse system in HCMC, Hanoi, and Da Nang",
+    story_l3: "Partnerships with 50+ shipping lines and international airlines",
+    story_l4: "Real-time tracking system and online customer portal",
+    tl_kicker: "MILESTONES",
+    tl_h2: "A 10-Year Journey of Creating Value",
+    tl_p: "From the very first steps to the leading position in the region — every milestone marks the relentless efforts of the Stella Shipping team.",
+    tl_list: [
+      { year: '2023', title: 'Stella Shipping Established', desc: 'Started with domestic delivery and basic forwarding in HCMC. The initial team of just 5 people with a big vision.' },
+      { year: '2024', title: 'Expansion to the North', desc: 'Opened the Hanoi office, added FCL/LCL international sea freight and customs clearance services.' },
+      { year: '2025', title: 'Modern Warehouse System', desc: 'Invested in 15,000m² warehouse with an advanced WMS management system, enhancing storage and cross-docking capabilities.' },
+      { year: '2026', title: 'Comprehensive Digital Transformation', desc: 'Launched the online customer portal, real-time tracking system, and API integration for large enterprises.' },
+    ],
+    vid_kicker: "INTRO VIDEO",
+    vid_h2: "Explore Stella Shipping through a real-world perspective",
+    vid_p: "Join us in exploring the professional operation process — from seaports to warehouses, from customs procedures to door-to-door delivery.",
+    vid_watch: "Watch company intro video",
+    cap_kicker: "CORE COMPETENCIES",
+    cap_h2: "Expertise & Comprehensive Services",
+    cap_p: "From international transport to domestic delivery, we provide a closed-loop service chain that meets all logistics needs of enterprises.",
+    cap_list: [
+      { title: 'Ocean Freight (FCL & LCL)', desc: 'Global container booking, negotiating competitive freight rates with 50+ shipping lines. Supporting dangerous, oversized, and reefer cargo.' },
+      { title: 'Air Freight', desc: 'Air freight services for urgent, high-value cargo. Connecting major international airports with the fastest transit times.' },
+      { title: 'Intermodal Transport', desc: 'Flexibly combining sea - land - rail - air, optimizing costs and time for each shipment.' },
+      { title: 'Warehousing & Distribution', desc: '15,000m² warehouse system with modern WMS. Cross-docking, pick-pack, inventory management, and last-mile delivery services.' },
+      { title: 'Customs Clearance', desc: 'Professional customs declaration team, consulting on HS codes, C/O, import-export documents. Committed to 24h clearance.' },
+      { title: 'Supply Chain Consulting', desc: 'Analyzing and optimizing the entire supply chain: routes, costs, risks. Customized SCM solutions for each industry.' },
+    ],
+    net_kicker: "GLOBAL NETWORK",
+    net_h2: "Connecting every destination in the world",
+    net_p: "With an extensive network of agents and transport partners, we ensure your goods arrive at the right place, at the right time.",
+    net_list: [
+      { title: 'Asia - Pacific', desc: 'China, Japan, South Korea, Singapore, Thailand, Malaysia, Indonesia, Australia' },
+      { title: 'Europe', desc: 'Germany, France, Netherlands, UK, Italy, Spain, Poland, Turkey' },
+      { title: 'Americas', desc: 'USA, Canada, Mexico, Brazil, Chile, Colombia' },
+      { title: 'Middle East & Africa', desc: 'UAE, Saudi Arabia, South Africa, Kenya, Egypt, Nigeria' },
+    ],
+    val_kicker: "CORE VALUES",
+    val_h2: "Principles guiding all activities",
+    val_list: [
+      { title: 'Prestige & Transparency', desc: 'Committed to clear pricing, no hidden costs. 24/7 transparent tracking system.' },
+      { title: 'Speed & Efficiency', desc: 'Standardized processes, response time under 2 hours. Optimizing transit time for each route.' },
+      { title: 'Sustainable Development', desc: 'Committed to Net-Zero 2035. Prioritizing green solutions, reducing carbon footprints in transport.' },
+      { title: 'Accompanying Clients', desc: 'Each client has a dedicated Account Manager. Support for long-term supply chain strategy consulting.' },
+    ],
+    cert_kicker: "CERTIFICATIONS & PARTNERS",
+    cert_h2: "Certified by prestigious organizations",
+    cert_p: "The quality of our services is verified and recognized by top international standards.",
+    cert_list: [
+      'ISO 9001:2015\nQuality Management',
+      'ISO 14001:2015\nEnvironmental Mgt',
+      'AEO\nAuthorized Operator',
+      'FIATA\nIntl Forwarders Assoc',
+      'IATA\nAirline Agent',
+      'WCA\nGlobal Logistics Net'
+    ],
+    cs_kicker: "CASE STUDY",
+    cs_h2: "Success stories with clients",
+    cs_title: "Reducing costs by 20% & shortening delivery by 2 days",
+    cs_client: "Client:",
+    cs_client_v: "Enterprise manufacturing electronic components exported to Europe, handling an average of 120 containers/month.",
+    cs_challenge: "Challenge:",
+    cs_challenge_v: "Logistics costs accounted for 18% of product cost, lead time extended to 28 days, frequently incurring container storage fees and customs delays.",
+    cs_solution: "Stella's Solution:",
+    cs_sol_1: "Optimized transport routes, switched to LCL consolidation for small shipments",
+    cs_sol_2: "Negotiated long-term contracts with 3 shipping lines, reducing unit prices by 15%",
+    cs_sol_3: "Implemented e-customs system, reducing clearance time from 3 days to 8 hours",
+    cs_sol_4: "Integrated tracking API into the client's ERP system",
+    cta_h2: "Ready to optimize your supply chain?",
+    cta_p: "Contact us today for a free consultation from Stella Shipping's logistics experts.",
+    cta_btn1: "Request free consultation",
+    cta_btn2: "Calculate freight rate"
+  }
+}
+
 
 /* ─── CSS ─── */
 const aboutPageCSS = `
@@ -320,6 +513,10 @@ const aboutPageCSS = `
 `
 
 export default function About() {
+  const { i18n } = useTranslation()
+  const lang = i18n.language === 'en' ? 'en' : 'vi'
+  const t = t_ui[lang]
+
   const pageRef = useScrollReveal()
   const [videoPlaying, setVideoPlaying] = useState(false)
 
@@ -330,17 +527,12 @@ export default function About() {
       {/* ═══════════════ 1. HERO ═══════════════ */}
       <section className="abt-hero">
         <div className="container abt-hero-content">
-          <div className="kicker reveal">VỀ STELLA SHIPPING</div>
-          <h1 className="reveal delay-1">
-            Đối tác Logistics<br />Đáng tin cậy <br />Đông Nam Á
-          </h1>
-          <p className="lead reveal delay-2">
-            Hơn 10 năm kết nối chuỗi cung ứng toàn cầu — từ cảng đến kho, từ hải quan tới giao nhận nội địa.
-            Chúng tôi tối ưu chi phí, giảm rủi ro và đảm bảo thời gian giao hàng cho mọi quy mô doanh nghiệp.
-          </p>
+          <div className="kicker reveal">{t.kicker}</div>
+          <h1 className="reveal delay-1" style={{ whiteSpace: 'pre-line' }}>{t.hero_h1}</h1>
+          <p className="lead reveal delay-2">{t.hero_p}</p>
           <div className="abt-hero-btns reveal delay-3">
-            <a className="btn btn-primary" href="/contact">Yêu cầu tư vấn</a>
-            <a className="btn-outline" href="#video-section">Xem video giới thiệu ▶</a>
+            <a className="btn btn-primary" href="/contact">{t.btn_contact}</a>
+            <a className="btn-outline" href="#video-section">{t.btn_video}</a>
           </div>
         </div>
       </section>
@@ -348,30 +540,30 @@ export default function About() {
       {/* ═══════════════ 2. STATS BAR ═══════════════ */}
       <section className="abt-section">
         <div className="abt-stats-bar">
-          <StatItem value={10} suffix="+" label="Năm kinh nghiệm" />
-          <StatItem value={20} suffix="+" label="Quốc gia kết nối" />
-          <StatItem value={500} suffix="+" label="Khách hàng tin tưởng" />
-          <StatItem value={98} suffix="%" label="Giao hàng đúng hẹn" />
+          <StatItem value={10} suffix="+" label={t.stat_1} />
+          <StatItem value={20} suffix="+" label={t.stat_2} />
+          <StatItem value={500} suffix="+" label={t.stat_3} />
+          <StatItem value={98} suffix="%" label={t.stat_4} />
         </div>
       </section>
 
       {/* ═══════════════ 3. SỨ MỆNH & TẦM NHÌN ═══════════════ */}
       <section className="abt-section abt-section-alt">
         <div className="abt-section-header reveal">
-          <div className="kicker">SỨ MỆNH & TẦM NHÌN</div>
-          <h2>Kiến tạo chuỗi cung ứng bền vững</h2>
-          <p>Chúng tôi tin rằng logistics không chỉ là vận chuyển hàng hóa — mà là kết nối giá trị, tạo dựng lòng tin và thúc đẩy tăng trưởng cho doanh nghiệp Việt trên bản đồ toàn cầu.</p>
+          <div className="kicker">{t.mv_kicker}</div>
+          <h2>{t.mv_h2}</h2>
+          <p>{t.mv_p}</p>
         </div>
         <div className="abt-mv-grid">
           <div className="abt-mv-card reveal from-left">
             <div className="mv-icon">🎯</div>
-            <h3>Sứ mệnh</h3>
-            <p>Cung cấp giải pháp logistics tích hợp, tối ưu chi phí và thời gian cho doanh nghiệp Việt Nam. Chúng tôi cam kết mang đến dịch vụ chuyên nghiệp, minh bạch và đáng tin cậy — giúp khách hàng tập trung vào cốt lõi kinh doanh trong khi chúng tôi quản lý toàn bộ chuỗi cung ứng.</p>
+            <h3>{t.mission_title}</h3>
+            <p>{t.mission_desc}</p>
           </div>
           <div className="abt-mv-card reveal from-right delay-1">
             <div className="mv-icon">🌏</div>
-            <h3>Tầm nhìn</h3>
-            <p>Trở thành đối tác logistics hàng đầu Đông Nam Á vào năm 2030, tiên phong ứng dụng công nghệ số hóa và phát triển bền vững trong chuỗi cung ứng. Chúng tôi hướng đến xây dựng mạng lưới kết nối liền mạch từ cảng biển đến tay người tiêu dùng.</p>
+            <h3>{t.vision_title}</h3>
+            <p>{t.vision_desc}</p>
           </div>
         </div>
       </section>
@@ -380,26 +572,19 @@ export default function About() {
       <section className="abt-section">
         <div className="abt-story">
           <div className="abt-story-text reveal from-left">
-            <div className="kicker" style={{ color: '#f36c1f', fontWeight: 700, letterSpacing: 3, fontSize: 12, marginBottom: 8 }}>CÂU CHUYỆN CỦA CHÚNG TÔI</div>
-            <h2>Từ một văn phòng nhỏ đến mạng lưới toàn cầu</h2>
-            <p>
-              Stella Shipping được thành lập năm 2009 tại TP. Hồ Chí Minh với tầm nhìn đơn giản nhưng táo bạo:
-              giúp doanh nghiệp vừa và nhỏ Việt Nam tiếp cận dịch vụ logistics quốc tế ở tiêu chuẩn cao nhất với
-              chi phí hợp lý.
-            </p>
-            <p>
-              Sau hơn 15 năm phát triển, chúng tôi đã xây dựng được mạng lưới đối tác vận tải rộng khắp 120+ quốc gia,
-              sở hữu hệ thống kho bãi hiện đại tại các cảng trọng điểm, và đội ngũ hơn 200 chuyên viên giàu kinh nghiệm.
-            </p>
+            <div className="kicker" style={{ color: '#f36c1f', fontWeight: 700, letterSpacing: 3, fontSize: 12, marginBottom: 8 }}>{t.story_kicker}</div>
+            <h2>{t.story_h2}</h2>
+            <p>{t.story_p1}</p>
+            <p>{t.story_p2}</p>
             <ul>
-              <li>Đội ngũ 200+ chuyên gia logistics quốc tế</li>
-              <li>Hệ thống kho bãi 15.000m² tại TP.HCM, Hà Nội và Đà Nẵng</li>
-              <li>Đối tác với 50+ hãng tàu và hãng hàng không quốc tế</li>
-              <li>Hệ thống tracking real-time và cổng khách hàng trực tuyến</li>
+              <li>{t.story_l1}</li>
+              <li>{t.story_l2}</li>
+              <li>{t.story_l3}</li>
+              <li>{t.story_l4}</li>
             </ul>
           </div>
           <div className="abt-story-img reveal from-right delay-1">
-            <img src="/Banner.jpg" alt="Câu chuyện Stella Shipping" />
+            <img src="/Banner.jpg" alt={t.story_kicker} />
           </div>
         </div>
       </section>
@@ -431,12 +616,11 @@ export default function About() {
       {/* ═══════════════ 6. VIDEO GIỚI THIỆU ═══════════════ */}
       <section className="abt-video-section" id="video-section">
         <div className="abt-video-inner">
-          <div className="kicker reveal" style={{ color: '#f36c1f', fontWeight: 700, letterSpacing: 3, fontSize: 12, marginBottom: 8 }}>VIDEO GIỚI THIỆU</div>
-          <h2 className="reveal delay-1">Khám phá Stella Shipping qua góc nhìn thực tế</h2>
-          <p className="reveal delay-2">Hãy cùng chúng tôi khám phá quy trình vận hành chuyên nghiệp — từ cảng biển đến kho hàng, từ thủ tục hải quan đến giao nhận tận nơi.</p>
+          <div className="kicker reveal" style={{ color: '#f36c1f', fontWeight: 700, letterSpacing: 3, fontSize: 12, marginBottom: 8 }}>{t.vid_kicker}</div>
+          <h2 className="reveal delay-1">{t.vid_h2}</h2>
+          <p className="reveal delay-2">{t.vid_p}</p>
           <div className="abt-video-wrapper reveal scale-up delay-3">
             {videoPlaying ? (
-              /* ── Thay URL video thật vào đây ── */
               <iframe
                 src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0"
                 title="Stella Shipping Introduction"
@@ -446,7 +630,7 @@ export default function About() {
             ) : (
               <div className="abt-video-placeholder" onClick={() => setVideoPlaying(true)}>
                 <button className="abt-play-btn" aria-label="Play video">▶</button>
-                <span>Xem video giới thiệu công ty</span>
+                <span>{t.vid_watch}</span>
               </div>
             )}
           </div>
@@ -456,18 +640,18 @@ export default function About() {
       {/* ═══════════════ 7. NĂNG LỰC & DỊCH VỤ ═══════════════ */}
       <section className="abt-section">
         <div className="abt-section-header reveal">
-          <div className="kicker">NĂNG LỰC CỐT LÕI</div>
-          <h2>Chuyên môn & Dịch vụ toàn diện</h2>
-          <p>Từ vận tải quốc tế đến giao nhận nội địa, chúng tôi cung cấp chuỗi dịch vụ khép kín đáp ứng mọi nhu cầu logistics của doanh nghiệp.</p>
+          <div className="kicker">{t.cap_kicker}</div>
+          <h2>{t.cap_h2}</h2>
+          <p>{t.cap_p}</p>
         </div>
         <div className="abt-cap-grid">
           {[
-            { img: '/Banner.jpg', title: 'Vận tải biển (FCL & LCL)', desc: 'Booking container tuyến toàn cầu, đàm phán giá cước cạnh tranh với 50+ hãng tàu. Hỗ trợ hàng nguy hiểm, quá khổ và reefer.' },
-            { img: '/AirFreight.jpg', title: 'Vận tải hàng không', desc: 'Dịch vụ air freight cho hàng khẩn cấp, giá trị cao. Kết nối các sân bay quốc tế lớn với thời gian transit nhanh nhất.' },
-            { img: '/INTERMODA.jpg', title: 'Vận tải đa phương thức', desc: 'Kết hợp đường biển – bộ – sắt – hàng không linh hoạt, tối ưu chi phí và thời gian cho từng lô hàng.' },
-            { img: '/Logictis.jpg', title: 'Kho bãi & Phân phối', desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Dịch vụ cross-docking, pick-pack, quản lý tồn kho và last-mile delivery.' },
-            { img: '/OURRANGE.jpg', title: 'Thủ tục Hải quan', desc: 'Đội ngũ khai báo hải quan chuyên nghiệp, tư vấn mã HS, C/O, hồ sơ xuất nhập khẩu. Cam kết thông quan trong 24h.' },
-            { img: '/Shippinglines.jpg', title: 'Tư vấn chuỗi cung ứng', desc: 'Phân tích và tối ưu toàn bộ chuỗi cung ứng: lộ trình, chi phí, rủi ro. Giải pháp SCM tùy chỉnh cho từng ngành hàng.' },
+            { img: '/Banner.jpg', ...t.cap_list[0] },
+            { img: '/AirFreight.jpg', ...t.cap_list[1] },
+            { img: '/INTERMODA.jpg', ...t.cap_list[2] },
+            { img: '/Logictis.jpg', ...t.cap_list[3] },
+            { img: '/OURRANGE.jpg', ...t.cap_list[4] },
+            { img: '/Shippinglines.jpg', ...t.cap_list[5] }
           ].map((s, i) => (
             <div key={i} className={`abt-cap-card reveal delay-${Math.min(i + 1, 5)}`}>
               <img src={s.img} alt={s.title} />
@@ -483,16 +667,16 @@ export default function About() {
       {/* ═══════════════ 8. MẠNG LƯỚI TOÀN CẦU ═══════════════ */}
       <section className="abt-section abt-section-dark">
         <div className="abt-section-header reveal">
-          <div className="kicker">MẠNG LƯỚI TOÀN CẦU</div>
-          <h2>Kết nối mọi điểm đến trên thế giới</h2>
-          <p>Với mạng lưới đại lý và đối tác vận tải rộng khắp, chúng tôi đảm bảo hàng hóa của bạn đến đúng nơi, đúng lúc.</p>
+          <div className="kicker">{t.net_kicker}</div>
+          <h2>{t.net_h2}</h2>
+          <p>{t.net_p}</p>
         </div>
         <div className="abt-network-grid">
           {[
-            { icon: '🌏', title: 'Châu Á – Thái Bình Dương', desc: 'Trung Quốc, Nhật Bản, Hàn Quốc, Singapore, Thái Lan, Malaysia, Indonesia, Úc' },
-            { icon: '🌍', title: 'Châu Âu', desc: 'Đức, Pháp, Hà Lan, Anh, Ý, Tây Ban Nha, Ba Lan, Thổ Nhĩ Kỳ' },
-            { icon: '🌎', title: 'Châu Mỹ', desc: 'Hoa Kỳ, Canada, Mexico, Brazil, Chile, Colombia' },
-            { icon: '🌍', title: 'Trung Đông & Châu Phi', desc: 'UAE, Ả Rập Saudi, Nam Phi, Kenya, Ai Cập, Nigeria' },
+            { icon: '🌏', ...t.net_list[0] },
+            { icon: '🌍', ...t.net_list[1] },
+            { icon: '🌎', ...t.net_list[2] },
+            { icon: '🌍', ...t.net_list[3] }
           ].map((n, i) => (
             <div key={i} className={`abt-network-card reveal delay-${i + 1}`}>
               <div className="net-icon">{n.icon}</div>
@@ -506,15 +690,15 @@ export default function About() {
       {/* ═══════════════ 9. GIÁ TRỊ CỐT LÕI ═══════════════ */}
       <section className="abt-section">
         <div className="abt-section-header reveal">
-          <div className="kicker">GIÁ TRỊ CỐT LÕI</div>
-          <h2>Nguyên tắc dẫn dắt mọi hoạt động</h2>
+          <div className="kicker">{t.val_kicker}</div>
+          <h2>{t.val_h2}</h2>
         </div>
         <div className="abt-values-grid">
           {[
-            { icon: '🛡️', title: 'Uy tín & Minh bạch', desc: 'Cam kết báo giá rõ ràng, không phát sinh chi phí ẩn. Hệ thống tracking minh bạch 24/7.' },
-            { icon: '⚡', title: 'Tốc độ & Hiệu quả', desc: 'Quy trình chuẩn hóa, response time dưới 2 giờ. Tối ưu thời gian transit cho từng tuyến.' },
-            { icon: '🌱', title: 'Phát triển bền vững', desc: 'Cam kết Net-Zero 2035. Ưu tiên giải pháp xanh, giảm carbon footprint trong vận tải.' },
-            { icon: '🤝', title: 'Đồng hành cùng khách hàng', desc: 'Mỗi khách hàng đều có Account Manager riêng. Hỗ trợ tư vấn chiến lược chuỗi cung ứng dài hạn.' },
+            { icon: '🛡️', ...t.val_list[0] },
+            { icon: '⚡', ...t.val_list[1] },
+            { icon: '🌱', ...t.val_list[2] },
+            { icon: '🤝', ...t.val_list[3] }
           ].map((v, i) => (
             <div key={i} className={`abt-value-card reveal delay-${i + 1}`}>
               <div className="abt-value-icon">{v.icon}</div>
@@ -528,22 +712,22 @@ export default function About() {
       {/* ═══════════════ 10. CHỨNG CHỈ & ĐỐI TÁC ═══════════════ */}
       <section className="abt-section abt-section-alt">
         <div className="abt-section-header reveal">
-          <div className="kicker">CHỨNG CHỈ & ĐỐI TÁC</div>
-          <h2>Được chứng nhận bởi các tổ chức uy tín</h2>
-          <p>Chất lượng dịch vụ của chúng tôi được kiểm chứng và công nhận bởi các tiêu chuẩn quốc tế hàng đầu.</p>
+          <div className="kicker">{t.cert_kicker}</div>
+          <h2>{t.cert_h2}</h2>
+          <p>{t.cert_p}</p>
         </div>
         <div className="abt-cert-row">
           {[
-            { icon: '🏆', label: 'ISO 9001:2015\nQuản lý chất lượng' },
-            { icon: '📋', label: 'ISO 14001:2015\nQuản lý môi trường' },
-            { icon: '🔒', label: 'AEO\nDoanh nghiệp ưu tiên' },
-            { icon: '🚢', label: 'FIATA\nHiệp hội Giao nhận QT' },
-            { icon: '✈️', label: 'IATA\nĐại lý hàng không' },
-            { icon: '📦', label: 'WCA\nMạng lưới Logistics TG' },
+            { icon: '🏆', label: t.cert_list[0] },
+            { icon: '📋', label: t.cert_list[1] },
+            { icon: '🔒', label: t.cert_list[2] },
+            { icon: '🚢', label: t.cert_list[3] },
+            { icon: '✈️', label: t.cert_list[4] },
+            { icon: '📦', label: t.cert_list[5] }
           ].map((c, i) => (
             <div key={i} className={`abt-cert-item reveal delay-${Math.min(i + 1, 5)}`}>
               <div className="abt-cert-icon">{c.icon}</div>
-              <span>{c.label}</span>
+              <span style={{ whiteSpace: 'pre-line' }}>{c.label}</span>
             </div>
           ))}
         </div>
@@ -552,23 +736,23 @@ export default function About() {
       {/* ═══════════════ 11. CASE STUDY ═══════════════ */}
       <section className="abt-section">
         <div className="abt-section-header reveal">
-          <div className="kicker">CASE STUDY</div>
-          <h2>Câu chuyện thành công cùng khách hàng</h2>
+          <div className="kicker">{t.cs_kicker}</div>
+          <h2>{t.cs_h2}</h2>
         </div>
         <div className="abt-story">
           <div className="abt-story-img reveal from-left">
             <img src="/INTERMODA.jpg" alt="Case study logistics" />
           </div>
           <div className="abt-story-text reveal from-right delay-1">
-            <h2>Giảm 20% chi phí & rút ngắn 2 ngày giao hàng</h2>
-            <p><strong>Khách hàng:</strong> Doanh nghiệp sản xuất linh kiện điện tử xuất khẩu sang châu Âu, xử lý trung bình 120 container/tháng.</p>
-            <p><strong>Thách thức:</strong> Chi phí logistics chiếm 18% giá thành sản phẩm, lead time kéo dài 28 ngày, thường xuyên phát sinh phí lưu container và trễ hải quan.</p>
-            <p><strong>Giải pháp Stella:</strong></p>
+            <h2>{t.cs_title}</h2>
+            <p><strong>{t.cs_client}</strong> {t.cs_client_v}</p>
+            <p><strong>{t.cs_challenge}</strong> {t.cs_challenge_v}</p>
+            <p><strong>{t.cs_solution}</strong></p>
             <ul>
-              <li>Tối ưu lộ trình vận chuyển, chuyển sang gom hàng LCL cho lô nhỏ</li>
-              <li>Đàm phán hợp đồng dài hạn với 3 hãng tàu, giảm đơn giá 15%</li>
-              <li>Triển khai hệ thống hải quan điện tử, thời gian thông quan từ 3 ngày xuống 8 giờ</li>
-              <li>Tích hợp API tracking vào hệ thống ERP của khách hàng</li>
+              <li>{t.cs_sol_1}</li>
+              <li>{t.cs_sol_2}</li>
+              <li>{t.cs_sol_3}</li>
+              <li>{t.cs_sol_4}</li>
             </ul>
           </div>
         </div>
@@ -576,11 +760,11 @@ export default function About() {
 
       {/* ═══════════════ 14. CTA BANNER ═══════════════ */}
       <section className="abt-cta-banner">
-        <h2 className="reveal">Sẵn sàng tối ưu chuỗi cung ứng của bạn?</h2>
-        <p className="reveal delay-1">Liên hệ ngay hôm nay để nhận tư vấn miễn phí từ đội ngũ chuyên gia logistics của Stella Shipping.</p>
+        <h2 className="reveal">{t.cta_h2}</h2>
+        <p className="reveal delay-1">{t.cta_p}</p>
         <div className="abt-cta-btns reveal delay-2">
-          <a href="/contact" className="cta-white">Yêu cầu tư vấn miễn phí</a>
-          <a href="/pricing" className="cta-outline">Tính cước vận chuyển</a>
+          <a href="/contact" className="cta-white">{t.cta_btn1}</a>
+          <a href="/pricing" className="cta-outline">{t.cta_btn2}</a>
         </div>
       </section>
 

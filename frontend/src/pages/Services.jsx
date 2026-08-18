@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 /* ─── Scroll-reveal hook ─── */
 function useScrollReveal() {
@@ -21,97 +22,240 @@ function useScrollReveal() {
   return containerRef
 }
 
-/* ═══ DATA ═══ */
-const SERVICES = [
-  {
-    icon: '🚢',
-    title: 'Vận tải biển',
-    subtitle: 'FCL & LCL',
-    desc: 'Booking container quốc tế với 50+ hãng tàu hàng đầu. Dịch vụ FCL nguyên container và LCL ghép hàng trên tuyến toàn cầu. Hỗ trợ hàng nguy hiểm, quá khổ, reefer và project cargo.',
-    features: ['FCL — Nguyên container 20\'/40\'/40HC', 'LCL — Ghép hàng lẻ linh hoạt', 'Hàng nguy hiểm (DG Cargo)', 'Hàng đông lạnh (Reefer)', 'Hàng quá khổ (OOG/Project)'],
-    stats: { routes: '420+ cảng', carriers: '50+ hãng tàu', delivery: '98% đúng hẹn' },
-    color: '#0f2b57',
-    accent: '#2563eb',
-    link: '/services/shipping-lines',
-    img: '/Shippinglines.jpg'
+const t_ui = {
+  vi: {
+    hero_kicker: "STELLA SHIPPING",
+    hero_title_1: "Giải pháp ",
+    hero_title_hl: "Logistics",
+    hero_title_2: " toàn diện cho doanh nghiệp",
+    hero_desc: "Từ vận tải biển, hàng không, đa phương thức đến kho bãi, hải quan và tư vấn supply chain — chúng tôi cung cấp mọi dịch vụ bạn cần cho chuỗi cung ứng hiệu quả.",
+    hero_b1: "🌍 120+ Quốc gia",
+    hero_b2: "🚢 50+ Hãng tàu",
+    hero_b3: "✈️ 80+ Sân bay",
+    hero_b4: "⚡ Báo giá 2 giờ",
+    sv_kicker: "DỊCH VỤ CỦA CHÚNG TÔI",
+    sv_h2: "6 nhóm dịch vụ cốt lõi",
+    sv_p: "Mỗi giải pháp được thiết kế riêng để đáp ứng nhu cầu đa dạng của doanh nghiệp trong chuỗi cung ứng toàn cầu.",
+    sv_stat_routes: "Phạm vi",
+    sv_stat_carriers: "Đối tác",
+    sv_stat_delivery: "Hiệu suất",
+    sv_btn: "Xem chi tiết",
+    services: [
+      {
+        icon: '🚢',
+        title: 'Vận tải biển',
+        subtitle: 'FCL & LCL',
+        desc: 'Booking container quốc tế với 50+ hãng tàu hàng đầu. Dịch vụ FCL nguyên container và LCL ghép hàng trên tuyến toàn cầu. Hỗ trợ hàng nguy hiểm, quá khổ, reefer và project cargo.',
+        features: ['FCL — Nguyên container 20\'/40\'/40HC', 'LCL — Ghép hàng lẻ linh hoạt', 'Hàng nguy hiểm (DG Cargo)', 'Hàng đông lạnh (Reefer)', 'Hàng quá khổ (OOG/Project)'],
+        stats: { routes: '420+ cảng', carriers: '50+ hãng tàu', delivery: '98% đúng hẹn' },
+        color: '#0f2b57',
+        accent: '#2563eb',
+        link: '/services/shipping-lines',
+        img: '/Shippinglines.jpg'
+      },
+      {
+        icon: '✈️',
+        title: 'Vận tải hàng không',
+        subtitle: 'Air Freight',
+        desc: 'Giải pháp vận tải hàng không cho hàng khẩn cấp và giá trị cao. Kết nối 80+ sân bay quốc tế với thời gian transit nhanh nhất thị trường. Hợp tác với các hãng bay lớn.',
+        features: ['General Cargo', 'Express / Time-critical', 'Hàng dược phẩm (GDP)', 'E-Commerce Fulfillment', 'Charter flights theo yêu cầu'],
+        stats: { routes: '80+ sân bay', carriers: '20+ hãng bay', delivery: '1-5 ngày transit' },
+        color: '#7c3aed',
+        accent: '#a855f7',
+        link: '/services/scheduled-flights',
+        img: '/AirFreight.jpg'
+      },
+      {
+        icon: '🚛',
+        title: 'Vận tải đa phương thức',
+        subtitle: 'Intermodal',
+        desc: 'Kết hợp linh hoạt đường biển – bộ – sắt – hàng không. Tối ưu chi phí và thời gian cho từng tuyến vận chuyển cụ thể. Chỉ cần 1 hợp đồng duy nhất.',
+        features: ['Biển + Đường bộ', 'Hàng không + Đường bộ', 'Đường sắt liên vận quốc tế', 'Sea-Air kết hợp', 'Door-to-door tracking'],
+        stats: { routes: '120+ quốc gia', carriers: 'Đa phương thức', delivery: 'Tiết kiệm 20-40%' },
+        color: '#059669',
+        accent: '#34d399',
+        link: '/services/intermodal',
+        img: '/INTERMODA.jpg'
+      },
+      {
+        icon: '🏭',
+        title: 'Kho bãi & Logistics',
+        subtitle: 'Warehousing & Distribution',
+        desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Cross-docking, pick-pack, quản lý tồn kho và dịch vụ last-mile delivery. Kho lạnh đạt chuẩn HACCP.',
+        features: ['Kho khô & kho lạnh (-25°C)', 'Cross-docking xử lý nhanh', 'Pick & Pack cho E-commerce', 'Last-mile Delivery 63 tỉnh', 'WMS tích hợp ERP/API'],
+        stats: { routes: '15.000m² kho', carriers: '50+ xe', delivery: '99.8% chính xác' },
+        color: '#d97706',
+        accent: '#fbbf24',
+        link: '/services/logistics',
+        img: '/Logictis.jpg'
+      },
+      {
+        icon: '📋',
+        title: 'Thủ tục Hải quan',
+        subtitle: 'Customs Brokerage',
+        desc: 'Dịch vụ khai báo hải quan điện tử, phân loại mã HS, xin C/O, giấy phép XNK đặc biệt. Tư vấn thuế và hỗ trợ kiểm tra sau thông quan.',
+        features: ['Khai báo VNACCS/VCIS', 'Phân loại mã HS chính xác', 'Chứng nhận xuất xứ (15+ form)', 'Giấy phép XNK đặc biệt', 'Tư vấn thuế & hoàn thuế'],
+        stats: { routes: 'Thông quan 24h', carriers: '15+ form C/O', delivery: 'Tiết kiệm 15% thuế' },
+        color: '#dc2626',
+        accent: '#f87171',
+        link: '/services/dedicated',
+        img: '/OURRANGE.jpg'
+      },
+      {
+        icon: '🔍',
+        title: 'Tư vấn Supply Chain',
+        subtitle: 'SCM Consulting',
+        desc: 'Phân tích, đánh giá và tối ưu hóa chuỗi cung ứng. Thiết kế mạng lưới phân phối, dự báo nhu cầu bằng AI/ML, chuyển đổi số SCM và Green logistics.',
+        features: ['Phân tích & benchmark', 'Thiết kế mạng lưới phân phối', 'Dự báo nhu cầu AI/ML', 'Chuyển đổi số SCM', 'Green Supply Chain'],
+        stats: { routes: '85%+ chính xác', carriers: 'AI/ML powered', delivery: 'Giảm 30% CO2' },
+        color: '#0891b2',
+        accent: '#22d3ee',
+        link: '/services/charters',
+        img: '/Chacracter.jpg'
+      },
+    ],
+    proc_kicker: "QUY TRÌNH LÀM VIỆC",
+    proc_h2: "4 bước đơn giản để bắt đầu",
+    proc_p: "Quy trình minh bạch, rõ ràng — bạn chỉ cần liên hệ, mọi việc còn lại để Stella Shipping lo.",
+    proc_steps: [
+      { num: '01', title: 'Tư vấn & Khảo sát', desc: 'Lắng nghe nhu cầu, phân tích loại hàng, tuyến đường và timeline để đề xuất giải pháp phù hợp nhất.', icon: '💬' },
+      { num: '02', title: 'Báo giá & Hợp đồng', desc: 'Báo giá all-in minh bạch trong 2 giờ. Ký hợp đồng rõ ràng về phạm vi dịch vụ và SLA.', icon: '📝' },
+      { num: '03', title: 'Vận hành & Tracking', desc: 'Triển khai booking, vận chuyển, thông quan. Tracking real-time và cập nhật trạng thái tự động.', icon: '🚀' },
+      { num: '04', title: 'Giao hàng & Báo cáo', desc: 'Giao hàng đúng hẹn tại điểm đến. Báo cáo hoàn tất, hóa đơn và đánh giá chất lượng dịch vụ.', icon: '✅' },
+    ],
+    why_kicker: "TẠI SAO CHỌN CHÚNG TÔI",
+    why_h2: "Cam kết đồng hành cùng doanh nghiệp",
+    why_p: "Hơn 10 năm kinh nghiệm, chúng tôi hiểu rằng logistics không chỉ là vận chuyển — mà là xây dựng niềm tin.",
+    why_list: [
+      { icon: '🌍', title: '120+ Quốc gia', desc: 'Mạng lưới đối tác phủ sóng toàn cầu, kết nối bạn với mọi thị trường.' },
+      { icon: '⚡', title: 'Báo giá 2 giờ', desc: 'Nhận báo giá chính xác, cạnh tranh trong vòng 2 giờ làm việc.' },
+      { icon: '📡', title: 'Tracking Real-time', desc: 'Theo dõi hàng hóa 24/7 trên mọi phương thức vận tải.' },
+      { icon: '🤝', title: 'Đội ngũ chuyên gia', desc: 'Nhân sự kinh nghiệm 10+ năm trong logistics và supply chain.' },
+      { icon: '💰', title: 'Giá cạnh tranh', desc: 'Tận dụng volume và đàm phán với hãng tàu/bay để có giá tốt nhất.' },
+      { icon: '🔒', title: 'Bảo hiểm toàn trình', desc: 'Hàng hóa được bảo hiểm 100% giá trị trên toàn bộ hành trình vận chuyển.' },
+    ],
+    cta_h2: "Bạn cần giải pháp logistics?",
+    cta_p: "Liên hệ ngay để nhận tư vấn miễn phí và báo giá cạnh tranh nhất trong vòng 2 giờ.",
+    cta_btn1: "📋 Yêu cầu báo giá",
+    cta_btn2: "💰 Xem bảng giá",
   },
-  {
-    icon: '✈️',
-    title: 'Vận tải hàng không',
-    subtitle: 'Air Freight',
-    desc: 'Giải pháp vận tải hàng không cho hàng khẩn cấp và giá trị cao. Kết nối 80+ sân bay quốc tế với thời gian transit nhanh nhất thị trường. Hợp tác với các hãng bay lớn.',
-    features: ['General Cargo', 'Express / Time-critical', 'Hàng dược phẩm (GDP)', 'E-Commerce Fulfillment', 'Charter flights theo yêu cầu'],
-    stats: { routes: '80+ sân bay', carriers: '20+ hãng bay', delivery: '1-5 ngày transit' },
-    color: '#7c3aed',
-    accent: '#a855f7',
-    link: '/services/scheduled-flights',
-    img: '/AirFreight.jpg'
-  },
-  {
-    icon: '🚛',
-    title: 'Vận tải đa phương thức',
-    subtitle: 'Intermodal',
-    desc: 'Kết hợp linh hoạt đường biển – bộ – sắt – hàng không. Tối ưu chi phí và thời gian cho từng tuyến vận chuyển cụ thể. Chỉ cần 1 hợp đồng duy nhất.',
-    features: ['Biển + Đường bộ', 'Hàng không + Đường bộ', 'Đường sắt liên vận quốc tế', 'Sea-Air kết hợp', 'Door-to-door tracking'],
-    stats: { routes: '120+ quốc gia', carriers: 'Đa phương thức', delivery: 'Tiết kiệm 20-40%' },
-    color: '#059669',
-    accent: '#34d399',
-    link: '/services/intermodal',
-    img: '/INTERMODA.jpg'
-  },
-  {
-    icon: '🏭',
-    title: 'Kho bãi & Logistics',
-    subtitle: 'Warehousing & Distribution',
-    desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Cross-docking, pick-pack, quản lý tồn kho và dịch vụ last-mile delivery. Kho lạnh đạt chuẩn HACCP.',
-    features: ['Kho khô & kho lạnh (-25°C)', 'Cross-docking xử lý nhanh', 'Pick & Pack cho E-commerce', 'Last-mile Delivery 63 tỉnh', 'WMS tích hợp ERP/API'],
-    stats: { routes: '15.000m² kho', carriers: '50+ xe', delivery: '99.8% chính xác' },
-    color: '#d97706',
-    accent: '#fbbf24',
-    link: '/services/logistics',
-    img: '/Logictis.jpg'
-  },
-  {
-    icon: '📋',
-    title: 'Thủ tục Hải quan',
-    subtitle: 'Customs Brokerage',
-    desc: 'Dịch vụ khai báo hải quan điện tử, phân loại mã HS, xin C/O, giấy phép XNK đặc biệt. Tư vấn thuế và hỗ trợ kiểm tra sau thông quan.',
-    features: ['Khai báo VNACCS/VCIS', 'Phân loại mã HS chính xác', 'Chứng nhận xuất xứ (15+ form)', 'Giấy phép XNK đặc biệt', 'Tư vấn thuế & hoàn thuế'],
-    stats: { routes: 'Thông quan 24h', carriers: '15+ form C/O', delivery: 'Tiết kiệm 15% thuế' },
-    color: '#dc2626',
-    accent: '#f87171',
-    link: '/services/dedicated',
-    img: '/OURRANGE.jpg'
-  },
-  {
-    icon: '🔍',
-    title: 'Tư vấn Supply Chain',
-    subtitle: 'SCM Consulting',
-    desc: 'Phân tích, đánh giá và tối ưu hóa chuỗi cung ứng. Thiết kế mạng lưới phân phối, dự báo nhu cầu bằng AI/ML, chuyển đổi số SCM và Green logistics.',
-    features: ['Phân tích & benchmark', 'Thiết kế mạng lưới phân phối', 'Dự báo nhu cầu AI/ML', 'Chuyển đổi số SCM', 'Green Supply Chain'],
-    stats: { routes: '85%+ chính xác', carriers: 'AI/ML powered', delivery: 'Giảm 30% CO2' },
-    color: '#0891b2',
-    accent: '#22d3ee',
-    link: '/services/charters',
-    img: '/Chacracter.jpg'
-  },
-]
-
-const PROCESS_STEPS = [
-  { num: '01', title: 'Tư vấn & Khảo sát', desc: 'Lắng nghe nhu cầu, phân tích loại hàng, tuyến đường và timeline để đề xuất giải pháp phù hợp nhất.', icon: '💬' },
-  { num: '02', title: 'Báo giá & Hợp đồng', desc: 'Báo giá all-in minh bạch trong 2 giờ. Ký hợp đồng rõ ràng về phạm vi dịch vụ và SLA.', icon: '📝' },
-  { num: '03', title: 'Vận hành & Tracking', desc: 'Triển khai booking, vận chuyển, thông quan. Tracking real-time và cập nhật trạng thái tự động.', icon: '🚀' },
-  { num: '04', title: 'Giao hàng & Báo cáo', desc: 'Giao hàng đúng hẹn tại điểm đến. Báo cáo hoàn tất, hóa đơn và đánh giá chất lượng dịch vụ.', icon: '✅' },
-]
-
-const WHY_CHOOSE = [
-  { icon: '🌍', title: '120+ Quốc gia', desc: 'Mạng lưới đối tác phủ sóng toàn cầu, kết nối bạn với mọi thị trường.' },
-  { icon: '⚡', title: 'Báo giá 2 giờ', desc: 'Nhận báo giá chính xác, cạnh tranh trong vòng 2 giờ làm việc.' },
-  { icon: '📡', title: 'Tracking Real-time', desc: 'Theo dõi hàng hóa 24/7 trên mọi phương thức vận tải.' },
-  { icon: '🤝', title: 'Đội ngũ chuyên gia', desc: 'Nhân sự kinh nghiệm 10+ năm trong logistics và supply chain.' },
-  { icon: '💰', title: 'Giá cạnh tranh', desc: 'Tận dụng volume và đàm phán với hãng tàu/bay để có giá tốt nhất.' },
-  { icon: '🔒', title: 'Bảo hiểm toàn trình', desc: 'Hàng hóa được bảo hiểm 100% giá trị trên toàn bộ hành trình vận chuyển.' },
-]
+  en: {
+    hero_kicker: "STELLA SHIPPING",
+    hero_title_1: "Comprehensive ",
+    hero_title_hl: "Logistics",
+    hero_title_2: " solutions for enterprises",
+    hero_desc: "From sea, air, intermodal transport to warehousing, customs and supply chain consulting — we provide all the services you need for an efficient supply chain.",
+    hero_b1: "🌍 120+ Countries",
+    hero_b2: "🚢 50+ Shipping Lines",
+    hero_b3: "✈️ 80+ Airports",
+    hero_b4: "⚡ 2-Hour Quote",
+    sv_kicker: "OUR SERVICES",
+    sv_h2: "6 core service groups",
+    sv_p: "Each solution is tailored to meet the diverse needs of businesses in the global supply chain.",
+    sv_stat_routes: "Scope",
+    sv_stat_carriers: "Partners",
+    sv_stat_delivery: "Performance",
+    sv_btn: "View Details",
+    services: [
+      {
+        icon: '🚢',
+        title: 'Ocean Freight',
+        subtitle: 'FCL & LCL',
+        desc: 'International container booking with 50+ top shipping lines. FCL and LCL services on global routes. Support for dangerous, oversized, reefer and project cargo.',
+        features: ['FCL — 20\'/40\'/40HC containers', 'LCL — Flexible less-than-container', 'Dangerous Goods (DG Cargo)', 'Reefer Cargo', 'Out-of-Gauge (OOG/Project)'],
+        stats: { routes: '420+ ports', carriers: '50+ lines', delivery: '98% on-time' },
+        color: '#0f2b57',
+        accent: '#2563eb',
+        link: '/services/shipping-lines',
+        img: '/Shippinglines.jpg'
+      },
+      {
+        icon: '✈️',
+        title: 'Air Freight',
+        subtitle: 'Air Freight',
+        desc: 'Air freight solutions for urgent and high-value cargo. Connecting 80+ international airports with the fastest transit times. Partnering with major airlines.',
+        features: ['General Cargo', 'Express / Time-critical', 'Pharma (GDP)', 'E-Commerce Fulfillment', 'Charter flights on demand'],
+        stats: { routes: '80+ airports', carriers: '20+ airlines', delivery: '1-5 days transit' },
+        color: '#7c3aed',
+        accent: '#a855f7',
+        link: '/services/scheduled-flights',
+        img: '/AirFreight.jpg'
+      },
+      {
+        icon: '🚛',
+        title: 'Intermodal Transport',
+        subtitle: 'Intermodal',
+        desc: 'Flexible combination of sea – land – rail – air. Optimizing costs and time for specific routes. Only 1 single contract required.',
+        features: ['Sea + Land', 'Air + Land', 'Intl Rail Transport', 'Sea-Air combination', 'Door-to-door tracking'],
+        stats: { routes: '120+ countries', carriers: 'Intermodal', delivery: '20-40% savings' },
+        color: '#059669',
+        accent: '#34d399',
+        link: '/services/intermodal',
+        img: '/INTERMODA.jpg'
+      },
+      {
+        icon: '🏭',
+        title: 'Warehousing & Logistics',
+        subtitle: 'Warehousing & Distribution',
+        desc: '15,000m² warehouse system with modern WMS. Cross-docking, pick-pack, inventory management and last-mile delivery. HACCP certified cold storage.',
+        features: ['Dry & Cold storage (-25°C)', 'Fast cross-docking', 'Pick & Pack for E-commerce', 'Last-mile 63 provinces', 'WMS integrated ERP/API'],
+        stats: { routes: '15,000m² space', carriers: '50+ trucks', delivery: '99.8% accuracy' },
+        color: '#d97706',
+        accent: '#fbbf24',
+        link: '/services/logistics',
+        img: '/Logictis.jpg'
+      },
+      {
+        icon: '📋',
+        title: 'Customs Brokerage',
+        subtitle: 'Customs Brokerage',
+        desc: 'E-customs declaration, HS code classification, C/O application, special licenses. Tax consulting and post-clearance audit support.',
+        features: ['VNACCS/VCIS declaration', 'Accurate HS code', 'C/O (15+ forms)', 'Special licenses', 'Tax consulting & refund'],
+        stats: { routes: '24h clearance', carriers: '15+ C/O forms', delivery: '15% tax savings' },
+        color: '#dc2626',
+        accent: '#f87171',
+        link: '/services/dedicated',
+        img: '/OURRANGE.jpg'
+      },
+      {
+        icon: '🔍',
+        title: 'Supply Chain Consulting',
+        subtitle: 'SCM Consulting',
+        desc: 'Analyze, evaluate and optimize the supply chain. Distribution network design, AI/ML demand forecasting, SCM digital transformation and Green logistics.',
+        features: ['Analysis & benchmark', 'Distribution network design', 'AI/ML demand forecasting', 'SCM digital transformation', 'Green Supply Chain'],
+        stats: { routes: '85%+ accuracy', carriers: 'AI/ML powered', delivery: '30% CO2 reduction' },
+        color: '#0891b2',
+        accent: '#22d3ee',
+        link: '/services/charters',
+        img: '/Chacracter.jpg'
+      },
+    ],
+    proc_kicker: "WORK PROCESS",
+    proc_h2: "4 simple steps to start",
+    proc_p: "Transparent, clear process — you just contact us, Stella Shipping handles the rest.",
+    proc_steps: [
+      { num: '01', title: 'Consulting & Survey', desc: 'Listen to needs, analyze cargo type, route and timeline to propose the most suitable solution.', icon: '💬' },
+      { num: '02', title: 'Quote & Contract', desc: 'Transparent all-in quote in 2 hours. Clear contract on service scope and SLA.', icon: '📝' },
+      { num: '03', title: 'Operation & Tracking', desc: 'Deploy booking, transport, customs. Real-time tracking and automatic status updates.', icon: '🚀' },
+      { num: '04', title: 'Delivery & Report', desc: 'On-time delivery at destination. Completion report, invoice and service quality evaluation.', icon: '✅' },
+    ],
+    why_kicker: "WHY CHOOSE US",
+    why_h2: "Committed to accompany enterprises",
+    why_p: "Over 10 years of experience, we understand that logistics is not just transport — it's building trust.",
+    why_list: [
+      { icon: '🌍', title: '120+ Countries', desc: 'Global partner network, connecting you to every market.' },
+      { icon: '⚡', title: '2-Hour Quote', desc: 'Get accurate, competitive quotes within 2 business hours.' },
+      { icon: '📡', title: 'Real-time Tracking', desc: 'Track your cargo 24/7 across all transport modes.' },
+      { icon: '🤝', title: 'Expert Team', desc: 'Personnel with 10+ years of experience in logistics and supply chain.' },
+      { icon: '💰', title: 'Competitive Price', desc: 'Leverage volume and negotiate with carriers for the best rates.' },
+      { icon: '🔒', title: 'All-risk Insurance', desc: 'Goods are insured 100% of value throughout the transport journey.' },
+    ],
+    cta_h2: "Need a logistics solution?",
+    cta_p: "Contact us now for a free consultation and the most competitive quote within 2 hours.",
+    cta_btn1: "📋 Request Quote",
+    cta_btn2: "💰 View Pricing",
+  }
+}
 
 /* ═══════════════════════════════════════ CSS ═══════════════════════════════════════ */
 const css = `
@@ -295,6 +439,10 @@ const css = `
 
 /* ═══════════════════════════ Component ═══════════════════════════ */
 export default function Services() {
+  const { i18n } = useTranslation()
+  const lang = i18n.language === 'en' ? 'en' : 'vi'
+  const t = t_ui[lang]
+
   const pageRef = useScrollReveal()
 
   return (
@@ -304,16 +452,14 @@ export default function Services() {
       {/* ═══════ HERO ═══════ */}
       <section className="sv-hero">
         <div className="sv-hero-inner">
-          <div className="kicker rv">STELLA SHIPPING</div>
-          <h1 className="rv d1">Giải pháp <span className="hl">Logistics</span> toàn diện cho doanh nghiệp</h1>
-          <p className="rv d2">
-            Từ vận tải biển, hàng không, đa phương thức đến kho bãi, hải quan và tư vấn supply chain — chúng tôi cung cấp mọi dịch vụ bạn cần cho chuỗi cung ứng hiệu quả.
-          </p>
+          <div className="kicker rv">{t.hero_kicker}</div>
+          <h1 className="rv d1">{t.hero_title_1}<span className="hl">{t.hero_title_hl}</span>{t.hero_title_2}</h1>
+          <p className="rv d2">{t.hero_desc}</p>
           <div className="sv-hero-badges rv d3">
-            <span className="sv-badge">🌍 120+ Quốc gia</span>
-            <span className="sv-badge">🚢 50+ Hãng tàu</span>
-            <span className="sv-badge">✈️ 80+ Sân bay</span>
-            <span className="sv-badge">⚡ Báo giá 2 giờ</span>
+            <span className="sv-badge">{t.hero_b1}</span>
+            <span className="sv-badge">{t.hero_b2}</span>
+            <span className="sv-badge">{t.hero_b3}</span>
+            <span className="sv-badge">{t.hero_b4}</span>
           </div>
         </div>
       </section>
@@ -321,13 +467,13 @@ export default function Services() {
       {/* ═══════ MAIN SERVICES ═══════ */}
       <section className="sv-section">
         <div className="sv-section-hdr rv">
-          <div className="kicker">DỊCH VỤ CỦA CHÚNG TÔI</div>
-          <h2>6 nhóm dịch vụ cốt lõi</h2>
-          <p>Mỗi giải pháp được thiết kế riêng để đáp ứng nhu cầu đa dạng của doanh nghiệp trong chuỗi cung ứng toàn cầu.</p>
+          <div className="kicker">{t.sv_kicker}</div>
+          <h2>{t.sv_h2}</h2>
+          <p>{t.sv_p}</p>
         </div>
 
         <div className="sv-grid">
-          {SERVICES.map((svc, i) => (
+          {t.services.map((svc, i) => (
             <div className={`sv-card rv d${i + 1}`} key={svc.title}>
               <div className="sv-card-img">
                 <img src={svc.img} alt={svc.title} />
@@ -354,20 +500,20 @@ export default function Services() {
                 <div className="sv-card-stats">
                   <div className="sv-card-stat">
                     <strong>{svc.stats.routes}</strong>
-                    <span>Phạm vi</span>
+                    <span>{t.sv_stat_routes}</span>
                   </div>
                   <div className="sv-card-stat">
                     <strong>{svc.stats.carriers}</strong>
-                    <span>Đối tác</span>
+                    <span>{t.sv_stat_carriers}</span>
                   </div>
                   <div className="sv-card-stat">
                     <strong>{svc.stats.delivery}</strong>
-                    <span>Hiệu suất</span>
+                    <span>{t.sv_stat_delivery}</span>
                   </div>
                 </div>
 
                 <Link to={svc.link} className="sv-card-link" style={{ background: `linear-gradient(135deg, ${svc.color}, ${svc.accent})` }}>
-                  Xem chi tiết <span className="arrow">→</span>
+                  {t.sv_btn} <span className="arrow">→</span>
                 </Link>
               </div>
             </div>
@@ -378,13 +524,13 @@ export default function Services() {
       {/* ═══════ QUY TRÌNH ═══════ */}
       <section className="sv-section sv-section-alt">
         <div className="sv-section-hdr rv">
-          <div className="kicker">QUY TRÌNH LÀM VIỆC</div>
-          <h2>4 bước đơn giản để bắt đầu</h2>
-          <p>Quy trình minh bạch, rõ ràng — bạn chỉ cần liên hệ, mọi việc còn lại để Stella Shipping lo.</p>
+          <div className="kicker">{t.proc_kicker}</div>
+          <h2>{t.proc_h2}</h2>
+          <p>{t.proc_p}</p>
         </div>
 
         <div className="sv-process">
-          {PROCESS_STEPS.map((step, i) => (
+          {t.proc_steps.map((step, i) => (
             <div className={`sv-step rv d${i + 1}`} key={step.num}>
               <div className="sv-step-icon">{step.icon}</div>
               <h4>{step.num}. {step.title}</h4>
@@ -397,13 +543,13 @@ export default function Services() {
       {/* ═══════ WHY CHOOSE US ═══════ */}
       <section className="sv-section sv-section-dark">
         <div className="sv-section-hdr rv">
-          <div className="kicker">TẠI SAO CHỌN CHÚNG TÔI</div>
-          <h2>Cam kết đồng hành cùng doanh nghiệp</h2>
-          <p>Hơn 10 năm kinh nghiệm, chúng tôi hiểu rằng logistics không chỉ là vận chuyển — mà là xây dựng niềm tin.</p>
+          <div className="kicker">{t.why_kicker}</div>
+          <h2>{t.why_h2}</h2>
+          <p>{t.why_p}</p>
         </div>
 
         <div className="sv-why-grid">
-          {WHY_CHOOSE.map((item, i) => (
+          {t.why_list.map((item, i) => (
             <div className={`sv-why-card rv d${i + 1}`} key={item.title}>
               <div className="sv-why-icon">{item.icon}</div>
               <h4>{item.title}</h4>
@@ -415,11 +561,11 @@ export default function Services() {
 
       {/* ═══════ CTA ═══════ */}
       <section className="sv-cta">
-        <h2 className="rv">Bạn cần giải pháp logistics?</h2>
-        <p className="rv d1">Liên hệ ngay để nhận tư vấn miễn phí và báo giá cạnh tranh nhất trong vòng 2 giờ.</p>
+        <h2 className="rv">{t.cta_h2}</h2>
+        <p className="rv d1">{t.cta_p}</p>
         <div className="sv-cta-btns rv d2">
-          <Link to="/contact" className="cta-w">📋 Yêu cầu báo giá</Link>
-          <Link to="/pricing" className="cta-o">💰 Xem bảng giá</Link>
+          <Link to="/contact" className="cta-w">{t.cta_btn1}</Link>
+          <Link to="/pricing" className="cta-o">{t.cta_btn2}</Link>
         </div>
       </section>
     </div>

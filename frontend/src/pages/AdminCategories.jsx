@@ -38,7 +38,7 @@ export default function AdminCategories() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState(null);
-  const [form, setForm] = useState({ name: '', slug: '', description: '' });
+  const [form, setForm] = useState({ name: '', slug: '', description: '', name_en: '', description_en: '' });
 
   const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
 
@@ -62,13 +62,19 @@ export default function AdminCategories() {
 
   const openCreate = () => {
     setEditingId(null);
-    setForm({ name: '', slug: '', description: '' });
+    setForm({ name: '', slug: '', description: '', name_en: '', description_en: '' });
     setShowModal(true);
   };
 
   const openEdit = (cat) => {
     setEditingId(cat.id);
-    setForm({ name: cat.name, slug: cat.slug || '', description: cat.description || '' });
+    setForm({ 
+      name: cat.name, 
+      slug: cat.slug || '', 
+      description: cat.description || '',
+      name_en: cat.name_en || '',
+      description_en: cat.description_en || ''
+    });
     setShowModal(true);
   };
 
@@ -173,30 +179,57 @@ export default function AdminCategories() {
               <button className="adm-modal-close" onClick={() => setShowModal(false)}>✕</button>
             </div>
             <form className="adm-modal-body" onSubmit={handleSave}>
-              <div className="adm-form-group">
-                <label>Tên danh mục *</label>
-                <input
-                  value={form.name}
-                  onChange={e => setForm({ ...form, name: e.target.value })}
-                  placeholder="VD: Tin khuyến mãi"
-                  required
-                />
+              <div style={{ display: 'flex', gap: 16 }}>
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ margin: '0 0 12px', color: '#0f2b57' }}>Tiếng Việt</h4>
+                  <div className="adm-form-group">
+                    <label>Tên danh mục *</label>
+                    <input
+                      value={form.name}
+                      onChange={e => setForm({ ...form, name: e.target.value })}
+                      placeholder="VD: Tin khuyến mãi"
+                      required
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label>Mô tả</label>
+                    <textarea
+                      value={form.description}
+                      onChange={e => setForm({ ...form, description: e.target.value })}
+                      rows={3}
+                      placeholder="Mô tả ngắn gọn về danh mục này..."
+                    />
+                  </div>
+                </div>
+
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ margin: '0 0 12px', color: '#0f2b57' }}>Tiếng Anh</h4>
+                  <div className="adm-form-group">
+                    <label>Category Name</label>
+                    <input
+                      value={form.name_en}
+                      onChange={e => setForm({ ...form, name_en: e.target.value })}
+                      placeholder="VD: Promotions"
+                    />
+                  </div>
+                  <div className="adm-form-group">
+                    <label>Description</label>
+                    <textarea
+                      value={form.description_en}
+                      onChange={e => setForm({ ...form, description_en: e.target.value })}
+                      rows={3}
+                      placeholder="Short description for this category..."
+                    />
+                  </div>
+                </div>
               </div>
+              
               <div className="adm-form-group">
                 <label>Slug (Đường dẫn tĩnh)</label>
                 <input
                   value={form.slug}
                   onChange={e => setForm({ ...form, slug: e.target.value })}
                   placeholder="VD: tin-khuyen-mai"
-                />
-              </div>
-              <div className="adm-form-group">
-                <label>Mô tả</label>
-                <textarea
-                  value={form.description}
-                  onChange={e => setForm({ ...form, description: e.target.value })}
-                  rows={3}
-                  placeholder="Mô tả ngắn gọn về danh mục này..."
                 />
               </div>
               <div className="adm-form-footer">

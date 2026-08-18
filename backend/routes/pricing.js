@@ -5,7 +5,7 @@ const pool = require('../db');
 // ─── GET /api/pricing ─── lấy tất cả giá đang active
 router.get('/', async (req, res) => {
   try {
-    const { type } = req.query;
+    const { type, lang } = req.query;
     let sql = 'SELECT * FROM pricing_rates WHERE is_active = 1 ORDER BY service_type, id ASC';
     const params = [];
     if (type) {
@@ -13,7 +13,20 @@ router.get('/', async (req, res) => {
       params.push(type);
     }
     const [rows] = await pool.query(sql, params);
-    res.json(rows);
+    
+    const pricing = rows.map(r => ({
+      ...r,
+      service_type: lang === 'en' ? (r.service_type_en || r.service_type) : r.service_type,
+      route: lang === 'en' ? (r.route_en || r.route) : r.route,
+      origin: lang === 'en' ? (r.origin_en || r.origin) : r.origin,
+      destination: lang === 'en' ? (r.destination_en || r.destination) : r.destination,
+      service: lang === 'en' ? (r.service_en || r.service) : r.service,
+      transit_time: lang === 'en' ? (r.transit_time_en || r.transit_time) : r.transit_time,
+      note: lang === 'en' ? (r.note_en || r.note) : r.note,
+      notes: lang === 'en' ? (r.notes_en || r.notes) : r.notes
+    }));
+    
+    res.json(pricing);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'DB error' });
@@ -36,14 +49,23 @@ router.get('/last-updated', async (req, res) => {
 // ─── POST /api/pricing ─── tạo dòng giá mới (admin)
 router.post('/', async (req, res) => {
   try {
-    const { service_type, route, unit, price_from, currency, transit_time, note, is_active } = req.body;
+    const { 
+      service_type, route, origin, destination, service, unit, price_from, currency, transit_time, note, notes, is_active,
+      service_type_en, route_en, origin_en, destination_en, service_en, transit_time_en, note_en, notes_en 
+    } = req.body;
     if (!service_type || !route || !unit || price_from === undefined) {
       return res.status(400).json({ error: 'Thiếu thông tin bắt buộc' });
     }
     const [result] = await pool.query(
-      `INSERT INTO pricing_rates (service_type, route, unit, price_from, currency, transit_time, note, is_active)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [service_type, route, unit, price_from, currency || 'USD', transit_time || null, note || null, is_active !== undefined ? is_active : 1]
+      `INSERT INTO pricing_rates (
+        service_type, route, origin, destination, service, unit, price_from, currency, transit_time, note, notes, is_active,
+        service_type_en, route_en, origin_en, destination_en, service_en, transit_time_en, note_en, notes_en
+      )
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        service_type, route, origin || null, destination || null, service || null, unit, price_from, currency || 'USD', transit_time || null, note || null, notes || null, is_active !== undefined ? is_active : 1,
+        service_type_en || null, route_en || null, origin_en || null, destination_en || null, service_en || null, transit_time_en || null, note_en || null, notes_en || null
+      ]
     );
     const [rows] = await pool.query('SELECT * FROM pricing_rates WHERE id = ?', [result.insertId]);
     res.status(201).json(rows[0]);
@@ -57,7 +79,10 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { service_type, route, unit, price_from, currency, transit_time, note, is_active } = req.body;
+    const { 
+      service_type, route, origin, destination, service, unit, price_from, currency, transit_time, note, notes, is_active,
+      service_type_en, route_en, origin_en, destination_en, service_en, transit_time_en, note_en, notes_en 
+    } = req.body;
 
     const [check] = await pool.query('SELECT id FROM pricing_rates WHERE id = ?', [id]);
     if (!check.length) return res.status(404).json({ error: 'Not found' });
@@ -66,14 +91,30 @@ router.put('/:id', async (req, res) => {
       `UPDATE pricing_rates SET
         service_type = COALESCE(?, service_type),
         route        = COALESCE(?, route),
+        origin       = ?,
+        destination  = ?,
+        service      = ?,
         unit         = COALESCE(?, unit),
         price_from   = COALESCE(?, price_from),
         currency     = COALESCE(?, currency),
         transit_time = ?,
         note         = ?,
-        is_active    = COALESCE(?, is_active)
+        notes        = ?,
+        is_active    = COALESCE(?, is_active),
+        service_type_en = ?,
+        route_en = ?,
+        origin_en = ?,
+        destination_en = ?,
+        service_en = ?,
+        transit_time_en = ?,
+        note_en = ?,
+        notes_en = ?
        WHERE id = ?`,
-      [service_type, route, unit, price_from, currency, transit_time ?? null, note ?? null, is_active, id]
+      [
+        service_type, route, origin ?? null, destination ?? null, service ?? null, unit, price_from, currency, transit_time ?? null, note ?? null, notes ?? null, is_active,
+        service_type_en ?? null, route_en ?? null, origin_en ?? null, destination_en ?? null, service_en ?? null, transit_time_en ?? null, note_en ?? null, notes_en ?? null,
+        id
+      ]
     );
 
     const [rows] = await pool.query('SELECT * FROM pricing_rates WHERE id = ?', [id]);

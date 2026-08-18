@@ -259,14 +259,14 @@ export default function Navbar() {
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
     axios
-      .get(`${API_URL}/api/nav`)
+      .get(`${API_URL}/api/nav?lang=${i18n.language}`)
       .then((r) => {
         if (r.data && r.data.length > 0) setItems(r.data)
       })
       .catch(() => {
         // giữ nguyên FALLBACK_NAV
       })
-  }, [])
+  }, [i18n.language])
 
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 999 }}>

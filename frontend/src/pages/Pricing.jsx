@@ -356,7 +356,7 @@ export default function Pricing() {
   /* ── Load giá từ API ── */
   useEffect(() => {
     setLoading(true)
-    fetch(API)
+    fetch(`${API}?lang=${i18n.language}`)
       .then(r => r.json())
       .then(data => { setAllRates(Array.isArray(data) ? data : []); setLoading(false) })
       .catch(() => { setAllRates([]); setLoading(false) })
@@ -365,7 +365,7 @@ export default function Pricing() {
       .then(r => r.json())
       .then(d => setLastUpdated(d.last_updated))
       .catch(() => { })
-  }, [])
+  }, [i18n.language])
 
   const rates = allRates.filter(r => r.service_type === activeTab)
   const currentTab = TABS.find(tab => tab.key === activeTab)
