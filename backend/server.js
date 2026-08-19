@@ -109,11 +109,21 @@ app.get('/api/test-add-article', async (req, res) => {
         const [result] = await db.query(
           `INSERT INTO articles (title, description, full_content, category, author, img, read_time, status, title_en, description_en, full_content_en, category_en)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          ['T', 'D', '', 'Công ty', '', '/Banner.jpg', '3 phút', 'draft', '', '', '', '']
+          ['Test formatDate', 'Desc', '', 'Công ty', '', '/Banner.jpg', '3 phút', 'published', '', '', '', '']
         );
-        res.json({ success: true, id: result.insertId });
+        
+        const [rows] = await db.query('SELECT * FROM articles WHERE id = ?', [result.insertId]);
+        const r = rows[0];
+        
+        const formatDate = (dateStr) => {
+          const d = new Date(dateStr);
+          return `${d.getDate()} Thg ${('0' + (d.getMonth() + 1)).slice(-2)}, ${d.getFullYear()}`;
+        };
+        const date = formatDate(r.created_at);
+        
+        res.json({ success: true, id: r.id, date: date });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message, stack: err.stack });
     }
 });
 
