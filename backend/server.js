@@ -66,6 +66,34 @@ app.get('/api/init-newsletter', async (req, res) => {
     }
 });
 
+// TẠM THỜI: Endpoint chạy i18n_migration trên production
+app.get('/api/init-i18n', async (req, res) => {
+    try {
+        const queries = [
+            "ALTER TABLE articles ADD COLUMN title_en VARCHAR(500) AFTER title",
+            "ALTER TABLE articles ADD COLUMN description_en TEXT AFTER description",
+            "ALTER TABLE articles ADD COLUMN full_content_en TEXT AFTER full_content",
+            "ALTER TABLE articles ADD COLUMN category_en VARCHAR(100) AFTER category",
+            "ALTER TABLE categories ADD COLUMN name_en VARCHAR(255) AFTER name",
+            "ALTER TABLE categories ADD COLUMN description_en TEXT AFTER description",
+            "ALTER TABLE navigation ADD COLUMN label_en VARCHAR(255) AFTER label",
+            "ALTER TABLE pricing_rates ADD COLUMN route_en VARCHAR(255) AFTER route",
+            "ALTER TABLE pricing_rates ADD COLUMN origin_en VARCHAR(255) AFTER origin",
+            "ALTER TABLE pricing_rates ADD COLUMN destination_en VARCHAR(255) AFTER destination",
+            "ALTER TABLE pricing_rates ADD COLUMN service_en VARCHAR(100) AFTER service",
+            "ALTER TABLE pricing_rates ADD COLUMN service_type_en VARCHAR(100) AFTER service_type",
+            "ALTER TABLE pricing_rates ADD COLUMN note_en TEXT AFTER note",
+            "ALTER TABLE pricing_rates ADD COLUMN notes_en TEXT AFTER notes"
+        ];
+        for (const query of queries) {
+            try { await db.query(query); } catch (e) { /* ignore duplicate column */ }
+        }
+        res.send("✅ Đã chạy i18n migration thành công!");
+    } catch (err) {
+        res.status(500).send("❌ Lỗi: " + err.message);
+    }
+});
+
 app.use('/api/nav', navRoute);
 app.use('/api/articles', articlesRoute);
 app.use('/api/pricing', pricingRoute);
