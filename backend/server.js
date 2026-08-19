@@ -94,6 +94,29 @@ app.get('/api/init-i18n', async (req, res) => {
     }
 });
 
+// TẠM THỜI: Endpoint kiểm tra schema
+app.get('/api/test-db', async (req, res) => {
+    try {
+        const [rows] = await db.query("DESCRIBE articles;");
+        res.json(rows);
+    } catch (err) {
+        res.status(500).send("Lỗi: " + err.message);
+    }
+});
+
+app.get('/api/test-add-article', async (req, res) => {
+    try {
+        const [result] = await db.query(
+          `INSERT INTO articles (title, description, full_content, category, author, img, read_time, status, title_en, description_en, full_content_en, category_en)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          ['T', 'D', '', 'Công ty', '', '/Banner.jpg', '3 phút', 'draft', '', '', '', '']
+        );
+        res.json({ success: true, id: result.insertId });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 app.use('/api/nav', navRoute);
 app.use('/api/articles', articlesRoute);
 app.use('/api/pricing', pricingRoute);
