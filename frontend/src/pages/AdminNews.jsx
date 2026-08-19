@@ -207,13 +207,20 @@ export default function AdminNews() {
   }
 
   /* ── Save ── */
-  const handleSave = (e) => {
-    e.preventDefault()
+  const handleSave = (e, targetStatus) => {
+    if (e) e.preventDefault()
     if (!form.title.trim() || !form.desc.trim()) return alert('Vui lòng điền tiêu đề và mô tả.')
+    
+    // Sử dụng targetStatus được truyền vào, hoặc giữ nguyên form.status nếu không có
+    const payload = { ...form }
+    if (targetStatus) {
+      payload.status = targetStatus
+    }
+
     if (editingId) {
-      updateArticle(editingId, form)
+      updateArticle(editingId, payload)
     } else {
-      addArticle(form)
+      addArticle(payload)
     }
     setShowEditor(false)
     setForm({ ...emptyForm })
@@ -434,9 +441,9 @@ export default function AdminNews() {
               <div className="adm-form-footer">
                 <button type="button" className="adm-btn adm-btn-outline" onClick={() => setShowEditor(false)}>Hủy</button>
                 {!editingId && (
-                  <button type="submit" className="adm-btn adm-btn-secondary" onClick={() => setForm(f => ({ ...f, status: 'draft' }))}>💾 Lưu nháp</button>
+                  <button type="button" className="adm-btn adm-btn-secondary" onClick={(e) => handleSave(e, 'draft')}>💾 Lưu nháp</button>
                 )}
-                <button type="submit" className="adm-btn adm-btn-primary" onClick={() => { if (!editingId) setForm(f => ({ ...f, status: 'published' })) }}>
+                <button type="button" className="adm-btn adm-btn-primary" onClick={(e) => handleSave(e, 'published')}>
                   {editingId ? '💾 Cập nhật' : '🚀 Xuất bản'}
                 </button>
               </div>

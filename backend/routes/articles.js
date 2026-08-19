@@ -193,8 +193,9 @@ router.put('/:id', verifyToken, async (req, res) => {
     const { title, desc, fullDesc, category, author, img, readTime, status, title_en, desc_en, fullDesc_en, category_en } = req.body;
     const { id } = req.params;
 
-    const [check] = await pool.query('SELECT id FROM articles WHERE id = ?', [id]);
+    const [check] = await pool.query('SELECT id, status FROM articles WHERE id = ?', [id]);
     if (!check.length) return res.status(404).json({ error: 'Not found' });
+    const oldStatus = check[0].status;
 
     await pool.query(
       `UPDATE articles SET
@@ -229,8 +230,8 @@ router.put('/:id', verifyToken, async (req, res) => {
       date: formatDate(r.created_at),
     });
 
-    // Gửi newsletter nếu bài viết được publish
-    if (status === 'published') {
+    // Chỉ gửi newsletter nếu bài viết vừa được chuyển từ draft -> published
+    if (status === 'published' && oldStatus !== 'published') {
       sendNewsletterEmail(r);
     }
   } catch (err) {
