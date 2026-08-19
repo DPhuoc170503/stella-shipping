@@ -56,6 +56,16 @@ app.get('/api/init-db', async (req, res) => {
 });
 */
 
+// TẠM THỜI: Endpoint tạo bảng subscribers trên production (xóa sau khi chạy xong)
+app.get('/api/init-newsletter', async (req, res) => {
+    try {
+        await executeSqlFile(path.join(__dirname, 'newsletter_migration.sql'));
+        res.send("✅ Bảng subscribers đã được tạo thành công!");
+    } catch (err) {
+        res.status(500).send("❌ Lỗi: " + err.message);
+    }
+});
+
 app.use('/api/nav', navRoute);
 app.use('/api/articles', articlesRoute);
 app.use('/api/pricing', pricingRoute);
