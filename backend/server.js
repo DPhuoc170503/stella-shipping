@@ -15,6 +15,7 @@ const statsRoute = require('./routes/stats');
 const authRoute = require('./routes/auth');
 const usersRoute = require('./routes/users');
 const categoriesRoute = require('./routes/categories');
+const newsletterRoute = require('./routes/newsletter');
 
 dotenv.config();
 const app = express();
@@ -65,6 +66,7 @@ app.use('/api/stats', statsRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/categories', categoriesRoute);
+app.use('/api/newsletter', newsletterRoute);
 
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Backend running on http://localhost:${port}`));

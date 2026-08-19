@@ -231,13 +231,40 @@ export default function FFotter() {
   const { t } = useTranslation()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
 
-  function handleSubscribe(e) {
+  async function handleSubscribe(e) {
     e.preventDefault()
-    if (email.trim()) {
-      setSubscribed(true)
-      setEmail('')
-      setTimeout(() => setSubscribed(false), 4000)
+    if (!email.trim()) return
+
+    setLoading(true)
+    setErrorMsg('')
+    setSubscribed(false)
+
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
+      const res = await fetch(`${API_URL}/api/newsletter/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim() })
+      })
+
+      const data = await res.json()
+
+      if (res.ok) {
+        setSubscribed(true)
+        setEmail('')
+        setTimeout(() => setSubscribed(false), 5000)
+      } else {
+        setErrorMsg(data.error || 'Có lỗi xảy ra, vui lòng thử lại.')
+        setTimeout(() => setErrorMsg(''), 4000)
+      }
+    } catch (err) {
+      setErrorMsg('Không thể kết nối đến máy chủ.')
+      setTimeout(() => setErrorMsg(''), 4000)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -272,10 +299,14 @@ export default function FFotter() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  disabled={loading}
                 />
-                <button className="sf-newsletter-btn" type="submit">{t('footer.newsletter_btn')}</button>
+                <button className="sf-newsletter-btn" type="submit" disabled={loading} style={loading ? { opacity: 0.7, cursor: 'not-allowed' } : {}}>
+                  {loading ? '...' : t('footer.newsletter_btn')}
+                </button>
               </form>
               {subscribed && <div className="sf-newsletter-ok">{t('footer.newsletter_success')}</div>}
+              {errorMsg && <div style={{ color: '#f87171', fontSize: '13px', marginTop: '8px' }}>{errorMsg}</div>}
             </div>
           </div>
 
@@ -355,9 +386,9 @@ export default function FFotter() {
             © {new Date().getFullYear()} <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>Stella Shipping</Link>. {t('footer.rights')}
           </div>
           <div className="sf-bottom-links">
-            <a href="#">{t('footer.privacy')}</a>
-            <a href="#">{t('footer.terms')}</a>
-            <a href="#">{t('footer.cookie')}</a>
+            <Link to="/policies">{t('footer.privacy')}</Link>
+            <Link to="/policies">{t('footer.terms')}</Link>
+            <Link to="/policies">{t('footer.cookie')}</Link>
           </div>
           <div className="sf-bottom-badge">
             <span className="sf-pulse" />

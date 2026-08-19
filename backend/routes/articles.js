@@ -2,6 +2,75 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { verifyToken } = require('../middleware/auth');
+const nodemailer = require('nodemailer');
+
+// ─── Helper: Gửi email bài viết mới đến tất cả subscribers ───
+async function sendNewsletterEmail(article) {
+  try {
+    // Lấy tất cả subscriber đang active
+    const [subscribers] = await pool.query('SELECT email FROM subscribers WHERE is_active = 1');
+    if (!subscribers.length) return;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS
+      }
+    });
+
+    const SITE_URL = process.env.SITE_URL || 'https://stellashipping.com.vn';
+    const API_URL = process.env.API_URL || 'https://stella-shipping.onrender.com';
+    const articleUrl = `${SITE_URL}/news/${article.id}`;
+    const imgUrl = article.img ? (article.img.startsWith('http') ? article.img : `${API_URL}${article.img}`) : '';
+
+    // Gửi email cho từng subscriber
+    for (const sub of subscribers) {
+      const unsubscribeUrl = `${API_URL}/api/newsletter/unsubscribe?email=${encodeURIComponent(sub.email)}`;
+
+      const mailOptions = {
+        from: `"Stella Shipping" <${process.env.GMAIL_USER}>`,
+        to: sub.email,
+        subject: `📰 Bài viết mới: ${article.title}`,
+        html: `
+          <div style="font-family:'Inter','Segoe UI',Arial,sans-serif;max-width:600px;margin:0 auto;background:#ffffff;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+            <!-- Header -->
+            <div style="background:linear-gradient(135deg,#081d34,#0f2b57);padding:28px 32px;text-align:center;">
+              <h1 style="margin:0;color:#fff;font-size:20px;font-weight:700;">🚢 Stella Shipping</h1>
+              <p style="margin:6px 0 0;color:rgba(255,255,255,0.6);font-size:12px;letter-spacing:2px;">BẢN TIN MỚI NHẤT</p>
+            </div>
+
+            <!-- Image -->
+            ${imgUrl ? `<img src="${imgUrl}" alt="${article.title}" style="width:100%;height:240px;object-fit:cover;display:block;" />` : ''}
+
+            <!-- Content -->
+            <div style="padding:28px 32px;">
+              <span style="display:inline-block;background:rgba(243,108,31,0.1);color:#f36c1f;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:12px;letter-spacing:1px;">${article.category || 'TIN TỨC'}</span>
+              <h2 style="margin:0 0 12px;font-size:20px;color:#0f2b57;line-height:1.4;">${article.title}</h2>
+              <p style="margin:0 0 20px;font-size:14px;color:#6b7280;line-height:1.7;">${article.description || ''}</p>
+              <a href="${articleUrl}" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#f36c1f,#e05a10);color:#fff;text-decoration:none;border-radius:8px;font-weight:700;font-size:14px;">Đọc bài viết →</a>
+            </div>
+
+            <!-- Footer -->
+            <div style="background:#f9fafb;padding:20px 32px;text-align:center;border-top:1px solid #e5e7eb;">
+              <p style="margin:0;font-size:12px;color:#9ca3af;">Bạn nhận được email này vì đã đăng ký bản tin Stella Shipping.</p>
+              <a href="${unsubscribeUrl}" style="color:#f36c1f;font-size:12px;text-decoration:underline;margin-top:4px;display:inline-block;">Hủy đăng ký</a>
+            </div>
+          </div>
+        `
+      };
+
+      // Gửi không đồng bộ, không block response
+      transporter.sendMail(mailOptions).catch(err => {
+        console.error(`Lỗi gửi newsletter đến ${sub.email}:`, err.message);
+      });
+    }
+
+    console.log(`Newsletter đã gửi đến ${subscribers.length} subscriber(s)`);
+  } catch (err) {
+    console.error('Lỗi gửi newsletter:', err);
+  }
+}
 
 // ─── GET /api/articles ─── lấy tất cả bài (có thể filter ?status=published)
 router.get('/', async (req, res) => {
@@ -107,6 +176,11 @@ router.post('/', verifyToken, async (req, res) => {
       status: r.status,
       date: formatDate(r.created_at),
     });
+
+    // Gửi newsletter nếu bài viết được publish
+    if ((status || 'draft') === 'published') {
+      sendNewsletterEmail(r);
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'DB error' });
@@ -154,6 +228,11 @@ router.put('/:id', verifyToken, async (req, res) => {
       status: r.status,
       date: formatDate(r.created_at),
     });
+
+    // Gửi newsletter nếu bài viết được publish
+    if (status === 'published') {
+      sendNewsletterEmail(r);
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'DB error' });
