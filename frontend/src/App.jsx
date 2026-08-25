@@ -26,7 +26,7 @@ const LogisticsService = lazy(() => import('./pages/LogisticsService'));
 const Dedicated = lazy(() => import('./pages/Dedicated'));
 const Charters = lazy(() => import('./pages/Charters'));
 const TrackTrace = lazy(() => import('./pages/TrackTrace'));
-const FindYourLocalOffices = lazy(() => import('./pages/FindYourLocalOffices'));
+const FindYourLocalOffices = lazy(() => import('./pages/Findyourlocaloffices'));
 const Policies = lazy(() => import('./pages/Policies'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
