@@ -28,49 +28,32 @@ router.put('/:id', verifyToken, async (req, res) => {
   }
 });
 
-// ─── POST /api/quotes ─── Gửi email yêu cầu báo giá VÀ lưu vào DB
-router.post('/', async (req, res) => {
-  const { name, company, email, phone, origin, destination, service, cargo, note } = req.body;
-
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Thiếu tên hoặc email' });
+// ─── Tạo transporter 1 lần duy nhất, tái sử dụng cho mọi request ───
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS
   }
+});
 
-  // 1. Lưu vào Database
-  try {
-    await db.query(
-      `INSERT INTO quotes (name, email, phone, company, origin, destination, service, cargo, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [name, email, phone || null, company || null, origin || null, destination || null, service || null, cargo || null, note || null]
-    );
-  } catch (dbError) {
-    console.error('Lỗi lưu báo giá vào DB:', dbError);
-    // Vẫn tiếp tục để cố gắng gửi email
-  }
+// Tên dịch vụ cho đẹp
+const serviceNames = {
+  sea_fcl: 'Vận tải biển FCL',
+  sea_lcl: 'Vận tải biển LCL',
+  air: 'Vận tải hàng không',
+  road: 'Vận tải đường bộ',
+  warehouse: 'Dịch vụ kho bãi'
+};
 
-  // 2. Cấu hình transporter với Gmail
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS
-    }
-  });
-
-  // Tên dịch vụ cho đẹp
-  const serviceNames = {
-    sea_fcl: 'Vận tải biển FCL',
-    sea_lcl: 'Vận tải biển LCL',
-    air: 'Vận tải hàng không',
-    road: 'Vận tải đường bộ',
-    warehouse: 'Dịch vụ kho bãi'
-  };
+// ─── Hàm gửi email chạy background (không block request) ───
+function sendQuoteEmailInBackground({ name, company, email, phone, origin, destination, service, cargo, note }) {
   const serviceDisplay = serviceNames[service] || service;
 
   const mailOptions = {
-    from: `"${name}" <${email}>`, // Người gửi là email khách (tuy nhiên Gmail sẽ ghi đè sender thật là GMAIL_USER, dùng replyTo để rep khách)
+    from: `"${name}" <${email}>`,
     replyTo: email,
-    to: process.env.GMAIL_USER, // Gửi thẳng về mail của bạn
+    to: process.env.GMAIL_USER,
     subject: `[Stella Shipping] Yêu cầu báo giá mới từ ${name} ${company ? `(${company})` : ''}`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;">
@@ -125,14 +108,37 @@ router.post('/', async (req, res) => {
     `
   };
 
-  try {
-    await transporter.sendMail(mailOptions);
-    res.json({ success: true, message: 'Đã gửi yêu cầu báo giá thành công' });
-  } catch (error) {
-    console.error('Lỗi gửi email:', error);
-    // Vẫn trả về success nếu đã lưu DB thành công, hoặc trả về error
-    res.json({ success: true, message: 'Đã lưu yêu cầu báo giá thành công (Email bị lỗi)' });
+  // Gửi email không await — chạy background, chỉ log kết quả
+  transporter.sendMail(mailOptions)
+    .then(() => console.log(`✅ Email báo giá đã gửi thành công cho ${name}`))
+    .catch(err => console.error('❌ Lỗi gửi email báo giá:', err.message));
+}
+
+// ─── POST /api/quotes ─── Lưu vào DB rồi trả response ngay, gửi email background ───
+router.post('/', async (req, res) => {
+  const { name, company, email, phone, origin, destination, service, cargo, note } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({ error: 'Thiếu tên hoặc email' });
   }
+
+  // 1. Lưu vào Database
+  try {
+    await db.query(
+      `INSERT INTO quotes (name, email, phone, company, origin, destination, service, cargo, note)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [name, email, phone || null, company || null, origin || null, destination || null, service || null, cargo || null, note || null]
+    );
+  } catch (dbError) {
+    console.error('Lỗi lưu báo giá vào DB:', dbError);
+    return res.status(500).json({ error: 'Lỗi lưu dữ liệu' });
+  }
+
+  // 2. Trả response ngay cho client — không chờ email
+  res.json({ success: true, message: 'Đã gửi yêu cầu báo giá thành công' });
+
+  // 3. Gửi email thông báo ở background (không block response)
+  sendQuoteEmailInBackground({ name, company, email, phone, origin, destination, service, cargo, note });
 });
 
 module.exports = router;

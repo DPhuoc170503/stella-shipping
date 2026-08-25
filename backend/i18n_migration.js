@@ -9,6 +9,7 @@ async function migrate() {
       "ALTER TABLE articles ADD COLUMN title_en VARCHAR(500) AFTER title;",
       "ALTER TABLE articles ADD COLUMN description_en TEXT AFTER description;",
       "ALTER TABLE articles ADD COLUMN full_content_en TEXT AFTER full_content;",
+      "ALTER TABLE articles ADD COLUMN category_en VARCHAR(100) AFTER category;",
       
       "ALTER TABLE categories ADD COLUMN name_en VARCHAR(255) AFTER name;",
       "ALTER TABLE categories ADD COLUMN description_en TEXT AFTER description;",

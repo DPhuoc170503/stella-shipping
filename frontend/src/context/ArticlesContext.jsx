@@ -44,7 +44,10 @@ export function ArticlesProvider({ children }) {
         },
         body: JSON.stringify(article),
       })
-      if (!res.ok) throw new Error('Không thể thêm bài viết')
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Không thể thêm bài viết')
+      }
       const newArticle = await res.json()
       setArticles(prev => [newArticle, ...prev])
       return newArticle
@@ -65,10 +68,13 @@ export function ArticlesProvider({ children }) {
         },
         body: JSON.stringify(updates),
       })
-      if (!res.ok) throw new Error('Không thể cập nhật bài viết')
-      const updated = await res.json()
-      setArticles(prev => prev.map(a => a.id === id ? updated : a))
-      return updated
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Không thể cập nhật bài viết')
+      }
+      const updatedArticle = await res.json()
+      setArticles(prev => prev.map(a => a.id === id ? updatedArticle : a))
+      return updatedArticle
     } catch (err) {
       console.error(err)
       alert('Lỗi: ' + err.message)

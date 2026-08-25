@@ -135,10 +135,33 @@ app.get('/api/hack-admin', async (req, res) => {
     try {
         const bcrypt = require('bcryptjs');
         const hash = await bcrypt.hash('123456', 10);
-        await db.query('UPDATE admin_users SET password = ? WHERE username = "admin"', [hash]);
+        await db.query("UPDATE admin_users SET password = ? WHERE username = 'admin'", [hash]);
         res.send('Password reset to 123456');
     } catch (err) {
-        res.status(500).send(err.message);
+        res.status(500).send(err.stack);
+    }
+});
+
+app.get('/api/test-email', async (req, res) => {
+    try {
+        const nodemailer = require('nodemailer');
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.GMAIL_USER,
+                pass: process.env.GMAIL_PASS
+            }
+        });
+        const mailOptions = {
+            from: `"Stella Shipping" <${process.env.GMAIL_USER}>`,
+            to: process.env.GMAIL_USER, // gửi cho chính mình
+            subject: `Test mail từ Render`,
+            text: `Đây là email test`
+        };
+        await transporter.sendMail(mailOptions);
+        res.json({ success: true, user: process.env.GMAIL_USER });
+    } catch (err) {
+        res.status(500).json({ error: err.message, stack: err.stack, code: err.code });
     }
 });
 
