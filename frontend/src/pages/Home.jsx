@@ -611,9 +611,7 @@ export default function Home() {
           {(articles && articles.filter(a => a.status === 'published').length > 0
             ? articles.filter(a => a.status === 'published')
             : [
-              { id: 1, img: '/Banner.jpg', category: 'NGÀNH', title: 'Xu hướng logistics xanh 2024: Cơ hội và thách thức', desc: 'Phân tích chi tiết về các sáng kiến giảm carbon trong vận tải biển và tác động đến chi phí chuỗi cung ứng.', date: '12/08/2024' },
-              { id: 2, img: '/AirFreight.jpg', category: 'DỊCH VỤ', title: 'Stella mở tuyến air freight trực tiếp TP.HCM – Frankfurt', desc: 'Rút ngắn thời gian transit xuống 2 ngày so với tuyến truyền thống, phục vụ nhu cầu hàng khẩn cấp sang EU.', date: '05/08/2024' },
-              { id: 3, img: '/INTERMODA.jpg', category: 'CÔNG NGHỆ', title: 'Ra mắt Cổng khách hàng 3.0 với AI dự đoán ETA', desc: 'Ứng dụng trí tuệ nhân tạo để dự đoán thời gian đến chính xác đến 95%, giúp khách hàng chủ động lên kế hoạch.', date: '28/07/2024' }
+              { id: 1, img: '/Banner.jpg', category: 'NGÀNH', title: 'Xu hướng logistics xanh 2024: Cơ hội và thách thức', desc: 'Phân tích chi tiết về các sáng kiến giảm carbon trong vận tải biển và tác động đến chi phí chuỗi cung ứng.', date: '12/08/2024' }
             ]
           ).map((n, i) => (
             <div key={i} className="hm-news-card">
