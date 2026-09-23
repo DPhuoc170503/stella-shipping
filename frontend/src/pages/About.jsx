@@ -100,15 +100,7 @@ const t_ui = {
     story_l2: "Hệ thống kho bãi 15.000m² tại TP.HCM, Hà Nội và Đà Nẵng",
     story_l3: "Đối tác với 50+ hãng tàu và hãng hàng không quốc tế",
     story_l4: "Hệ thống tracking real-time và cổng khách hàng trực tuyến",
-    tl_kicker: "CỘT MỐC PHÁT TRIỂN",
-    tl_h2: "Hành trình 10 năm kiến tạo giá trị",
-    tl_p: "Từ những bước đi đầu tiên đến vị thế hàng đầu khu vực — mỗi cột mốc đánh dấu sự nỗ lực không ngừng của đội ngũ Stella Shipping.",
-    tl_list: [
-      { year: '2023', title: 'Thành lập Stella Shipping', desc: 'Khởi đầu với dịch vụ giao nhận nội địa và forwarding cơ bản tại TP.HCM. Đội ngũ ban đầu chỉ 5 người với tầm nhìn lớn.' },
-      { year: '2024', title: 'Mở rộng ra miền Bắc', desc: 'Khai trương văn phòng Hà Nội, bổ sung dịch vụ vận tải biển quốc tế FCL/LCL và xử lý thủ tục hải quan.' },
-      { year: '2025', title: 'Hệ thống kho bãi hiện đại', desc: 'Đầu tư 15.000m² kho bãi với hệ thống quản lý WMS tiên tiến, nâng cao năng lực lưu trữ và cross-docking.' },
-      { year: '2026', title: 'Chuyển đổi số toàn diện', desc: 'Ra mắt cổng khách hàng online, hệ thống tracking real-time và API tích hợp ERP cho doanh nghiệp lớn.' },
-    ],
+
     vid_kicker: "VIDEO GIỚI THIỆU",
     vid_h2: "Khám phá Stella Shipping qua góc nhìn thực tế",
     vid_p: "Hãy cùng chúng tôi khám phá quy trình vận hành chuyên nghiệp — từ cảng biển đến kho hàng, từ thủ tục hải quan đến giao nhận tận nơi.",
@@ -353,20 +345,6 @@ const aboutPageCSS = `
   .abt-story-img { border-radius: 14px; overflow: hidden; box-shadow: 0 12px 40px rgba(10,20,40,.1) }
   .abt-story-img img { width: 100%; height: 100%; object-fit: cover; display: block }
 
-  /* ── Timeline ── */
-  .abt-timeline { position: relative; max-width: 800px; margin: 0 auto; padding-left: 40px }
-  .abt-timeline::before {
-    content: ''; position: absolute; left: 15px; top: 0; bottom: 0; width: 3px;
-    background: linear-gradient(180deg, #f36c1f, #0f2b57);
-  }
-  .abt-tl-item { position: relative; margin-bottom: 36px; padding-left: 20px }
-  .abt-tl-item::before {
-    content: ''; position: absolute; left: -29px; top: 6px; width: 14px; height: 14px;
-    background: #f36c1f; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 0 0 3px rgba(243,108,31,.25);
-  }
-  .abt-tl-year { font-weight: 800; color: #f36c1f; font-size: 18px; margin-bottom: 4px }
-  .abt-tl-title { font-weight: 700; color: #0f2b57; font-size: 16px; margin-bottom: 4px }
-  .abt-tl-desc { color: #5a6f82; font-size: 14px; line-height: 1.6 }
 
   /* ── Video section ── */
   .abt-video-section { position: relative; padding: 80px 24px; text-align: center; overflow: hidden }
@@ -505,7 +483,6 @@ const aboutPageCSS = `
     .abt-hero-content h1 { font-size: 32px }
     .abt-mv-grid, .abt-story, .abt-cap-grid, .abt-testimonials, .abt-team-grid { grid-template-columns: 1fr }
     .abt-stats-bar, .abt-values-grid, .abt-network-grid { grid-template-columns: repeat(2, 1fr) }
-    .abt-timeline { padding-left: 30px }
   }
   @media(max-width: 600px) {
     .abt-stats-bar, .abt-values-grid, .abt-network-grid { grid-template-columns: 1fr }
@@ -589,29 +566,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ═══════════════ 5. LỊCH SỬ PHÁT TRIỂN ═══════════════ */}
-      <section className="abt-section abt-section-alt">
-        <div className="abt-section-header reveal">
-          <div className="kicker">CỘT MỐC PHÁT TRIỂN</div>
-          <h2>Hành trình 10 năm kiến tạo giá trị</h2>
-          <p>Từ những bước đi đầu tiên đến vị thế hàng đầu khu vực — mỗi cột mốc đánh dấu sự nỗ lực không ngừng của đội ngũ Stella Shipping.</p>
-        </div>
-        <div className="abt-timeline">
-          {[
-            { year: '2023', title: 'Thành lập Stella Shipping', desc: 'Khởi đầu với dịch vụ giao nhận nội địa và forwarding cơ bản tại TP.HCM. Đội ngũ ban đầu chỉ 5 người với tầm nhìn lớn.' },
-            { year: '2024', title: 'Mở rộng ra miền Bắc', desc: 'Khai trương văn phòng Hà Nội, bổ sung dịch vụ vận tải biển quốc tế FCL/LCL và xử lý thủ tục hải quan.' },
-            { year: '2025', title: 'Hệ thống kho bãi hiện đại', desc: 'Đầu tư 15.000m² kho bãi với hệ thống quản lý WMS tiên tiến, nâng cao năng lực lưu trữ và cross-docking.' },
-            { year: '2026', title: 'Chuyển đổi số toàn diện', desc: 'Ra mắt cổng khách hàng online, hệ thống tracking real-time và API tích hợp ERP cho doanh nghiệp lớn.' },
 
-          ].map((item, i) => (
-            <div key={i} className={`abt-tl-item reveal delay-${Math.min(i + 1, 5)}`}>
-              <div className="abt-tl-year">{item.year}</div>
-              <div className="abt-tl-title">{item.title}</div>
-              <div className="abt-tl-desc">{item.desc}</div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ═══════════════ 6. VIDEO GIỚI THIỆU ═══════════════ */}
       <section className="abt-video-section" id="video-section">
