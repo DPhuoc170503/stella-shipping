@@ -78,7 +78,7 @@ const t_ui = {
   vi: {
     kicker: "VỀ STELLA SHIPPING",
     hero_h1: "Đối tác Logistics\nĐáng tin cậy \nĐông Nam Á",
-    hero_p: "Hơn 10 năm kết nối chuỗi cung ứng toàn cầu — từ cảng đến kho, từ hải quan tới giao nhận nội địa. Chúng tôi tối ưu chi phí, giảm rủi ro và đảm bảo thời gian giao hàng cho mọi quy mô doanh nghiệp.",
+    hero_p: "Kết nối chuỗi cung ứng toàn cầu — từ cảng đến kho, từ hải quan tới giao nhận nội địa. Chúng tôi tối ưu chi phí, giảm rủi ro và đảm bảo thời gian giao hàng cho mọi quy mô doanh nghiệp.",
     btn_contact: "Yêu cầu tư vấn",
     btn_video: "Xem video giới thiệu ▶",
     stat_1: "Năm kinh nghiệm",
@@ -112,9 +112,7 @@ const t_ui = {
       { title: 'Vận tải biển (FCL & LCL)', desc: 'Booking container tuyến toàn cầu, đàm phán giá cước cạnh tranh với 50+ hãng tàu. Hỗ trợ hàng nguy hiểm, quá khổ và reefer.' },
       { title: 'Vận tải hàng không', desc: 'Dịch vụ air freight cho hàng khẩn cấp, giá trị cao. Kết nối các sân bay quốc tế lớn với thời gian transit nhanh nhất.' },
       { title: 'Vận tải đa phương thức', desc: 'Kết hợp đường biển – bộ – sắt – hàng không linh hoạt, tối ưu chi phí và thời gian cho từng lô hàng.' },
-      { title: 'Kho bãi & Phân phối', desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Dịch vụ cross-docking, pick-pack, quản lý tồn kho và last-mile delivery.' },
       { title: 'Thủ tục Hải quan', desc: 'Đội ngũ khai báo hải quan chuyên nghiệp, tư vấn mã HS, C/O, hồ sơ xuất nhập khẩu. Cam kết thông quan trong 24h.' },
-      { title: 'Tư vấn chuỗi cung ứng', desc: 'Phân tích và tối ưu toàn bộ chuỗi cung ứng: lộ trình, chi phí, rủi ro. Giải pháp SCM tùy chỉnh cho từng ngành hàng.' },
     ],
     net_kicker: "MẠNG LƯỚI TOÀN CẦU",
     net_h2: "Kết nối mọi điểm đến trên thế giới",
@@ -206,9 +204,7 @@ const t_ui = {
       { title: 'Ocean Freight (FCL & LCL)', desc: 'Global container booking, negotiating competitive freight rates with 50+ shipping lines. Supporting dangerous, oversized, and reefer cargo.' },
       { title: 'Air Freight', desc: 'Air freight services for urgent, high-value cargo. Connecting major international airports with the fastest transit times.' },
       { title: 'Intermodal Transport', desc: 'Flexibly combining sea - land - rail - air, optimizing costs and time for each shipment.' },
-      { title: 'Warehousing & Distribution', desc: '15,000m² warehouse system with modern WMS. Cross-docking, pick-pack, inventory management, and last-mile delivery services.' },
       { title: 'Customs Clearance', desc: 'Professional customs declaration team, consulting on HS codes, C/O, import-export documents. Committed to 24h clearance.' },
-      { title: 'Supply Chain Consulting', desc: 'Analyzing and optimizing the entire supply chain: routes, costs, risks. Customized SCM solutions for each industry.' },
     ],
     net_kicker: "GLOBAL NETWORK",
     net_h2: "Connecting every destination in the world",
@@ -382,10 +378,12 @@ const aboutPageCSS = `
   .abt-video-placeholder span { color: rgba(255,255,255,.85); margin-top: 14px; font-weight: 600; font-size: 15px; letter-spacing: 1px }
 
   /* ── Services capabilities ── */
-  .abt-cap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto }
+  .abt-cap-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 24px; max-width: 1100px; margin: 0 auto; scroll-behavior: smooth; scrollbar-width: none; padding-bottom: 16px; }
+  .abt-cap-grid::-webkit-scrollbar { display: none; }
   .abt-cap-card {
+    flex: 0 0 calc(33.3333% - 16px);
     background: #fff; border-radius: 14px; overflow: hidden; transition: transform .3s, box-shadow .3s;
-    box-shadow: 0 6px 24px rgba(10,20,40,.05);
+    box-shadow: 0 6px 24px rgba(10,20,40,.05); scroll-snap-align: start;
   }
   .abt-cap-card:hover { transform: translateY(-6px); box-shadow: 0 16px 44px rgba(10,20,40,.1) }
   .abt-cap-card img { width: 100%; height: 180px; object-fit: cover }
@@ -496,6 +494,12 @@ export default function About() {
 
   const pageRef = useScrollReveal()
   const [videoPlaying, setVideoPlaying] = useState(false)
+  const capSliderRef = useRef(null)
+  const scrollCap = (dir) => {
+    if (capSliderRef.current) {
+      capSliderRef.current.scrollBy({ left: dir * 375, behavior: 'smooth' })
+    }
+  }
 
   return (
     <main ref={pageRef}>
@@ -577,7 +581,7 @@ export default function About() {
           <div className="abt-video-wrapper reveal scale-up delay-3">
             {videoPlaying ? (
               <iframe
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&rel=0"
+                src="https://www.youtube.com/embed/czv17sB12Tw?autoplay=1&rel=0"
                 title="Stella Shipping Introduction"
                 allow="autoplay; encrypted-media"
                 allowFullScreen
@@ -598,15 +602,17 @@ export default function About() {
           <div className="kicker">{t.cap_kicker}</div>
           <h2>{t.cap_h2}</h2>
           <p>{t.cap_p}</p>
+          <div style={{ marginTop: 24, display: 'flex', gap: 10, justifyContent: 'center' }}>
+            <button onClick={() => scrollCap(-1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 40, height: 40, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❮</button>
+            <button onClick={() => scrollCap(1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 40, height: 40, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❯</button>
+          </div>
         </div>
-        <div className="abt-cap-grid">
+        <div className="abt-cap-grid" ref={capSliderRef}>
           {[
             { img: '/Banner.jpg', ...t.cap_list[0] },
             { img: '/AirFreight.jpg', ...t.cap_list[1] },
             { img: '/INTERMODA.jpg', ...t.cap_list[2] },
-            { img: '/Logictis.jpg', ...t.cap_list[3] },
-            { img: '/OURRANGE.jpg', ...t.cap_list[4] },
-            { img: '/Shippinglines.jpg', ...t.cap_list[5] }
+            { img: '/OURRANGE.jpg', ...t.cap_list[3] }
           ].map((s, i) => (
             <div key={i} className={`abt-cap-card reveal delay-${Math.min(i + 1, 5)}`}>
               <img src={s.img} alt={s.title} />
@@ -664,54 +670,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ═══════════════ 10. CHỨNG CHỈ & ĐỐI TÁC ═══════════════ */}
-      <section className="abt-section abt-section-alt">
-        <div className="abt-section-header reveal">
-          <div className="kicker">{t.cert_kicker}</div>
-          <h2>{t.cert_h2}</h2>
-          <p>{t.cert_p}</p>
-        </div>
-        <div className="abt-cert-row">
-          {[
-            { icon: '🏆', label: t.cert_list[0] },
-            { icon: '📋', label: t.cert_list[1] },
-            { icon: '🔒', label: t.cert_list[2] },
-            { icon: '🚢', label: t.cert_list[3] },
-            { icon: '✈️', label: t.cert_list[4] },
-            { icon: '📦', label: t.cert_list[5] }
-          ].map((c, i) => (
-            <div key={i} className={`abt-cert-item reveal delay-${Math.min(i + 1, 5)}`}>
-              <div className="abt-cert-icon">{c.icon}</div>
-              <span style={{ whiteSpace: 'pre-line' }}>{c.label}</span>
-            </div>
-          ))}
-        </div>
-      </section>
 
-      {/* ═══════════════ 11. CASE STUDY ═══════════════ */}
-      <section className="abt-section">
-        <div className="abt-section-header reveal">
-          <div className="kicker">{t.cs_kicker}</div>
-          <h2>{t.cs_h2}</h2>
-        </div>
-        <div className="abt-story">
-          <div className="abt-story-img reveal from-left">
-            <img src="/INTERMODA.jpg" alt="Case study logistics" />
-          </div>
-          <div className="abt-story-text reveal from-right delay-1">
-            <h2>{t.cs_title}</h2>
-            <p><strong>{t.cs_client}</strong> {t.cs_client_v}</p>
-            <p><strong>{t.cs_challenge}</strong> {t.cs_challenge_v}</p>
-            <p><strong>{t.cs_solution}</strong></p>
-            <ul>
-              <li>{t.cs_sol_1}</li>
-              <li>{t.cs_sol_2}</li>
-              <li>{t.cs_sol_3}</li>
-              <li>{t.cs_sol_4}</li>
-            </ul>
-          </div>
-        </div>
-      </section>
 
       {/* ═══════════════ 14. CTA BANNER ═══════════════ */}
       <section className="abt-cta-banner">

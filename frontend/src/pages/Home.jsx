@@ -120,8 +120,9 @@ const homeCSS = `
   .hm-stat-lbl{display:block;font-size:13px;color:rgba(255,255,255,.7);margin-top:8px;letter-spacing:.5px}
 
   /* ── Services mega-grid ── */
-  .hm-svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1200px;margin:0 auto}
-  .hm-svc-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 6px 28px rgba(10,20,40,.05);transition:transform .35s,box-shadow .35s;position:relative}
+  .hm-svc-grid{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:24px;max-width:1200px;margin:0 auto;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:16px;}
+  .hm-svc-grid::-webkit-scrollbar { display: none; }
+  .hm-svc-card{flex:0 0 calc(33.3333% - 16px);background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 6px 28px rgba(10,20,40,.05);transition:transform .35s,box-shadow .35s;position:relative;scroll-snap-align:start;}
   .hm-svc-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(10,20,40,.12)}
   .hm-svc-card img{width:100%;height:200px;object-fit:cover;display:block}
   .hm-svc-card-body{padding:22px}
@@ -292,6 +293,13 @@ export default function Home() {
     }
   }
 
+  const svcSliderRef = useRef(null)
+  const scrollSvc = (dir) => {
+    if (svcSliderRef.current) {
+      svcSliderRef.current.scrollBy({ left: dir * 380, behavior: 'smooth' })
+    }
+  }
+
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
     fetch(`${API_URL}/api/settings/home_page?lang=${i18n.language}`)
@@ -324,9 +332,7 @@ export default function Home() {
       { img: '/Shippinglines.jpg', badge: 'SHIPPING', badge_en: 'SHIPPING', title: 'Vận tải biển (FCL & LCL)', title_en: 'Sea Freight (FCL & LCL)', desc: 'Booking container tuyến toàn cầu, đàm phán giá cước cạnh tranh với 50+ hãng tàu hàng đầu. Hỗ trợ hàng nguy hiểm, quá khổ, reefer và project cargo.', desc_en: 'Global route container booking, competitive freight negotiation with 50+ top shipping lines. Support dangerous goods, oversized, reefer and project cargo.', link: '/services/shipping-lines' },
       { img: '/AirFreight.jpg', badge: 'AIR FREIGHT', badge_en: 'AIR FREIGHT', title: 'Vận tải hàng không', title_en: 'Air Freight', desc: 'Giải pháp air freight cho hàng khẩn cấp và giá trị cao. Kết nối 80+ sân bay quốc tế với thời gian transit nhanh nhất thị trường.', desc_en: 'Air freight solutions for urgent and high-value cargo. Connecting 80+ international airports with the fastest transit time.', link: '/services/scheduled-flights' },
       { img: '/INTERMODA.jpg', badge: 'INTERMODAL', badge_en: 'INTERMODAL', title: 'Vận tải đa phương thức', title_en: 'Intermodal Transport', desc: 'Kết hợp linh hoạt đường biển – bộ – sắt – hàng không. Tối ưu chi phí và thời gian cho từng tuyến vận chuyển cụ thể.', desc_en: 'Flexible combination of sea - road - rail - air. Optimize cost and time for each specific route.', link: '/services/intermodal' },
-      { img: '/Logictis.jpg', badge: 'LOGISTICS', badge_en: 'LOGISTICS', title: 'Kho bãi & Phân phối', title_en: 'Warehousing & Distribution', desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Cross-docking, pick-pack, quản lý tồn kho và dịch vụ last-mile delivery.', desc_en: '15,000m² warehouse system with modern WMS. Cross-docking, pick-pack, inventory management and last-mile delivery services.', link: '/services/logistics' },
-      { img: '/OURRANGE.jpg', badge: 'CUSTOMS', badge_en: 'CUSTOMS', title: 'Thủ tục Hải quan', title_en: 'Customs Clearance', desc: 'Đội ngũ chuyên viên hải quan giàu kinh nghiệm. Tư vấn mã HS, C/O, xử lý hồ sơ XNK. Cam kết thông quan trong 24 giờ.', desc_en: 'Experienced customs specialists. HS code, C/O consulting, import-export profile handling. 24-hour clearance commitment.', link: '/services/dedicated' },
-      { img: '/Chacracter.jpg', badge: 'CONSULTING', badge_en: 'CONSULTING', title: 'Tư vấn chuỗi cung ứng', title_en: 'Supply Chain Consulting', desc: 'Phân tích và tối ưu toàn bộ supply chain: lộ trình, chi phí, rủi ro. Thiết kế giải pháp SCM tùy chỉnh cho từng ngành hàng.', desc_en: 'Analyze and optimize entire supply chain: routing, cost, risk. Design custom SCM solutions for each industry.', link: '/services/charters' }
+      { img: '/OURRANGE.jpg', badge: 'CUSTOMS', badge_en: 'CUSTOMS', title: 'Thủ tục Hải quan', title_en: 'Customs Clearance', desc: 'Đội ngũ chuyên viên hải quan giàu kinh nghiệm. Tư vấn mã HS, C/O, xử lý hồ sơ XNK. Cam kết thông quan trong 24 giờ.', desc_en: 'Experienced customs specialists. HS code, C/O consulting, import-export profile handling. 24-hour clearance commitment.', link: '/services/dedicated' }
     ],
     why_choose_us: [
       { icon: '🌐', title: 'Mạng lưới toàn cầu', title_en: 'Global Network', desc: 'Đối tác đại lý tại 120+ quốc gia. Kết nối liền mạch từ cảng xuất đến kho nhận hàng cuối cùng.', desc_en: 'Agent partners in 120+ countries. Seamless connection from export port to final receiving warehouse.' },
@@ -638,17 +644,20 @@ export default function Home() {
           <div className="kicker">{tt.svc_kicker}</div>
           <h2>{tt.svc_h2}</h2>
           <p>{tt.svc_p}</p>
+          <div style={{ marginTop: 20, display: 'flex', gap: 10, justifyContent: 'center' }}>
+            <button onClick={() => scrollSvc(-1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❮</button>
+            <button onClick={() => scrollSvc(1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 36, height: 36, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❯</button>
+          </div>
         </div>
-        <div className="hm-svc-grid hm-mobile-slider">
-          {s.services.map((svc, i) => {
-            const dSvc = defaultSettings.services[i] || {};
+        <div className="hm-svc-grid hm-mobile-slider" ref={svcSliderRef}>
+          {defaultSettings.services.map((svc, i) => {
             return (
               <div key={i} className={`hm-svc-card rv d${Math.min(i + 1, 5)}`}>
-                <div className="hm-svc-badge">{getF(svc, 'badge', dSvc)}</div>
-                <img src={svc.img} alt={getF(svc, 'title', dSvc)} />
+                <div className="hm-svc-badge">{getF(svc, 'badge', svc)}</div>
+                <img src={svc.img} alt={getF(svc, 'title', svc)} />
                 <div className="hm-svc-card-body">
-                  <h3>{getF(svc, 'title', dSvc)}</h3>
-                  <p>{getF(svc, 'desc', dSvc)}</p>
+                  <h3>{getF(svc, 'title', svc)}</h3>
+                  <p>{getF(svc, 'desc', svc)}</p>
                   <a className="hm-svc-link" href={svc.link}>{tt.svc_find_more}</a>
                 </div>
               </div>

@@ -28,13 +28,13 @@ const t_ui = {
     hero_title_1: "Giải pháp ",
     hero_title_hl: "Logistics",
     hero_title_2: " toàn diện cho doanh nghiệp",
-    hero_desc: "Từ vận tải biển, hàng không, đa phương thức đến kho bãi, hải quan và tư vấn supply chain — chúng tôi cung cấp mọi dịch vụ bạn cần cho chuỗi cung ứng hiệu quả.",
+    hero_desc: "Từ vận tải biển, hàng không, hải quan và chúng tôi cung cấp mọi dịch vụ bạn cần cho chuỗi cung ứng hiệu quả.",
     hero_b1: "🌍 120+ Quốc gia",
     hero_b2: "🚢 50+ Hãng tàu",
     hero_b3: "✈️ 80+ Sân bay",
     hero_b4: "⚡ Báo giá 2 giờ",
     sv_kicker: "DỊCH VỤ CỦA CHÚNG TÔI",
-    sv_h2: "6 nhóm dịch vụ cốt lõi",
+    sv_h2: "4 nhóm dịch vụ cốt lõi",
     sv_p: "Mỗi giải pháp được thiết kế riêng để đáp ứng nhu cầu đa dạng của doanh nghiệp trong chuỗi cung ứng toàn cầu.",
     sv_stat_routes: "Phạm vi",
     sv_stat_carriers: "Đối tác",
@@ -78,18 +78,6 @@ const t_ui = {
         img: '/INTERMODA.jpg'
       },
       {
-        icon: '🏭',
-        title: 'Kho bãi & Logistics',
-        subtitle: 'Warehousing & Distribution',
-        desc: 'Hệ thống kho 15.000m² với WMS hiện đại. Cross-docking, pick-pack, quản lý tồn kho và dịch vụ last-mile delivery. Kho lạnh đạt chuẩn HACCP.',
-        features: ['Kho khô & kho lạnh (-25°C)', 'Cross-docking xử lý nhanh', 'Pick & Pack cho E-commerce', 'Last-mile Delivery 63 tỉnh', 'WMS tích hợp ERP/API'],
-        stats: { routes: '15.000m² kho', carriers: '50+ xe', delivery: '99.8% chính xác' },
-        color: '#d97706',
-        accent: '#fbbf24',
-        link: '/services/logistics',
-        img: '/Logictis.jpg'
-      },
-      {
         icon: '📋',
         title: 'Thủ tục Hải quan',
         subtitle: 'Customs Brokerage',
@@ -101,25 +89,13 @@ const t_ui = {
         link: '/services/dedicated',
         img: '/OURRANGE.jpg'
       },
-      {
-        icon: '🔍',
-        title: 'Tư vấn Supply Chain',
-        subtitle: 'SCM Consulting',
-        desc: 'Phân tích, đánh giá và tối ưu hóa chuỗi cung ứng. Thiết kế mạng lưới phân phối, dự báo nhu cầu bằng AI/ML, chuyển đổi số SCM và Green logistics.',
-        features: ['Phân tích & benchmark', 'Thiết kế mạng lưới phân phối', 'Dự báo nhu cầu AI/ML', 'Chuyển đổi số SCM', 'Green Supply Chain'],
-        stats: { routes: '85%+ chính xác', carriers: 'AI/ML powered', delivery: 'Giảm 30% CO2' },
-        color: '#0891b2',
-        accent: '#22d3ee',
-        link: '/services/charters',
-        img: '/Chacracter.jpg'
-      },
     ],
     proc_kicker: "QUY TRÌNH LÀM VIỆC",
     proc_h2: "4 bước đơn giản để bắt đầu",
     proc_p: "Quy trình minh bạch, rõ ràng — bạn chỉ cần liên hệ, mọi việc còn lại để Stella Shipping lo.",
     proc_steps: [
       { num: '01', title: 'Tư vấn & Khảo sát', desc: 'Lắng nghe nhu cầu, phân tích loại hàng, tuyến đường và timeline để đề xuất giải pháp phù hợp nhất.', icon: '💬' },
-      { num: '02', title: 'Báo giá & Hợp đồng', desc: 'Báo giá all-in minh bạch trong 2 giờ. Ký hợp đồng rõ ràng về phạm vi dịch vụ và SLA.', icon: '📝' },
+      { num: '02', title: 'Báo giá & Hợp đồng', desc: 'Báo giá all-in minh bạch trong 2 giờ.', icon: '📝' },
       { num: '03', title: 'Vận hành & Tracking', desc: 'Triển khai booking, vận chuyển, thông quan. Tracking real-time và cập nhật trạng thái tự động.', icon: '🚀' },
       { num: '04', title: 'Giao hàng & Báo cáo', desc: 'Giao hàng đúng hẹn tại điểm đến. Báo cáo hoàn tất, hóa đơn và đánh giá chất lượng dịch vụ.', icon: '✅' },
     ],
@@ -150,7 +126,7 @@ const t_ui = {
     hero_b3: "✈️ 80+ Airports",
     hero_b4: "⚡ 2-Hour Quote",
     sv_kicker: "OUR SERVICES",
-    sv_h2: "6 core service groups",
+    sv_h2: "4 core service groups",
     sv_p: "Each solution is tailored to meet the diverse needs of businesses in the global supply chain.",
     sv_stat_routes: "Scope",
     sv_stat_carriers: "Partners",
@@ -194,18 +170,6 @@ const t_ui = {
         img: '/INTERMODA.jpg'
       },
       {
-        icon: '🏭',
-        title: 'Warehousing & Logistics',
-        subtitle: 'Warehousing & Distribution',
-        desc: '15,000m² warehouse system with modern WMS. Cross-docking, pick-pack, inventory management and last-mile delivery. HACCP certified cold storage.',
-        features: ['Dry & Cold storage (-25°C)', 'Fast cross-docking', 'Pick & Pack for E-commerce', 'Last-mile 63 provinces', 'WMS integrated ERP/API'],
-        stats: { routes: '15,000m² space', carriers: '50+ trucks', delivery: '99.8% accuracy' },
-        color: '#d97706',
-        accent: '#fbbf24',
-        link: '/services/logistics',
-        img: '/Logictis.jpg'
-      },
-      {
         icon: '📋',
         title: 'Customs Brokerage',
         subtitle: 'Customs Brokerage',
@@ -216,18 +180,6 @@ const t_ui = {
         accent: '#f87171',
         link: '/services/dedicated',
         img: '/OURRANGE.jpg'
-      },
-      {
-        icon: '🔍',
-        title: 'Supply Chain Consulting',
-        subtitle: 'SCM Consulting',
-        desc: 'Analyze, evaluate and optimize the supply chain. Distribution network design, AI/ML demand forecasting, SCM digital transformation and Green logistics.',
-        features: ['Analysis & benchmark', 'Distribution network design', 'AI/ML demand forecasting', 'SCM digital transformation', 'Green Supply Chain'],
-        stats: { routes: '85%+ accuracy', carriers: 'AI/ML powered', delivery: '30% CO2 reduction' },
-        color: '#0891b2',
-        accent: '#22d3ee',
-        link: '/services/charters',
-        img: '/Chacracter.jpg'
       },
     ],
     proc_kicker: "WORK PROCESS",
@@ -314,12 +266,15 @@ const css = `
   .sv-section-dark .sv-section-hdr p{color:rgba(255,255,255,.7)}
 
   /* ── Service cards grid ── */
-  .sv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;max-width:1200px;margin:0 auto}
+  .sv-grid{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:28px;max-width:1200px;margin:0 auto;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:16px;}
+  .sv-grid::-webkit-scrollbar { display: none; }
   .sv-card{
+    flex:0 0 calc(33.3333% - 19px);
     position:relative;background:#fff;border-radius:18px;overflow:hidden;
     box-shadow:0 8px 32px rgba(10,20,40,.06);
     transition:transform .4s cubic-bezier(.22,1,.36,1),box-shadow .4s;
     display:flex;flex-direction:column;
+    scroll-snap-align:start;
   }
   .sv-card:hover{transform:translateY(-10px);box-shadow:0 20px 56px rgba(10,20,40,.14)}
 
@@ -444,6 +399,12 @@ export default function Services() {
   const t = t_ui[lang]
 
   const pageRef = useScrollReveal()
+  const svcSliderRef = useRef(null)
+  const scrollSvc = (dir) => {
+    if (svcSliderRef.current) {
+      svcSliderRef.current.scrollBy({ left: dir * 390, behavior: 'smooth' })
+    }
+  }
 
   return (
     <div className="sv-page" ref={pageRef}>
@@ -470,9 +431,13 @@ export default function Services() {
           <div className="kicker">{t.sv_kicker}</div>
           <h2>{t.sv_h2}</h2>
           <p>{t.sv_p}</p>
+          <div style={{ marginTop: 24, display: 'flex', gap: 10, justifyContent: 'center' }}>
+            <button onClick={() => scrollSvc(-1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 40, height: 40, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❮</button>
+            <button onClick={() => scrollSvc(1)} style={{ background: '#fff', border: '1px solid #e1e8ef', width: 40, height: 40, borderRadius: '50%', cursor: 'pointer', color: '#0f2b57', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all .2s' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#f36c1f'} onMouseLeave={e => e.currentTarget.style.borderColor = '#e1e8ef'}>❯</button>
+          </div>
         </div>
 
-        <div className="sv-grid">
+        <div className="sv-grid" ref={svcSliderRef}>
           {t.services.map((svc, i) => (
             <div className={`sv-card rv d${i + 1}`} key={svc.title}>
               <div className="sv-card-img">
