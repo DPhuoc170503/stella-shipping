@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 export default function AdminMedia() {
   const [files, setFiles] = useState([]);
@@ -6,6 +7,7 @@ export default function AdminMedia() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const fileInputRef = useRef(null);
+  const { logout } = useAuth();
   
   const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
 
@@ -51,6 +53,12 @@ export default function AdminMedia() {
       });
       const data = await res.json();
       
+      if (res.status === 401) {
+        alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+        logout();
+        return;
+      }
+      
       if (!res.ok) throw new Error(data.error || 'Lỗi khi upload ảnh');
       
       alert('Upload thành công!');
@@ -72,6 +80,11 @@ export default function AdminMedia() {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` }
       });
       const data = await res.json();
+      if (res.status === 401) {
+        alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+        logout();
+        return;
+      }
       if (!res.ok) throw new Error(data.error || 'Lỗi khi xóa ảnh');
       
       // Update local state to avoid refetching
