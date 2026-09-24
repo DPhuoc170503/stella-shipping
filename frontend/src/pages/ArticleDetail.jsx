@@ -71,7 +71,7 @@ export default function ArticleDetail() {
       <div className="dt-container">
         <div className="dt-content">
           <p className="dt-lead">{article.desc}</p>
-          <img src={imgUrl || '/Banner.jpg'} alt={article.title} style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', borderRadius: '12px', marginBottom: '32px' }} />
+          <img src={imgUrl || '/Banner.jpg'} alt={article.title} style={{ width: '100%', height: 'auto', borderRadius: '12px', marginBottom: '32px' }} />
           <div className="dt-body" dangerouslySetInnerHTML={{ __html: article.fullDesc ? article.fullDesc.replace(/\n/g, '<br/>') : 'Đang cập nhật nội dung...' }} />
 
           <div className="dt-share">
