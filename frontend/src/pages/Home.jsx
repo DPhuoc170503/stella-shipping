@@ -666,26 +666,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════ 5. TẠI SAO CHỌN CHÚNG TÔI ═══════════════ */}
-      <section className="hm-section hm-section-alt">
-        <div className="hm-section-hdr rv">
-          <div className="kicker">{tt.why_kicker}</div>
-          <h2>{tt.why_h2}</h2>
-          <p>{tt.why_p}</p>
-        </div>
-        <div className="hm-why-grid hm-mobile-slider">
-          {s.why_choose_us.map((w, i) => {
-            const dWhy = defaultSettings.why_choose_us[i] || {};
-            return (
-              <div key={i} className={`hm-why-card rv d${Math.min(i + 1, 5)}`}>
-                <div className="hm-why-icon">{w.icon}</div>
-                <h4>{getF(w, 'title', dWhy)}</h4>
-                <p>{getF(w, 'desc', dWhy)}</p>
-              </div>
-            )
-          })}
-        </div>
-      </section>
 
       {/* ═══════════════ 6. QUY TRÌNH LÀM VIỆC ═══════════════ */}
       <section className="hm-section">
