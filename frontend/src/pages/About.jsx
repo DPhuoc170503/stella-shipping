@@ -518,15 +518,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* ═══════════════ 2. STATS BAR ═══════════════ */}
-      <section className="abt-section">
-        <div className="abt-stats-bar">
-          <StatItem value={10} suffix="+" label={t.stat_1} />
-          <StatItem value={20} suffix="+" label={t.stat_2} />
-          <StatItem value={500} suffix="+" label={t.stat_3} />
-          <StatItem value={98} suffix="%" label={t.stat_4} />
-        </div>
-      </section>
 
       {/* ═══════════════ 3. SỨ MỆNH & TẦM NHÌN ═══════════════ */}
       <section className="abt-section abt-section-alt">
