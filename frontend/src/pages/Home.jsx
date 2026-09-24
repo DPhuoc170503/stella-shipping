@@ -23,35 +23,7 @@ function useScrollReveal() {
   return containerRef
 }
 
-/* ─── Animated counter ─── */
-function AnimNum({ target, suffix = '', label }) {
-  const [count, setCount] = useState(0)
-  const ref = useRef(null)
-  const started = useRef(false)
-  useEffect(() => {
-    if (!ref.current) return
-    const io = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started.current) {
-        started.current = true
-        const t0 = performance.now()
-        const run = (now) => {
-          const p = Math.min((now - t0) / 2000, 1)
-          setCount(Math.floor(p * target))
-          if (p < 1) requestAnimationFrame(run)
-        }
-        requestAnimationFrame(run)
-      }
-    }, { threshold: 0.5 })
-    io.observe(ref.current)
-    return () => io.disconnect()
-  }, [target])
-  return (
-    <div className="hm-stat" ref={ref}>
-      <span className="hm-stat-num">{count}{suffix}</span>
-      <span className="hm-stat-lbl">{label}</span>
-    </div>
-  )
-}
+
 
 
 /* ═══════════════════════════════════════════ CSS ═══════════════════════════════════════════ */
@@ -113,11 +85,7 @@ const homeCSS = `
   .hm-section-hdr p{color:#5a6f82;font-size:15px;line-height:1.65}
   .hm-section-dark .hm-section-hdr p{color:rgba(255,255,255,.7)}
 
-  /* ── Stats strip ── */
-  .hm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:1200px;margin:0 auto;padding:48px 0}
-  .hm-stat{text-align:center;padding:24px;background:rgba(255,255,255,.04);border-radius:12px;border:1px solid rgba(255,255,255,.08)}
-  .hm-stat-num{display:block;font-size:48px;font-weight:800;color:#f36c1f;line-height:1}
-  .hm-stat-lbl{display:block;font-size:13px;color:rgba(255,255,255,.7);margin-top:8px;letter-spacing:.5px}
+
 
   /* ── Services mega-grid ── */
   .hm-svc-grid{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:24px;max-width:1200px;margin:0 auto;scroll-behavior:smooth;scrollbar-width:none;padding-bottom:16px;}
@@ -155,17 +123,7 @@ const homeCSS = `
   .hm-ind-icon{font-size:32px;margin-bottom:10px}
   .hm-ind-card h4{margin:0;color:#fff;font-size:13px;font-weight:600}
 
-  /* ── Promo split ── */
-  .hm-promo{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:1200px;margin:0 auto;border-radius:16px;overflow:hidden;box-shadow:0 16px 48px rgba(10,20,40,.08)}
-  .hm-promo-img{min-height:360px;background:url('/Banner.jpg') center/cover}
-  .hm-promo-content{background:linear-gradient(135deg,#0f2b57,#153468);color:#fff;padding:48px 40px;display:flex;flex-direction:column;justify-content:center}
-  .hm-promo-content .kicker{color:#f36c1f;font-weight:700;letter-spacing:3px;font-size:12px;margin-bottom:10px}
-  .hm-promo-content h2{font-size:30px;margin:0 0 14px;font-weight:800}
-  .hm-promo-content p{color:rgba(255,255,255,.75);line-height:1.65;margin-bottom:14px;font-size:15px}
-  .hm-promo-content ul{padding-left:18px;color:rgba(255,255,255,.8);line-height:2;margin:0 0 22px}
-  .hm-promo-content ul li::marker{color:#f36c1f}
-  .hm-promo-cta{display:inline-block;background:#f36c1f;color:#fff;padding:13px 28px;border-radius:8px;font-weight:700;text-decoration:none;transition:background .25s;font-size:15px}
-  .hm-promo-cta:hover{background:#e05a10}
+
 
   /* ── News/Insights ── */
   .hm-news-grid{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:24px;max-width:1200px;margin:0 auto;padding-bottom:16px;scroll-behavior:smooth;scrollbar-width:none;}
@@ -179,11 +137,7 @@ const homeCSS = `
   .hm-news-body p{margin:0 0 12px;color:#5a6f82;font-size:13px;line-height:1.55}
   .hm-news-body a{color:#f36c1f;font-weight:600;font-size:13px;text-decoration:none}
 
-  /* ── Partners strip ── */
-  .hm-partners{display:flex;justify-content:center;gap:48px;flex-wrap:wrap;max-width:1200px;margin:0 auto;align-items:center}
-  .hm-partner{display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.6;transition:opacity .3s;font-size:13px;color:#5a6f82;font-weight:600;letter-spacing:.5px}
-  .hm-partner:hover{opacity:1}
-  .hm-partner .p-icon{font-size:32px}
+
 
   /* ── CTA banner ── */
   .hm-cta-banner{position:relative;padding:80px 24px;text-align:center;overflow:hidden;background:linear-gradient(135deg,#f36c1f 0%,#e05a10 50%,#c94d0e 100%);color:#fff}
@@ -212,7 +166,7 @@ const homeCSS = `
     .hm-hero-text h1{font-size:34px}
     .hm-svc-grid,.hm-news-grid,.hm-promo{grid-template-columns:1fr}
     .hm-why-grid{grid-template-columns:repeat(2,1fr)}
-    .hm-stats{grid-template-columns:repeat(2,1fr)}
+
     .hm-ind-grid{grid-template-columns:repeat(3,1fr)}
     .hm-process{flex-direction:column;gap:24px}
     .hm-process::before{display:none}
@@ -267,13 +221,11 @@ const homeCSS = `
     }
   }
   @media(max-width:600px){
-    .hm-why-grid,.hm-stats{grid-template-columns:1fr}
+    .hm-why-grid{grid-template-columns:1fr}
     .hm-ind-grid{grid-template-columns:repeat(2,1fr)}
     .hm-hero-text .eyebrow{font-size:11px;letter-spacing:2px;padding:5px 10px}
     .hm-news-body h4{font-size:15px}
     .hm-svc-card img{height:180px}
-    .hm-partners{gap:18px 20px}
-    .hm-partner{flex-basis:calc(50% - 20px)}
   }
 `
 
@@ -395,18 +347,7 @@ export default function Home() {
         { icon: '🪵', name: 'Gỗ & Nội thất' },
         { icon: '🌾', name: 'Nông sản' },
       ],
-      promo_kicker: "CÔNG NGHỆ SỐ",
-      promo_h2: "Cổng khách hàng trực tuyến",
-      promo_p: "Quản lý toàn bộ lô hàng, chứng từ và báo cáo trên một nền tảng duy nhất — mọi lúc, mọi nơi.",
-      promo_lis: [
-        "Tracking lô hàng real-time 24/7",
-        "Quản lý chứng từ điện tử (B/L, Invoice, Packing List)",
-        "Dashboard báo cáo chi phí & hiệu suất",
-        "API tích hợp trực tiếp với ERP/WMS",
-        "Thông báo tự động qua email & SMS"
-      ],
-      partner_kicker: "ĐỐI TÁC & CHỨNG CHỈ",
-      partner_h2: "Đồng hành cùng các tổ chức hàng đầu",
+
       cta_h2: "Sẵn sàng tối ưu chuỗi cung ứng?",
       cta_p: "Liên hệ ngay hôm nay để nhận tư vấn miễn phí và báo giá chi tiết từ đội ngũ chuyên gia logistics Stella Shipping.",
       cta_btn1: "Yêu cầu tư vấn miễn phí",
@@ -445,18 +386,7 @@ export default function Home() {
         { icon: '🪵', name: 'Wood & Furniture' },
         { icon: '🌾', name: 'Agriculture' },
       ],
-      promo_kicker: "DIGITAL TECHNOLOGY",
-      promo_h2: "Online Customer Portal",
-      promo_p: "Manage all shipments, documents and reports on a single platform — anytime, anywhere.",
-      promo_lis: [
-        "24/7 real-time shipment tracking",
-        "Electronic document management (B/L, Invoice, Packing List)",
-        "Cost & performance reporting dashboard",
-        "Direct API integration with ERP/WMS",
-        "Automated email & SMS notifications"
-      ],
-      partner_kicker: "PARTNERS & CERTIFICATES",
-      partner_h2: "Partnering with leading organizations",
+
       cta_h2: "Ready to optimize your supply chain?",
       cta_p: "Contact us today to get a free consultation and detailed quote from Stella Shipping's logistics expert team.",
       cta_btn1: "Request free consultation",
@@ -705,46 +635,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══════════════ 8. PROMO - CỔNG KHÁCH HÀNG ═══════════════ */}
-      <section className="hm-section">
-        <div className="hm-promo rv su">
-          <div className="hm-promo-img" />
-          <div className="hm-promo-content">
-            <div className="kicker">{tt.promo_kicker}</div>
-            <h2>{tt.promo_h2}</h2>
-            <p>{tt.promo_p}</p>
-            <ul>
-              {tt.promo_lis.map((item, idx) => <li key={idx}>{item}</li>)}
-            </ul>
-          </div>
-        </div>
-      </section>
 
-      {/* ═══════════════ 11. ĐỐI TÁC ═══════════════ */}
-      <section className="hm-section hm-section-alt">
-        <div className="hm-section-hdr rv">
-          <div className="kicker">{tt.partner_kicker}</div>
-          <h2>{tt.partner_h2}</h2>
-        </div>
-        <div className="hm-partners rv">
-          {[
-            { icon: '🚢', name: 'Maersk' },
-            { icon: '🚢', name: 'CMA CGM' },
-            { icon: '🚢', name: 'MSC' },
-            { icon: '✈️', name: 'Emirates SkyCargo' },
-            { icon: '🏆', name: 'ISO 9001' },
-            { icon: '📋', name: 'ISO 14001' },
-            { icon: '🔒', name: 'AEO' },
-            { icon: '🌐', name: 'FIATA' },
-            { icon: '✈️', name: 'IATA' },
-          ].map((p, i) => (
-            <div key={i} className="hm-partner">
-              <div className="p-icon">{p.icon}</div>
-              {p.name}
-            </div>
-          ))}
-        </div>
-      </section>
 
       {/* ═══════════════ 12. CTA BANNER ═══════════════ */}
       <section className="hm-cta-banner">
