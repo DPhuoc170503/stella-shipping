@@ -22,6 +22,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Tự động chạy migration thêm cột mới cho template
+try {
+  require('./add_columns.js');
+} catch (e) {
+  console.log('Migration failed or add_columns.js not found', e.message);
+}
+
 // Serve static files from the uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
