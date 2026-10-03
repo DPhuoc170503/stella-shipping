@@ -19,7 +19,6 @@ async function migrate() {
       console.error('ERROR:', err.message);
     }
   }
-  process.exit(0);
 }
 
 migrate();
