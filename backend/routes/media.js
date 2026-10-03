@@ -4,6 +4,13 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { verifyToken } = require('../middleware/auth');
+const cloudinary = require('cloudinary').v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 // Đảm bảo thư mục uploads tồn tại
 const uploadDir = path.join(__dirname, '../uploads');
@@ -17,7 +24,6 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
-    // Tạo tên file duy nhất tránh trùng lặp
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const ext = path.extname(file.originalname);
     cb(null, 'media-' + uniqueSuffix + ext);
@@ -38,16 +44,31 @@ const upload = multer({
 });
 
 // GET /api/media - Lấy danh sách file ảnh đã upload
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
+    if (process.env.CLOUDINARY_CLOUD_NAME) {
+      const result = await cloudinary.search
+        .expression('folder:stella_shipping')
+        .sort_by('created_at', 'desc')
+        .max_results(50)
+        .execute();
+
+      const mediaList = result.resources.map(file => ({
+        name: file.public_id, // Sử dụng public_id làm tên để dễ xoá
+        url: file.secure_url,
+        size: file.bytes,
+        createdAt: file.created_at
+      }));
+      return res.json(mediaList);
+    }
+
+    // Fallback: Local Files
     const files = fs.readdirSync(uploadDir);
-    // Lọc chỉ lấy các file ảnh
     const imageFiles = files.filter(file => {
       const ext = path.extname(file).toLowerCase();
       return ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'].includes(ext);
     });
 
-    // Tạo mảng thông tin file kèm URL
     const mediaList = imageFiles.map(file => {
       const stats = fs.statSync(path.join(uploadDir, file));
       return {
@@ -58,19 +79,17 @@ router.get('/', (req, res) => {
       };
     });
 
-    // Sắp xếp mới nhất lên đầu
     mediaList.sort((a, b) => b.createdAt - a.createdAt);
-
     res.json(mediaList);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Không thể đọc thư mục media' });
+    res.status(500).json({ error: 'Không thể đọc danh sách media' });
   }
 });
 
 // POST /api/media/upload - Upload file mới
 router.post('/upload', verifyToken, (req, res) => {
-  upload.single('image')(req, res, function (err) {
+  upload.single('image')(req, res, async function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ error: err.message });
     } else if (err) {
@@ -81,21 +100,49 @@ router.post('/upload', verifyToken, (req, res) => {
       return res.status(400).json({ error: 'Không tìm thấy file' });
     }
 
-    res.json({
-      success: true,
-      message: 'Upload thành công',
-      url: `/uploads/${req.file.filename}`,
-      name: req.file.filename
-    });
+    try {
+      if (process.env.CLOUDINARY_CLOUD_NAME) {
+        // Upload lên Cloudinary
+        const result = await cloudinary.uploader.upload(req.file.path, {
+          folder: 'stella_shipping'
+        });
+        
+        // Xóa file local sau khi upload thành công
+        fs.unlinkSync(req.file.path);
+        
+        return res.json({
+          success: true,
+          message: 'Upload thành công',
+          url: result.secure_url,
+          name: result.public_id
+        });
+      }
+
+      // Fallback: Local Files
+      res.json({
+        success: true,
+        message: 'Upload thành công',
+        url: `/uploads/${req.file.filename}`,
+        name: req.file.filename
+      });
+    } catch (uploadErr) {
+      console.error(uploadErr);
+      res.status(500).json({ error: 'Lỗi khi upload ảnh lên Cloudinary' });
+    }
   });
 });
 
 // DELETE /api/media/:filename - Xóa file
-router.delete('/:filename', verifyToken, (req, res) => {
+router.delete('/:filename(*)', verifyToken, async (req, res) => {
   try {
-    const filename = req.params.filename;
-    const filepath = path.join(uploadDir, filename);
+    const filename = req.params.filename; // Bắt cả public_id chứa folder name (eg. stella_shipping/...)
 
+    if (process.env.CLOUDINARY_CLOUD_NAME && filename.includes('stella_shipping/')) {
+      await cloudinary.uploader.destroy(filename);
+      return res.json({ success: true, message: 'Đã xóa file trên Cloudinary' });
+    }
+
+    const filepath = path.join(uploadDir, filename);
     if (fs.existsSync(filepath)) {
       fs.unlinkSync(filepath);
       res.json({ success: true, message: 'Đã xóa file' });

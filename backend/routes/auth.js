@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'stella-shipping-secret-key-2024';
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
+
     if (!username || !password) {
       return res.status(400).json({ success: false, error: 'Vui lòng nhập tên đăng nhập và mật khẩu.' });
     }
@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
     }
 
     const user = rows[0];
-    
+
     // Compare password
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {

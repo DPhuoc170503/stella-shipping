@@ -96,6 +96,11 @@ router.get('/', async (req, res) => {
       category: lang === 'en' ? (r.category_en || r.category) : r.category,
       author: r.author,
       img: r.img,
+      img2: r.img2 || '',
+      img3: r.img3 || '',
+      img4: r.img4 || '',
+      galleryImages: r.gallery_images ? (typeof r.gallery_images === 'string' ? JSON.parse(r.gallery_images) : r.gallery_images) : [],
+      template: r.template || 'single',
       readTime: r.read_time,
       status: r.status,
       date: formatDate(r.created_at),
@@ -126,6 +131,11 @@ router.get('/:id', async (req, res) => {
       category: lang === 'en' ? (r.category_en || r.category) : r.category,
       author: r.author,
       img: r.img,
+      img2: r.img2 || '',
+      img3: r.img3 || '',
+      img4: r.img4 || '',
+      galleryImages: r.gallery_images ? (typeof r.gallery_images === 'string' ? JSON.parse(r.gallery_images) : r.gallery_images) : [],
+      template: r.template || 'single',
       readTime: r.read_time,
       status: r.status,
       date: formatDate(r.created_at),
@@ -139,12 +149,12 @@ router.get('/:id', async (req, res) => {
 // ─── POST /api/articles ─── tạo bài mới
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { title, desc, fullDesc, category, author, img, readTime, status, title_en, desc_en, fullDesc_en, category_en } = req.body;
+    const { title, desc, fullDesc, category, author, img, img2, img3, img4, galleryImages, template, readTime, status, title_en, desc_en, fullDesc_en, category_en } = req.body;
     if (!title || !desc) return res.status(400).json({ error: 'title và desc là bắt buộc' });
 
     const [result] = await pool.query(
-      `INSERT INTO articles (title, description, full_content, category, author, img, read_time, status, title_en, description_en, full_content_en, category_en)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO articles (title, description, full_content, category, author, img, img2, img3, img4, gallery_images, template, read_time, status, title_en, description_en, full_content_en, category_en)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
         desc,
@@ -152,6 +162,11 @@ router.post('/', verifyToken, async (req, res) => {
         category || 'Công ty',
         author || '',
         img || '/Banner.jpg',
+        img2 || '',
+        img3 || '',
+        img4 || '',
+        galleryImages ? JSON.stringify(galleryImages) : null,
+        template || 'single',
         readTime || '3 phút',
         status || 'draft',
         title_en || '',
@@ -172,6 +187,11 @@ router.post('/', verifyToken, async (req, res) => {
       category: r.category,
       author: r.author,
       img: r.img,
+      img2: r.img2 || '',
+      img3: r.img3 || '',
+      img4: r.img4 || '',
+      galleryImages: r.gallery_images ? (typeof r.gallery_images === 'string' ? JSON.parse(r.gallery_images) : r.gallery_images) : [],
+      template: r.template || 'single',
       readTime: r.read_time,
       status: r.status,
       date: formatDate(r.created_at),
@@ -190,7 +210,7 @@ router.post('/', verifyToken, async (req, res) => {
 // ─── PUT /api/articles/:id ─── cập nhật bài
 router.put('/:id', verifyToken, async (req, res) => {
   try {
-    const { title, desc, fullDesc, category, author, img, readTime, status, title_en, desc_en, fullDesc_en, category_en } = req.body;
+    const { title, desc, fullDesc, category, author, img, img2, img3, img4, galleryImages, template, readTime, status, title_en, desc_en, fullDesc_en, category_en } = req.body;
     const { id } = req.params;
 
     const [check] = await pool.query('SELECT id, status FROM articles WHERE id = ?', [id]);
@@ -205,6 +225,11 @@ router.put('/:id', verifyToken, async (req, res) => {
         category = COALESCE(?, category),
         author = COALESCE(?, author),
         img = COALESCE(?, img),
+        img2 = COALESCE(?, img2),
+        img3 = COALESCE(?, img3),
+        img4 = COALESCE(?, img4),
+        gallery_images = COALESCE(?, gallery_images),
+        template = COALESCE(?, template),
         read_time = COALESCE(?, read_time),
         status = COALESCE(?, status),
         title_en = COALESCE(?, title_en),
@@ -212,7 +237,7 @@ router.put('/:id', verifyToken, async (req, res) => {
         full_content_en = COALESCE(?, full_content_en),
         category_en = COALESCE(?, category_en)
        WHERE id = ?`,
-      [title, desc, fullDesc, category, author, img, readTime, status, title_en, desc_en, fullDesc_en, category_en, id]
+      [title, desc, fullDesc, category, author, img, img2, img3, img4, galleryImages ? JSON.stringify(galleryImages) : undefined, template, readTime, status, title_en, desc_en, fullDesc_en, category_en, id]
     );
 
     const [rows] = await pool.query('SELECT * FROM articles WHERE id = ?', [id]);
@@ -225,6 +250,11 @@ router.put('/:id', verifyToken, async (req, res) => {
       category: r.category,
       author: r.author,
       img: r.img,
+      img2: r.img2 || '',
+      img3: r.img3 || '',
+      img4: r.img4 || '',
+      galleryImages: r.gallery_images ? (typeof r.gallery_images === 'string' ? JSON.parse(r.gallery_images) : r.gallery_images) : [],
+      template: r.template || 'single',
       readTime: r.read_time,
       status: r.status,
       date: formatDate(r.created_at),

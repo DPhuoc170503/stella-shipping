@@ -270,6 +270,14 @@ export default function News() {
 
   const trendData = TRENDING[lang]
 
+  const API_IMG = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
+  const resolveImg = (src) => {
+    if (!src) return '/Banner.jpg'
+    if (src.startsWith('http')) return src
+    if (src.startsWith('/uploads/')) return `${API_IMG}${src}`
+    return src
+  }
+
   useEffect(() => {
     const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
     fetch(`${API_URL}/api/categories`)
@@ -369,7 +377,15 @@ export default function News() {
         <div className="nw-articles">
           {visible.map((a, i) => (
             <article key={a.id} className={`nw-art rv d${(i % 3) + 1}`}>
-              <img src={a.img} alt={lang === 'en' && a.title_en ? a.title_en : a.title} className="nw-art-img" />
+              <div style={{ position: 'relative' }}>
+                <img src={resolveImg(a.img)} alt={lang === 'en' && a.title_en ? a.title_en : a.title} className="nw-art-img" />
+                {a.template === 'multi' && (
+                  <span style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(124,58,237,.9)', color: '#fff', padding: '3px 8px', borderRadius: 6, fontSize: 10, fontWeight: 700 }}>🎨 4 ảnh</span>
+                )}
+                {a.template === 'gallery' && (
+                  <span style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(234,88,12,.9)', color: '#fff', padding: '3px 8px', borderRadius: 6, fontSize: 10, fontWeight: 700 }}>📸 Gallery</span>
+                )}
+              </div>
               <div className="nw-art-body">
                 <div className="nw-art-top">
                   <span className="nw-art-cat">{lang === 'en' && a.category_en ? a.category_en : a.category}</span>
