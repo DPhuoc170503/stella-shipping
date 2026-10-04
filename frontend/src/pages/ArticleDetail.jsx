@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useArticles } from '../context/ArticlesContext'
 
@@ -11,26 +11,36 @@ export default function ArticleDetail() {
 
   const article = articles.find(a => a.id === parseInt(id))
 
-  // Gallery slideshow state
-  const [galleryIndex, setGalleryIndex] = useState(0)
   const [lightbox, setLightbox] = useState(null)
+
+  const magazineRef = useRef(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    setGalleryIndex(0)
     setLightbox(null)
   }, [id])
 
-  // Auto-advance gallery slideshow
+  // Scroll-reveal animation for inline magazine sections
   useEffect(() => {
-    if (!article || article.template !== 'gallery') return
-    const imgs = article.galleryImages || []
-    if (imgs.length <= 1) return
-    const interval = setInterval(() => {
-      setGalleryIndex(prev => (prev + 1) % imgs.length)
-    }, 4000)
-    return () => clearInterval(interval)
-  }, [article, galleryIndex])
+    if (!magazineRef.current) return
+    const sections = magazineRef.current.querySelectorAll('[data-animate]')
+    if (!sections.length) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('dt-il-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    )
+    sections.forEach(s => observer.observe(s))
+    return () => observer.disconnect()
+  })
+
+
 
   if (loading) {
     return (
@@ -64,10 +74,7 @@ export default function ArticleDetail() {
   }
   const imgUrl = resolveImg(article.img)
 
-  // Template-specific image collections
   const template = article.template || 'single'
-  const multiImages = [article.img2, article.img3, article.img4].filter(Boolean).map(resolveImg)
-  const galleryImages = (article.galleryImages || []).map(resolveImg)
 
   return (
     <div>
@@ -105,127 +112,162 @@ export default function ArticleDetail() {
             <img src={imgUrl || '/Banner.jpg'} alt={article.title} className="dt-main-img" />
           )}
 
-          {/* ══════ TEMPLATE: MULTI (1 main + 3 sub grid) ══════ */}
-          {template === 'multi' && (
-            <div className="dt-multi">
-              <img
-                src={imgUrl || '/Banner.jpg'}
-                alt={article.title}
-                className="dt-main-img dt-multi-main"
-                onClick={() => setLightbox(imgUrl)}
-              />
-              {multiImages.length > 0 && (
-                <div className="dt-multi-grid">
-                  {multiImages.map((img, i) => (
-                    <img
-                      key={i}
-                      src={img}
-                      alt={`${article.title} - ảnh ${i + 2}`}
-                      className="dt-multi-sub"
-                      onClick={() => setLightbox(img)}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
 
-          {/* ══════ TEMPLATE: GALLERY (slideshow + thumbnails) ══════ */}
-          {template === 'gallery' && (
-            <div className="dt-gallery">
-              {/* Main slideshow */}
-              <div className="dt-gallery-main">
-                <img
-                  src={galleryImages[galleryIndex] || imgUrl}
-                  alt={`${article.title} - slide ${galleryIndex + 1}`}
-                  className="dt-gallery-slide"
-                  onClick={() => setLightbox(galleryImages[galleryIndex] || imgUrl)}
-                />
-                {galleryImages.length > 1 && (
-                  <>
-                    <button
-                      className="dt-gallery-nav dt-gallery-prev"
-                      onClick={() => setGalleryIndex(prev => (prev - 1 + galleryImages.length) % galleryImages.length)}
-                    >‹</button>
-                    <button
-                      className="dt-gallery-nav dt-gallery-next"
-                      onClick={() => setGalleryIndex(prev => (prev + 1) % galleryImages.length)}
-                    >›</button>
-                    <div className="dt-gallery-counter">
-                      {galleryIndex + 1} / {galleryImages.length}
+          {/* ══════ TEMPLATE: FLOW (alternating text + image) ══════ */}
+          {template === 'flow' && (() => {
+            const textBlocks = article.fullDesc ? article.fullDesc.split('<!-- SPLIT -->') : [''];
+            const flowImgs = (article.galleryImages || []).map(resolveImg);
+            const blockCount = Math.max(textBlocks.length, flowImgs.length);
+
+            return (
+              <div className="rp-report" ref={magazineRef}>
+                {Array.from({ length: blockCount }).map((_, idx) => (
+                  <div key={idx} className="rp-page" data-animate="true">
+                    
+                    {/* Header bar only on the first block */}
+                    {idx === 0 && (
+                      <div className="rp-page-header">
+                        <span className="rp-brand">STELLA SHIPPING</span>
+                        <span className="rp-sep">|</span>
+                        <span className="rp-type">{article.category?.toUpperCase() || 'ARTICLE'}</span>
+                      </div>
+                    )}
+
+                    {/* Image at TOP for subsequent blocks (matching inline style) */}
+                    {idx > 0 && flowImgs[idx] && (
+                      <div className="rp-img-container rp-img-top" onClick={() => setLightbox(flowImgs[idx])}>
+                        <img src={flowImgs[idx]} alt={`Minh hoạ ${idx + 1}`} className="rp-img" />
+                        <div className="rp-img-caption"><em>Ảnh: Stella Shipping</em></div>
+                      </div>
+                    )}
+
+                    {/* Text content */}
+                    <div className="rp-page-body">
+                      {textBlocks[idx] && textBlocks[idx].trim() && (
+                        <div
+                          className="rp-text-block"
+                          dangerouslySetInnerHTML={{ __html: textBlocks[idx].replace(/\n/g, '<br/>') }}
+                        />
+                      )}
                     </div>
-                  </>
-                )}
+
+                    {/* Image at BOTTOM for the first block */}
+                    {idx === 0 && flowImgs[idx] && (
+                      <div className="rp-img-container" onClick={() => setLightbox(flowImgs[idx])}>
+                        <img src={flowImgs[idx]} alt={`Minh hoạ ${idx + 1}`} className="rp-img" />
+                        <div className="rp-img-caption"><em>Ảnh: Stella Shipping</em></div>
+                      </div>
+                    )}
+
+                    {/* Footer bar for all blocks */}
+                    <div className="rp-page-footer">
+                      <span>Stella Shipping</span>
+                      <span>|</span>
+                      <span>Trang {idx + 1} / {blockCount}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
-              {/* Thumbnails */}
-              {galleryImages.length > 1 && (
-                <div className="dt-gallery-thumbs">
-                  {galleryImages.map((img, i) => (
-                    <img
-                      key={i}
-                      src={img}
-                      alt=""
-                      className={`dt-gallery-thumb ${i === galleryIndex ? 'active' : ''}`}
-                      onClick={() => setGalleryIndex(i)}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
+            );
+          })()}
 
-          {/* ══════ TEMPLATE: INLINE (interspersed images) ══════ */}
-          {template === 'inline' && (
-            <div className="dt-inline">
-              {(() => {
-                // Chia fullDesc thành 4 phần bằng dấu <!-- SPLIT -->
-                const textBlocks = article.fullDesc ? article.fullDesc.split('<!-- SPLIT -->') : [''];
-                // img2=ảnh sau đoạn 1, img3=ảnh sau đoạn 2, img4=ảnh sau đoạn 3, đoạn 4 là đoạn cuối
-                const inlineImgs = [article.img2, article.img3, article.img4].map(src => src ? resolveImg(src) : null);
-                
-                return (
-                  <>
-                    {/* Đoạn 1 */}
+          {/* ══════ TEMPLATE: INLINE (Professional Report Style) ══════ */}
+          {template === 'inline' && (() => {
+            const textBlocks = article.fullDesc ? article.fullDesc.split('<!-- SPLIT -->') : [''];
+            const inlineImgs = [article.img2, article.img3, article.img4].map(src => src ? resolveImg(src) : null);
+            // Collect pages: each page = { text, img (shown at top of that page) }
+            // Page 1: intro text + main image (imgUrl)
+            // Page 2: img2 + text block 2
+            // Page 3: img3 + text block 3
+            // Page 4 (optional): img4 or text block 4 (conclusion)
+            
+            return (
+              <div className="rp-report" ref={magazineRef}>
+
+                {/* ═══ PAGE 1 ═══ */}
+                <div className="rp-page" data-animate="true">
+                  <div className="rp-page-header">
+                    <span className="rp-brand">STELLA SHIPPING</span>
+                    <span className="rp-sep">|</span>
+                    <span className="rp-type">{article.category?.toUpperCase() || 'MARKET UPDATE'}</span>
+                  </div>
+
+                  <div className="rp-page-body">
+                    {/* Intro / Lead text */}
                     {textBlocks[0] && textBlocks[0].trim() && (
-                      <div className="dt-body" style={{marginBottom: '24px'}} dangerouslySetInnerHTML={{ __html: textBlocks[0].replace(/\n/g, '<br/>') }} />
+                      <div className="rp-text-block" dangerouslySetInnerHTML={{ __html: textBlocks[0].replace(/\n/g, '<br/>') }} />
                     )}
-                    {/* Ảnh 1 */}
-                    {inlineImgs[0] && (
-                      <img src={inlineImgs[0]} alt="Ảnh minh hoạ 1"
-                        style={{marginBottom: '32px', borderRadius: '12px', width: '100%', maxHeight: '480px', objectFit: 'cover', cursor: 'pointer', display: 'block'}}
-                        onClick={(e) => setLightbox(e.target.src)} />
-                    )}
-                    {/* Đoạn 2 */}
-                    {textBlocks[1] && textBlocks[1].trim() && (
-                      <div className="dt-body" style={{marginBottom: '24px'}} dangerouslySetInnerHTML={{ __html: textBlocks[1].replace(/\n/g, '<br/>') }} />
-                    )}
-                    {/* Ảnh 2 */}
-                    {inlineImgs[1] && (
-                      <img src={inlineImgs[1]} alt="Ảnh minh hoạ 2"
-                        style={{marginBottom: '32px', borderRadius: '12px', width: '100%', maxHeight: '480px', objectFit: 'cover', cursor: 'pointer', display: 'block'}}
-                        onClick={(e) => setLightbox(e.target.src)} />
-                    )}
-                    {/* Đoạn 3 */}
-                    {textBlocks[2] && textBlocks[2].trim() && (
-                      <div className="dt-body" style={{marginBottom: '24px'}} dangerouslySetInnerHTML={{ __html: textBlocks[2].replace(/\n/g, '<br/>') }} />
-                    )}
-                    {/* Ảnh 3 */}
-                    {inlineImgs[2] && (
-                      <img src={inlineImgs[2]} alt="Ảnh minh hoạ 3"
-                        style={{marginBottom: '32px', borderRadius: '12px', width: '100%', maxHeight: '480px', objectFit: 'cover', cursor: 'pointer', display: 'block'}}
-                        onClick={(e) => setLightbox(e.target.src)} />
-                    )}
-                    {/* Đoạn cuối */}
-                    {textBlocks[3] && textBlocks[3].trim() && (
-                      <div className="dt-body" style={{marginBottom: '24px'}} dangerouslySetInnerHTML={{ __html: textBlocks[3].replace(/\n/g, '<br/>') }} />
-                    )}
-                  </>
-                );
-              })()}
-            </div>
-          )}
+                  </div>
 
-          {template !== 'inline' && (
+                  <div className="rp-page-footer">
+                    <span>Stella Shipping</span>
+                    <span>|</span>
+                    <span>Logistics Market Update</span>
+                  </div>
+                </div>
+
+                {/* ═══ PAGE 2 ═══ */}
+                {(inlineImgs[0] || (textBlocks[1] && textBlocks[1].trim())) && (
+                  <div className="rp-page" data-animate="true">
+                    {inlineImgs[0] && (
+                      <div className="rp-img-container rp-img-top" onClick={() => setLightbox(inlineImgs[0])}>
+                        <img src={inlineImgs[0]} alt="Minh hoạ 2" className="rp-img" />
+                      </div>
+                    )}
+
+                    <div className="rp-page-body">
+                      {textBlocks[1] && textBlocks[1].trim() && (
+                        <div className="rp-text-block" dangerouslySetInnerHTML={{ __html: textBlocks[1].replace(/\n/g, '<br/>') }} />
+                      )}
+                    </div>
+
+                    <div className="rp-page-footer">
+                      <span>Stella Shipping</span>
+                      <span>|</span>
+                      <span>Logistics Market Update</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* ═══ PAGE 3 ═══ */}
+                {(inlineImgs[1] || (textBlocks[2] && textBlocks[2].trim()) || inlineImgs[2] || (textBlocks[3] && textBlocks[3].trim())) && (
+                  <div className="rp-page" data-animate="true">
+                    {inlineImgs[1] && (
+                      <div className="rp-img-container rp-img-top" onClick={() => setLightbox(inlineImgs[1])}>
+                        <img src={inlineImgs[1]} alt="Minh hoạ 3" className="rp-img" />
+                      </div>
+                    )}
+
+                    <div className="rp-page-body">
+                      {textBlocks[2] && textBlocks[2].trim() && (
+                        <div className="rp-text-block" dangerouslySetInnerHTML={{ __html: textBlocks[2].replace(/\n/g, '<br/>') }} />
+                      )}
+
+                      {/* If there's a 3rd image or 4th text block, include in same page */}
+                      {inlineImgs[2] && (
+                        <div className="rp-img-container rp-img-inline" onClick={() => setLightbox(inlineImgs[2])}>
+                          <img src={inlineImgs[2]} alt="Minh hoạ 4" className="rp-img" />
+                        </div>
+                      )}
+
+                      {textBlocks[3] && textBlocks[3].trim() && (
+                        <div className="rp-text-block rp-text-sources" dangerouslySetInnerHTML={{ __html: textBlocks[3].replace(/\n/g, '<br/>') }} />
+                      )}
+                    </div>
+
+                    <div className="rp-page-footer">
+                      <span>Stella Shipping</span>
+                      <span>|</span>
+                      <span>Logistics Market Update</span>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            );
+          })()}
+
+          {template !== 'inline' && template !== 'flow' && (
             <div className="dt-body" dangerouslySetInnerHTML={{ __html: article.fullDesc ? article.fullDesc.replace(/\n/g, '<br/>') : 'Đang cập nhật nội dung...' }} />
           )}
 
@@ -365,124 +407,8 @@ const detailCSS = `
     transform: scale(1.005);
   }
 
-  /* ══════ MULTI TEMPLATE ══════ */
-  .dt-multi {
-    margin-bottom: 32px;
-  }
-  .dt-multi-main {
-    width: 100%;
-    height: 380px;
-    object-fit: cover;
-    border-radius: 14px 14px 4px 4px;
-    margin-bottom: 6px;
-    cursor: pointer;
-    transition: filter .3s;
-  }
-  .dt-multi-main:hover {
-    filter: brightness(1.05);
-  }
-  .dt-multi-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
-  .dt-multi-sub {
-    width: 100%;
-    height: 140px;
-    object-fit: cover;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all .3s;
-  }
-  .dt-multi-sub:first-child { border-radius: 0 0 0 14px; }
-  .dt-multi-sub:last-child { border-radius: 0 0 14px 0; }
-  .dt-multi-sub:hover {
-    filter: brightness(1.1);
-    transform: scale(1.02);
-  }
 
-  /* ══════ GALLERY TEMPLATE ══════ */
-  .dt-gallery {
-    margin-bottom: 32px;
-  }
-  .dt-gallery-main {
-    position: relative;
-    border-radius: 14px;
-    overflow: hidden;
-    background: #000;
-  }
-  .dt-gallery-slide {
-    width: 100%;
-    height: 440px;
-    object-fit: cover;
-    display: block;
-    cursor: pointer;
-    transition: opacity .5s ease;
-  }
-  .dt-gallery-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,.9);
-    border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 22px;
-    font-weight: 700;
-    cursor: pointer;
-    color: #0f2b57;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all .2s;
-    box-shadow: 0 4px 16px rgba(0,0,0,.15);
-    z-index: 2;
-  }
-  .dt-gallery-nav:hover {
-    background: #f36c1f;
-    color: #fff;
-  }
-  .dt-gallery-prev { left: 16px; }
-  .dt-gallery-next { right: 16px; }
-  .dt-gallery-counter {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    background: rgba(15,43,87,.75);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: .5px;
-    backdrop-filter: blur(4px);
-  }
-  .dt-gallery-thumbs {
-    display: flex;
-    gap: 6px;
-    margin-top: 10px;
-    overflow-x: auto;
-    padding: 4px 0;
-  }
-  .dt-gallery-thumb {
-    width: 72px;
-    height: 52px;
-    object-fit: cover;
-    border-radius: 8px;
-    cursor: pointer;
-    border: 3px solid transparent;
-    opacity: .5;
-    transition: all .2s;
-    flex-shrink: 0;
-  }
-  .dt-gallery-thumb.active {
-    border-color: #f36c1f;
-    opacity: 1;
-  }
-  .dt-gallery-thumb:hover {
-    opacity: .85;
-  }
+
 
   /* ══════ LIGHTBOX ══════ */
   .dt-lightbox {
@@ -538,6 +464,219 @@ const detailCSS = `
   }
   .dt-body p {
     margin-bottom: 24px;
+  }
+
+  /* ══════ REPORT TEMPLATE (Word Document Style) ══════ */
+  .rp-report {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin: -24px -24px 0 -24px;
+    padding: 0;
+  }
+
+  /* ── Page wrapper (paper feel) ── */
+  .rp-page {
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 20px rgba(15,43,87,.08), 0 1px 4px rgba(0,0,0,.04);
+    border: 1px solid #e8ecf1;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .rp-page.dt-il-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── Page header bar ── */
+  .rp-page-header {
+    background: #0f2b57;
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .rp-brand {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+  }
+  .rp-sep {
+    color: rgba(255,255,255,.3);
+    font-size: 16px;
+    font-weight: 300;
+  }
+  .rp-type {
+    color: #f36c1f;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+
+  /* ── Page body ── */
+  .rp-page-body {
+    padding: 36px 40px;
+  }
+
+  /* ── Text block ── */
+  .rp-text-block {
+    font-size: 14.5px;
+    line-height: 1.85;
+    color: #2c3e50;
+    margin-bottom: 28px;
+    text-align: justify;
+    word-break: break-word;
+  }
+  .rp-text-block h2, .rp-text-block h3, .rp-text-block strong {
+    color: #0f2b57;
+  }
+  .rp-text-block h2 {
+    font-size: 20px;
+    margin: 32px 0 14px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f36c1f;
+    display: inline-block;
+    line-height: 1.3;
+  }
+  .rp-text-block h3 {
+    font-size: 17px;
+    margin: 24px 0 10px 0;
+    line-height: 1.3;
+  }
+  .rp-text-block p {
+    margin-bottom: 14px;
+  }
+  .rp-text-block ul, .rp-text-block ol {
+    padding-left: 20px;
+    margin-bottom: 14px;
+  }
+  .rp-text-block li {
+    margin-bottom: 6px;
+  }
+  .rp-text-block a {
+    color: #f36c1f;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .rp-text-block a:hover {
+    text-decoration: underline;
+  }
+
+  /* Sources / conclusion block */
+  .rp-text-sources {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e1e6ea;
+    font-size: 13.5px;
+    color: #5a6f82;
+  }
+
+  /* ── Images ── */
+  .rp-img-container {
+    position: relative;
+    margin-bottom: 24px;
+    cursor: pointer;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+  }
+  .rp-img-container:hover {
+    box-shadow: 0 4px 20px rgba(15,43,87,.12);
+  }
+  .rp-img {
+    width: 100%;
+    height: auto;
+    max-height: 420px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .rp-img-container:hover .rp-img {
+    transform: scale(1.02);
+  }
+
+  /* Image at top of page (no padding, full bleed) */
+  .rp-img-top {
+    margin: 0;
+    border-radius: 0;
+  }
+  .rp-img-top .rp-img {
+    max-height: 380px;
+    border-radius: 0;
+  }
+
+  /* Inline image within text */
+  .rp-img-inline {
+    margin: 20px 0 24px 0;
+  }
+  .rp-img-inline .rp-img {
+    max-height: 360px;
+    border-radius: 6px;
+  }
+
+  /* Image caption */
+  .rp-img-caption {
+    padding: 10px 16px;
+    font-size: 12.5px;
+    color: #7b8a9a;
+    font-style: italic;
+    background: #f8fafc;
+    border-top: 1px solid #edf1f5;
+  }
+
+  /* ── Page footer ── */
+  .rp-page-footer {
+    padding: 12px 40px;
+    background: #f8fafc;
+    border-top: 1px solid #edf1f5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11.5px;
+    color: #8a9bb0;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .rp-page-footer span:nth-child(2) {
+    color: #d5dde6;
+    font-weight: 300;
+    font-size: 14px;
+  }
+
+  /* ── Responsive ── */
+  @media(max-width: 768px) {
+    .rp-report {
+      margin: -12px -12px 0 -12px;
+      gap: 24px;
+    }
+    .rp-page-header {
+      padding: 12px 20px;
+    }
+    .rp-brand {
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+    .rp-type {
+      font-size: 10px;
+    }
+    .rp-page-body {
+      padding: 24px 20px;
+    }
+    .rp-text-block {
+      font-size: 14px;
+      text-align: left;
+    }
+    .rp-img-top .rp-img {
+      max-height: 220px;
+    }
+    .rp-page-footer {
+      padding: 10px 20px;
+      font-size: 10px;
+    }
   }
 
   .dt-share {

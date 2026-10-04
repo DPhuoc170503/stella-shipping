@@ -11,26 +11,20 @@ const TEMPLATES = [
     desc: 'Bài viết đơn giản với 1 ảnh đại diện. Phù hợp cho tin tức ngắn, thông báo.',
     preview: '┌──────────┐\n│  🖼️ Ảnh  │\n│          │\n│  Nội     │\n│  dung    │\n└──────────┘'
   },
-  {
-    id: 'multi',
-    icon: '🎨',
-    title: 'Đa ảnh — 4 ảnh',
-    desc: 'Bài viết với 1 ảnh chính + 3 ảnh phụ hiển thị dạng lưới. Phù hợp tin tức sự kiện, ra mắt.',
-    preview: '┌──────────┐\n│  🖼️ Chính│\n│ ┌──┬──┬──┐\n│ │P1│P2│P3│\n│ └──┴──┴──┘\n└──────────┘'
-  },
-  {
-    id: 'gallery',
-    icon: '📸',
-    title: 'Gallery — Nhiều ảnh',
-    desc: 'Thêm không giới hạn ảnh, hiển thị dạng carousel/slideshow. Phù hợp sự kiện, triển lãm, review.',
-    preview: '┌──────────┐\n│  🖼️ Chính│\n│ ← 📷📷📷 →\n│  Slide   │\n│  show    │\n└──────────┘'
-  },
+
   {
     id: 'inline',
-    icon: '📝',
-    title: 'Trộn ảnh — Xen kẽ',
-    desc: 'Bài viết với 1 ảnh chính và 3 ảnh phụ xen kẽ trong nội dung. Phù hợp bài phân tích dài.',
-    preview: '┌──────────┐\n│  🖼️ Chính│\n│  Text    │\n│  🖼️ Phụ 1│\n│  Text    │\n└──────────┘'
+    icon: '📄',
+    title: 'Báo cáo — 3 trang',
+    desc: 'Bài viết dạng báo cáo chuyên nghiệp với 3 trang giống tài liệu Word. Có header branding, ảnh full-width, footer.',
+    preview: '┌──────────┐\n│ STELLA   │\n│ 📝 Text  │\n│ 🖼️ Image │\n│ ─footer─ │\n└──────────┘'
+  },
+  {
+    id: 'flow',
+    icon: '📰',
+    title: 'Bài dài — Xen kẽ',
+    desc: 'Nội dung xen kẽ ảnh liên tục. Thêm nhiều ảnh tuỳ ý, mỗi ảnh nằm giữa các đoạn văn. Phù hợp bài phân tích, sự kiện, hướng dẫn.',
+    preview: '┌──────────┐\n│ 📝 Text 1 │\n│ 🖼️ Ảnh 1  │\n│ 📝 Text 2 │\n│ 🖼️ Ảnh 2  │\n└──────────┘'
   }
 ]
 
@@ -140,32 +134,6 @@ const adminCSS = `
   .tpl-desc{font-size:12px;color:#7b8a9a;line-height:1.5}
   .tpl-preview{font-family:'Courier New',monospace;font-size:10px;color:#b0b8c4;white-space:pre;line-height:1.3;margin-top:10px;background:#f8fafc;padding:8px;border-radius:6px;text-align:left}
 
-  /* ══════ MULTI-IMAGE SECTION ══════ */
-  .img-section{background:#f8fafc;border:1px solid #edf1f5;border-radius:12px;padding:20px;margin-bottom:18px}
-  .img-section-title{font-size:14px;font-weight:700;color:#0f2b57;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-  .img-section-title .badge{background:#f36c1f;color:#fff;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600}
-  .img-slot{margin-bottom:16px}
-  .img-slot:last-child{margin-bottom:0}
-  .img-slot-label{font-size:12px;font-weight:600;color:#5a6f82;margin-bottom:6px;display:flex;align-items:center;gap:6px}
-  .img-slot-label .num{background:#0f2b57;color:#fff;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
-
-  /* ══════ GALLERY MANAGER ══════ */
-  .gallery-manager{background:#f8fafc;border:1px solid #edf1f5;border-radius:12px;padding:20px;margin-bottom:18px}
-  .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;margin-top:12px}
-  .gallery-item{position:relative;border-radius:8px;overflow:hidden;aspect-ratio:1;cursor:pointer}
-  .gallery-item img{width:100%;height:100%;object-fit:cover}
-  .gallery-item .remove-btn{position:absolute;top:4px;right:4px;background:rgba(239,68,68,.9);color:#fff;border:none;width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
-  .gallery-item:hover .remove-btn{opacity:1}
-  .gallery-item .order-badge{position:absolute;bottom:4px;left:4px;background:rgba(15,43,87,.8);color:#fff;font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
-  .gallery-add{border:2px dashed #d5dde6;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 8px;cursor:pointer;transition:all .2s;aspect-ratio:1;font-size:11px;color:#7b8a9a;gap:2px}
-  .gallery-add:hover{border-color:#f36c1f;color:#f36c1f;background:rgba(243,108,31,.02)}
-
-  /* ══════ GALLERY PICKER MODAL ══════ */
-  .picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;max-height:300px;overflow-y:auto;padding:4px}
-  .picker-item{border-radius:8px;overflow:hidden;aspect-ratio:1.4;cursor:pointer;border:2.5px solid transparent;transition:all .2s;opacity:.7}
-  .picker-item:hover{opacity:1}
-  .picker-item.selected{border-color:#f36c1f;opacity:1}
-  .picker-item img{width:100%;height:100%;object-fit:cover}
 
   /* steps indicator */
   .adm-steps{display:flex;align-items:center;gap:0;margin-bottom:24px;padding:0 4px}
@@ -364,27 +332,11 @@ export default function AdminNews() {
     }
   }
 
-  /* ── Gallery helpers ── */
-  const addToGallery = (imgUrl) => {
-    setForm(f => ({
-      ...f,
-      galleryImages: [...(f.galleryImages || []), imgUrl]
-    }))
-  }
-
-  const removeFromGallery = (index) => {
-    setForm(f => ({
-      ...f,
-      galleryImages: f.galleryImages.filter((_, i) => i !== index)
-    }))
-  }
-
   /* ── Template label helper ── */
   const getTemplateBadge = (tpl) => {
     switch (tpl) {
-      case 'multi': return <span className="adm-tpl-badge adm-tpl-multi">🎨 Đa ảnh</span>
-      case 'gallery': return <span className="adm-tpl-badge adm-tpl-gallery">📸 Gallery</span>
-      case 'inline': return <span className="adm-tpl-badge adm-tpl-inline" style={{background: 'rgba(34,197,94,.08)', color: '#16a34a'}}>📝 Xen kẽ</span>
+      case 'inline': return <span className="adm-tpl-badge adm-tpl-inline" style={{background: 'rgba(34,197,94,.08)', color: '#16a34a'}}>📄 Báo cáo</span>
+      case 'flow': return <span className="adm-tpl-badge adm-tpl-inline" style={{background: 'rgba(99,102,241,.08)', color: '#4f46e5'}}>📰 Bài dài</span>
       default: return <span className="adm-tpl-badge adm-tpl-single">🖼️ Cơ bản</span>
     }
   }
@@ -409,6 +361,38 @@ export default function AdminNews() {
     const parts = getInlineParts(form[key]);
     parts[index] = value;
     setForm(f => ({ ...f, [key]: parts.join('<!-- SPLIT -->') }));
+  }
+
+  /* ── Flow template helpers ── */
+  const getFlowParts = (text) => {
+    if (!text) return [''];
+    return text.split('<!-- SPLIT -->');
+  }
+  const updateFlowPart = (index, value, isEn = false) => {
+    const key = isEn ? 'fullDesc_en' : 'fullDesc';
+    const parts = getFlowParts(form[key]);
+    parts[index] = value;
+    setForm(f => ({ ...f, [key]: parts.join('<!-- SPLIT -->') }));
+  }
+  const addFlowPart = (isEn = false) => {
+    const key = isEn ? 'fullDesc_en' : 'fullDesc';
+    const parts = getFlowParts(form[key]);
+    parts.push('');
+    setForm(f => ({ ...f, [key]: parts.join('<!-- SPLIT -->') }));
+  }
+  const removeFlowPart = (index, isEn = false) => {
+    const key = isEn ? 'fullDesc_en' : 'fullDesc';
+    const parts = getFlowParts(form[key]);
+    parts.splice(index, 1);
+    setForm(f => ({ ...f, [key]: parts.join('<!-- SPLIT -->') }));
+  }
+
+  /* ── Gallery/Flow image helpers ── */
+  const addFlowImage = (imgUrl) => {
+    setForm(f => ({ ...f, galleryImages: [...(f.galleryImages || []), imgUrl] }))
+  }
+  const removeFlowImage = (index) => {
+    setForm(f => ({ ...f, galleryImages: f.galleryImages.filter((_, i) => i !== index) }))
   }
 
   const allImages = [...IMAGES, ...mediaFiles.map(f => `${API_URL}${f.url}`)]
@@ -602,8 +586,8 @@ export default function AdminNews() {
                         style={{ padding: '6px 12px', border: '1.5px solid #e1e8ef', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}
                       >
                         <option value="single">🖼️ Cơ bản — 1 ảnh</option>
-                        <option value="multi">🎨 Đa ảnh — 4 ảnh</option>
-                        <option value="gallery">📸 Gallery — Nhiều ảnh</option>
+                        <option value="inline">📄 Báo cáo — 3 trang</option>
+                        <option value="flow">📰 Bài dài — Xen kẽ</option>
                       </select>
                     </div>
                   )}
@@ -723,69 +707,258 @@ export default function AdminNews() {
                     </div>
                   )}
 
-                  {/* === INLINE: Nội dung xen kẽ ảnh === */}
+                  {/* === FLOW: Bài dài xen kẽ text + ảnh === */}
+                  {form.template === 'flow' && (() => {
+                    const partsVi = getFlowParts(form.fullDesc);
+                    const partsEn = getFlowParts(form.fullDesc_en);
+                    const flowImgs = form.galleryImages || [];
+                    const blockCount = Math.max(partsVi.length, flowImgs.length + 1);
+
+                    return (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                        {/* Header info banner */}
+                        <div style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #6366f1 100%)', color: '#fff', padding: '14px 20px', borderRadius: 10 }}>
+                          <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 4 }}>📰 Bài dài — Xen kẽ text &amp; ảnh</div>
+                          <div style={{ fontSize: 12, color: 'rgba(255,255,255,.75)' }}>
+                            Mỗi khối gồm 1 đoạn văn + 1 ảnh bên dưới. Thêm bao nhiêu khối tuỳ ý. Đoạn cuối có thể không có ảnh.
+                          </div>
+                        </div>
+
+                        {/* Dynamic blocks */}
+                        {Array.from({ length: blockCount }).map((_, idx) => (
+                          <div key={idx} style={{ border: '1.5px solid #e1e8ef', borderRadius: 10, overflow: 'hidden' }}>
+                            {/* Block header */}
+                            <div style={{ background: '#f8fafc', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #e1e8ef' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                <span style={{ background: '#4f46e5', color: '#fff', width: 24, height: 24, borderRadius: 6, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800 }}>{idx + 1}</span>
+                                <span style={{ fontSize: 13, fontWeight: 700, color: '#0f2b57' }}>Khối nội dung {idx + 1}</span>
+                              </div>
+                              {blockCount > 1 && (
+                                <button type="button" onClick={() => { removeFlowPart(idx); removeFlowPart(idx, true); if (flowImgs[idx]) removeFlowImage(idx); }}
+                                  style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.2)', color: '#dc2626', borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>
+                                  ✕ Xoá khối
+                                </button>
+                              )}
+                            </div>
+
+                            <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                              {/* Text fields */}
+                              <div className="adm-form-row">
+                                <div className="adm-form-group" style={{ marginBottom: 0 }}>
+                                  <label>📝 Đoạn văn {idx + 1} (VI)</label>
+                                  <textarea
+                                    value={partsVi[idx] || ''}
+                                    onChange={e => updateFlowPart(idx, e.target.value)}
+                                    rows={4}
+                                    placeholder={idx === 0 ? 'Đoạn mở đầu bài viết...' : `Tiếp tục nội dung khối ${idx + 1}...`}
+                                  />
+                                </div>
+                                <div className="adm-form-group" style={{ marginBottom: 0 }}>
+                                  <label>📝 Đoạn văn {idx + 1} (EN)</label>
+                                  <textarea
+                                    value={partsEn[idx] || ''}
+                                    onChange={e => updateFlowPart(idx, e.target.value, true)}
+                                    rows={4}
+                                    placeholder={idx === 0 ? 'Opening paragraph (EN)...' : `Continue block ${idx + 1} (EN)...`}
+                                  />
+                                </div>
+                              </div>
+
+                              {/* Image for this block */}
+                              <div style={{ background: '#f8fafc', borderRadius: 8, padding: 12, border: '1px dashed #d5dde6' }}>
+                                <div style={{ fontSize: 12, fontWeight: 600, color: '#5a6f82', marginBottom: 8 }}>
+                                  🖼️ Ảnh bên dưới đoạn {idx + 1} {idx === blockCount - 1 ? '(tuỳ chọn — đoạn cuối)' : ''}
+                                </div>
+                                {flowImgs[idx] ? (
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                    <img src={flowImgs[idx]} alt="" style={{ width: 80, height: 56, objectFit: 'cover', borderRadius: 6, border: '2px solid #f36c1f' }} />
+                                    <div style={{ flex: 1, fontSize: 12, color: '#7b8a9a', wordBreak: 'break-all' }}>{flowImgs[idx]}</div>
+                                    <button type="button" onClick={() => removeFlowImage(idx)}
+                                      style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.2)', color: '#dc2626', borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontSize: 12 }}>
+                                      ✕ Xoá
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <input
+                                      type="text"
+                                      placeholder="Dán URL ảnh hoặc chọn bên dưới..."
+                                      style={{ width: '100%', padding: '8px 12px', border: '1.5px solid #e1e8ef', borderRadius: 8, fontSize: 13, marginBottom: 8, fontFamily: 'inherit' }}
+                                      onBlur={e => { if (e.target.value.trim()) addFlowImage(e.target.value.trim()); e.target.value = ''; }}
+                                    />
+                                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', maxHeight: 100, overflowY: 'auto', padding: 4, background: '#fff', borderRadius: 6, border: '1px solid #edf1f5' }}>
+                                      {allImages.map(img => (
+                                        <img key={img} src={img} alt="" onClick={() => addFlowImage(img)}
+                                          style={{ width: 64, height: 44, objectFit: 'cover', borderRadius: 6, cursor: 'pointer', border: '2px solid transparent', opacity: 0.7, transition: 'all .2s' }}
+                                          onMouseOver={e => { e.target.style.opacity = 1; e.target.style.borderColor = '#f36c1f'; }}
+                                          onMouseOut={e => { e.target.style.opacity = 0.7; e.target.style.borderColor = 'transparent'; }}
+                                        />
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+
+                        {/* Add new block button */}
+                        <button
+                          type="button"
+                          onClick={() => { addFlowPart(); addFlowPart(true); }}
+                          style={{ border: '2px dashed #c7d2fe', borderRadius: 10, padding: '14px 20px', background: 'rgba(99,102,241,.03)', color: '#4f46e5', fontWeight: 700, fontSize: 14, cursor: 'pointer', transition: 'all .2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
+                          onMouseOver={e => { e.currentTarget.style.background = 'rgba(99,102,241,.08)'; e.currentTarget.style.borderColor = '#818cf8'; }}
+                          onMouseOut={e => { e.currentTarget.style.background = 'rgba(99,102,241,.03)'; e.currentTarget.style.borderColor = '#c7d2fe'; }}
+                        >
+                          ➕ Thêm khối nội dung mới
+                        </button>
+                      </div>
+                    );
+                  })()}
+
+                  {/* === INLINE: Nội dung báo cáo chuyên nghiệp (3 trang) === */}
                   {form.template === 'inline' && (() => {
                     const partsVi = getInlineParts(form.fullDesc);
                     const partsEn = getInlineParts(form.fullDesc_en);
+                    
+                    const pageHeaderStyle = {
+                      background: '#0f2b57',
+                      color: '#fff',
+                      padding: '12px 20px',
+                      borderRadius: '10px 10px 0 0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 10,
+                      fontSize: 13,
+                      fontWeight: 700,
+                      letterSpacing: 0.5
+                    };
+                    const pageBodyStyle = {
+                      background: '#fff',
+                      border: '1.5px solid #e1e8ef',
+                      borderTop: 'none',
+                      borderRadius: '0 0 10px 10px',
+                      padding: '20px'
+                    };
+                    const pageBadgeStyle = {
+                      background: '#f36c1f',
+                      color: '#fff',
+                      fontSize: 10,
+                      fontWeight: 800,
+                      padding: '3px 10px',
+                      borderRadius: 6,
+                      letterSpacing: 0.5
+                    };
+                    const previewLabelStyle = {
+                      fontSize: 11,
+                      color: '#8a9bb0',
+                      fontStyle: 'italic',
+                      marginTop: 4,
+                      marginBottom: 0
+                    };
+                    
                     return (
-                      <div className="img-section" style={{ background: '#f8fafc' }}>
-                        <div className="img-section-title">
-                          📝 Nội dung xen kẽ ảnh
-                          <span className="badge">Mẫu xen kẽ</span>
-                        </div>
-                        <p style={{ fontSize: 12, color: '#7b8a9a', margin: '0 0 20px', lineHeight: 1.5 }}>
-                          Điền nội dung đoạn 1, chọn ảnh 1, rồi tiếp tục điền nội dung đoạn 2... Hệ thống sẽ ghép lại thành 1 bài viết hoàn chỉnh.
-                        </p>
-
-                        <div className="adm-form-row">
-                          <div className="adm-form-group">
-                            <label>Nội dung đoạn 1 (VI)</label>
-                            <textarea value={partsVi[0]} onChange={e => updateInlinePart(0, e.target.value)} rows={4} placeholder="Văn bản nằm dưới ảnh đại diện..." />
-                          </div>
-                          <div className="adm-form-group">
-                            <label>Nội dung đoạn 1 (EN)</label>
-                            <textarea value={partsEn[0]} onChange={e => updateInlinePart(0, e.target.value, true)} rows={4} />
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                        <div style={{ background: 'linear-gradient(135deg, #0f2b57 0%, #1a3a6a 100%)', color: '#fff', padding: '16px 20px', borderRadius: 10, textAlign: 'center' }}>
+                          <div style={{ fontSize: 16, fontWeight: 800, marginBottom: 4 }}>📄 Bố cục Báo cáo Chuyên nghiệp</div>
+                          <div style={{ fontSize: 12, color: 'rgba(255,255,255,.7)' }}>
+                            Bài viết sẽ hiển thị dạng 3 trang giống tài liệu Word, mỗi trang có header branding + ảnh + nội dung + footer.
                           </div>
                         </div>
 
-                        <ImagePicker value={form.img2} onChange={v => setForm(f => ({ ...f, img2: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">1</span> Ảnh xen kẽ 1</>} />
-
-                        <div className="adm-form-row" style={{ marginTop: 24 }}>
-                          <div className="adm-form-group">
-                            <label>Nội dung đoạn 2 (VI)</label>
-                            <textarea value={partsVi[1]} onChange={e => updateInlinePart(1, e.target.value)} rows={4} placeholder="Văn bản nằm dưới ảnh xen kẽ 1..." />
+                        {/* ═══ TRANG 1 ═══ */}
+                        <div>
+                          <div style={pageHeaderStyle}>
+                            <span style={pageBadgeStyle}>TRANG 1</span>
+                            <span>Giới thiệu</span>
                           </div>
-                          <div className="adm-form-group">
-                            <label>Nội dung đoạn 2 (EN)</label>
-                            <textarea value={partsEn[1]} onChange={e => updateInlinePart(1, e.target.value, true)} rows={4} />
-                          </div>
-                        </div>
-
-                        <ImagePicker value={form.img3} onChange={v => setForm(f => ({ ...f, img3: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">2</span> Ảnh xen kẽ 2</>} />
-
-                        <div className="adm-form-row" style={{ marginTop: 24 }}>
-                          <div className="adm-form-group">
-                            <label>Nội dung đoạn 3 (VI)</label>
-                            <textarea value={partsVi[2]} onChange={e => updateInlinePart(2, e.target.value)} rows={4} placeholder="Văn bản nằm dưới ảnh xen kẽ 2..." />
-                          </div>
-                          <div className="adm-form-group">
-                            <label>Nội dung đoạn 3 (EN)</label>
-                            <textarea value={partsEn[2]} onChange={e => updateInlinePart(2, e.target.value, true)} rows={4} />
+                          <div style={pageBodyStyle}>
+                            <p style={previewLabelStyle}>💡 Header bar "STELLA SHIPPING | DANH MỤC" sẽ tự động hiển thị ở đầu trang 1</p>
+                            
+                            <div className="adm-form-row" style={{ marginTop: 14 }}>
+                              <div className="adm-form-group">
+                                <label>📝 Nội dung đoạn 1 (VI)</label>
+                                <textarea value={partsVi[0]} onChange={e => updateInlinePart(0, e.target.value)} rows={5} placeholder="Đoạn giới thiệu bài viết, nằm bên trên ảnh chính..." />
+                              </div>
+                              <div className="adm-form-group">
+                                <label>📝 Nội dung đoạn 1 (EN)</label>
+                                <textarea value={partsEn[0]} onChange={e => updateInlinePart(0, e.target.value, true)} rows={5} placeholder="Introduction paragraph (EN)..." />
+                              </div>
+                            </div>
+                            
+                            <p style={{ ...previewLabelStyle, marginTop: 12 }}>🖼️ Ảnh đại diện (chính) chỉ hiển thị bên ngoài danh sách tin tức, không hiện trong bài viết</p>
                           </div>
                         </div>
 
-                        <ImagePicker value={form.img4} onChange={v => setForm(f => ({ ...f, img4: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">3</span> Ảnh xen kẽ 3</>} />
-
-                        <div className="adm-form-row" style={{ marginTop: 24 }}>
-                          <div className="adm-form-group">
-                            <label>Nội dung đoạn cuối (VI)</label>
-                            <textarea value={partsVi[3]} onChange={e => updateInlinePart(3, e.target.value)} rows={4} placeholder="Đoạn văn kết luận..." />
+                        {/* ═══ TRANG 2 ═══ */}
+                        <div>
+                          <div style={pageHeaderStyle}>
+                            <span style={pageBadgeStyle}>TRANG 2</span>
+                            <span>Ảnh minh hoạ 1 + Nội dung chính</span>
                           </div>
-                          <div className="adm-form-group">
-                            <label>Nội dung đoạn cuối (EN)</label>
-                            <textarea value={partsEn[3]} onChange={e => updateInlinePart(3, e.target.value, true)} rows={4} />
+                          <div style={pageBodyStyle}>
+                            <p style={previewLabelStyle}>🖼️ Ảnh bên dưới sẽ hiển thị full-width ở đầu trang 2 (không padding)</p>
+                            
+                            <div style={{ marginTop: 12, marginBottom: 16 }}>
+                              <ImagePicker value={form.img2} onChange={v => setForm(f => ({ ...f, img2: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">1</span> Ảnh đầu trang 2</>} />
+                            </div>
+                            
+                            <div className="adm-form-row">
+                              <div className="adm-form-group">
+                                <label>📝 Nội dung trang 2 (VI)</label>
+                                <textarea value={partsVi[1]} onChange={e => updateInlinePart(1, e.target.value)} rows={5} placeholder="Nội dung phân tích chính, nằm bên dưới ảnh đầu trang 2..." />
+                              </div>
+                              <div className="adm-form-group">
+                                <label>📝 Nội dung trang 2 (EN)</label>
+                                <textarea value={partsEn[1]} onChange={e => updateInlinePart(1, e.target.value, true)} rows={5} placeholder="Main analysis content (EN)..." />
+                              </div>
+                            </div>
                           </div>
                         </div>
+
+                        {/* ═══ TRANG 3 ═══ */}
+                        <div>
+                          <div style={pageHeaderStyle}>
+                            <span style={pageBadgeStyle}>TRANG 3</span>
+                            <span>Ảnh minh hoạ 2 + Phân tích + Kết luận</span>
+                          </div>
+                          <div style={pageBodyStyle}>
+                            <p style={previewLabelStyle}>🖼️ Ảnh bên dưới sẽ hiển thị full-width ở đầu trang 3</p>
+                            
+                            <div style={{ marginTop: 12, marginBottom: 16 }}>
+                              <ImagePicker value={form.img3} onChange={v => setForm(f => ({ ...f, img3: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">2</span> Ảnh đầu trang 3</>} />
+                            </div>
+                            
+                            <div className="adm-form-row">
+                              <div className="adm-form-group">
+                                <label>📝 Nội dung trang 3 (VI)</label>
+                                <textarea value={partsVi[2]} onChange={e => updateInlinePart(2, e.target.value)} rows={5} placeholder="Phân tích chi tiết, ý nghĩa..." />
+                              </div>
+                              <div className="adm-form-group">
+                                <label>📝 Nội dung trang 3 (EN)</label>
+                                <textarea value={partsEn[2]} onChange={e => updateInlinePart(2, e.target.value, true)} rows={5} placeholder="Detailed analysis (EN)..." />
+                              </div>
+                            </div>
+                            
+                            <div style={{ borderTop: '1px dashed #d5dde6', paddingTop: 16, marginTop: 8 }}>
+                              <p style={{ fontSize: 12, color: '#7b8a9a', margin: '0 0 12px', fontWeight: 600 }}>📎 Ảnh bổ sung + Đoạn kết luận (tuỳ chọn)</p>
+                              
+                              <ImagePicker value={form.img4} onChange={v => setForm(f => ({ ...f, img4: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">3</span> Ảnh bổ sung trong trang 3</>} />
+                              
+                              <div className="adm-form-row" style={{ marginTop: 16 }}>
+                                <div className="adm-form-group">
+                                  <label>📝 Đoạn kết luận / Nguồn (VI)</label>
+                                  <textarea value={partsVi[3]} onChange={e => updateInlinePart(3, e.target.value)} rows={4} placeholder="Nguồn tham khảo, ghi chú biên tập, kết luận..." />
+                                </div>
+                                <div className="adm-form-group">
+                                  <label>📝 Đoạn kết luận / Nguồn (EN)</label>
+                                  <textarea value={partsEn[3]} onChange={e => updateInlinePart(3, e.target.value, true)} rows={4} placeholder="Sources, editor notes, conclusion (EN)..." />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                       </div>
                     );
                   })()}
