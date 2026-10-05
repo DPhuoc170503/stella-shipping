@@ -193,7 +193,7 @@ function ImagePicker({ value, onChange, images, mediaFiles, apiUrl, label }) {
         style={{ width: '100%', padding: '10px 14px', border: '1.5px solid #e1e8ef', borderRadius: '8px', fontSize: '13px', marginBottom: 6, fontFamily: 'inherit' }}
       />
       <div className="adm-img-preview" style={{ maxHeight: 120, overflowY: 'auto', padding: 4, background: '#fff', borderRadius: 6, border: '1px solid #edf1f5' }}>
-        {[...images, ...mediaFiles.map(f => `${apiUrl}${f.url}`)].map(img => (
+        {[...images, ...mediaFiles.map(f => f.url.startsWith('http') ? f.url : `${apiUrl}${f.url}`)].map(img => (
           <img
             key={img}
             src={img}
@@ -343,6 +343,9 @@ export default function AdminNews() {
 
   const resolveImg = (src) => {
     if (!src) return '/Banner.jpg'
+    if (src.includes('http') && src.lastIndexOf('http') > 0) {
+      src = src.substring(src.lastIndexOf('http'))
+    }
     if (src.startsWith('http')) return src
     if (src.startsWith('/uploads/')) return `${API_URL}${src}`
     return src
@@ -395,7 +398,7 @@ export default function AdminNews() {
     setForm(f => ({ ...f, galleryImages: f.galleryImages.filter((_, i) => i !== index) }))
   }
 
-  const allImages = [...IMAGES, ...mediaFiles.map(f => `${API_URL}${f.url}`)]
+  const allImages = [...IMAGES, ...mediaFiles.map(f => f.url.startsWith('http') ? f.url : `${API_URL}${f.url}`)]
 
   return (
     <div>

@@ -621,7 +621,7 @@ export default function Home() {
             ]
           ).map((n, i) => (
             <div key={i} className="hm-news-card">
-              <img src={n.img || '/Banner.jpg'} alt={n.title} />
+              <img src={n.img ? (n.img.includes('http') && n.img.lastIndexOf('http') > 0 ? n.img.substring(n.img.lastIndexOf('http')) : n.img) : '/Banner.jpg'} alt={n.title} />
               <div className="hm-news-body">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                   <div className="tag" style={{ marginBottom: 0 }}>{n.category || 'TIN TỨC'}</div>

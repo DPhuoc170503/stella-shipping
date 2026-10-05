@@ -68,6 +68,9 @@ export default function ArticleDetail() {
   const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com';
   const resolveImg = (src) => {
     if (!src) return '/Banner.jpg'
+    if (src.includes('http') && src.lastIndexOf('http') > 0) {
+      src = src.substring(src.lastIndexOf('http'))
+    }
     if (src.startsWith('http')) return src
     if (src.startsWith('/uploads/')) return `${API_URL}${src}`
     return src

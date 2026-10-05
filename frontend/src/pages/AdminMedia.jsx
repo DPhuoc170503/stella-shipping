@@ -95,7 +95,7 @@ export default function AdminMedia() {
   };
 
   const handleCopy = (url) => {
-    const fullUrl = `${API_URL}${url}`;
+    const fullUrl = url.startsWith('http') ? url : `${API_URL}${url}`;
     navigator.clipboard.writeText(fullUrl).then(() => {
       alert(`Đã copy link: ${fullUrl}`);
     }).catch(() => {
@@ -225,7 +225,7 @@ export default function AdminMedia() {
           {files.map(file => (
             <div key={file.name} className="media-card">
               <div className="media-img-wrapper">
-                <img src={`${API_URL}${file.url}`} alt={file.name} loading="lazy" />
+                <img src={file.url.startsWith('http') ? file.url : `${API_URL}${file.url}`} alt={file.name} loading="lazy" />
               </div>
               <div className="media-info">
                 <div className="media-name" title={file.name}>{file.name}</div>
