@@ -4,6 +4,24 @@ const pool = require('../db');
 const { verifyToken } = require('../middleware/auth');
 const nodemailer = require('nodemailer');
 
+// Helper: tự động xử lý URL bị lỗi (double-prepended domain)
+function cleanUrl(url) {
+  if (!url) return url;
+  if (url.includes('http') && url.lastIndexOf('http') > 0) {
+    return url.substring(url.lastIndexOf('http'));
+  }
+  return url;
+}
+function cleanGallery(gallery_images) {
+  if (!gallery_images) return [];
+  try {
+    const arr = typeof gallery_images === 'string' ? JSON.parse(gallery_images) : gallery_images;
+    return Array.isArray(arr) ? arr.map(cleanUrl) : [];
+  } catch {
+    return [];
+  }
+}
+
 // ─── Helper: Gửi email bài viết mới đến tất cả subscribers ───
 async function sendNewsletterEmail(article) {
   try {
@@ -22,7 +40,14 @@ async function sendNewsletterEmail(article) {
     const SITE_URL = process.env.SITE_URL || 'https://stellashipping.com.vn';
     const API_URL = process.env.API_URL || 'https://stella-shipping.onrender.com';
     const articleUrl = `${SITE_URL}/news/${article.id}`;
-    const imgUrl = article.img ? (article.img.startsWith('http') ? article.img : `${API_URL}${article.img}`) : '';
+    const resolveImg = (src) => {
+      if (!src) return '';
+      if (src.includes('http') && src.lastIndexOf('http') > 0) {
+        src = src.substring(src.lastIndexOf('http'));
+      }
+      return src.startsWith('http') ? src : `${API_URL}${src}`;
+    };
+    const imgUrl = resolveImg(article.img);
 
     // Gửi email cho từng subscriber
     for (const sub of subscribers) {
@@ -95,11 +120,11 @@ router.get('/', async (req, res) => {
       fullDesc: lang === 'en' ? (r.full_content_en || r.full_content || '') : (r.full_content || ''),
       category: lang === 'en' ? (r.category_en || r.category) : r.category,
       author: r.author,
-      img: r.img,
-      img2: r.img2 || '',
-      img3: r.img3 || '',
-      img4: r.img4 || '',
-      galleryImages: r.gallery_images ? (typeof r.gallery_images === 'string' ? JSON.parse(r.gallery_images) : r.gallery_images) : [],
+      img: cleanUrl(r.img),
+      img2: cleanUrl(r.img2) || '',
+      img3: cleanUrl(r.img3) || '',
+      img4: cleanUrl(r.img4) || '',
+      galleryImages: cleanGallery(r.gallery_images),
       template: r.template || 'single',
       readTime: r.read_time,
       status: r.status,
@@ -130,11 +155,11 @@ router.get('/:id', async (req, res) => {
       fullDesc: lang === 'en' ? (r.full_content_en || r.full_content || '') : (r.full_content || ''),
       category: lang === 'en' ? (r.category_en || r.category) : r.category,
       author: r.author,
-      img: r.img,
-      img2: r.img2 || '',
-      img3: r.img3 || '',
-      img4: r.img4 || '',
-      galleryImages: r.gallery_images ? (typeof r.gallery_images === 'string' ? JSON.parse(r.gallery_images) : r.gallery_images) : [],
+      img: cleanUrl(r.img),
+      img2: cleanUrl(r.img2) || '',
+      img3: cleanUrl(r.img3) || '',
+      img4: cleanUrl(r.img4) || '',
+      galleryImages: cleanGallery(r.gallery_images),
       template: r.template || 'single',
       readTime: r.read_time,
       status: r.status,
@@ -161,11 +186,11 @@ router.post('/', verifyToken, async (req, res) => {
         fullDesc || '',
         category || 'Công ty',
         author || '',
-        img || '/Banner.jpg',
-        img2 || '',
-        img3 || '',
-        img4 || '',
-        galleryImages ? JSON.stringify(galleryImages) : null,
+        cleanUrl(img) || '/Banner.jpg',
+        cleanUrl(img2) || '',
+        cleanUrl(img3) || '',
+        cleanUrl(img4) || '',
+        galleryImages ? JSON.stringify(galleryImages.map(cleanUrl)) : null,
         template || 'single',
         readTime || '3 phút',
         status || 'draft',
@@ -186,11 +211,11 @@ router.post('/', verifyToken, async (req, res) => {
       fullDesc: r.full_content || '',
       category: r.category,
       author: r.author,
-      img: r.img,
-      img2: r.img2 || '',
-      img3: r.img3 || '',
-      img4: r.img4 || '',
-      galleryImages: r.gallery_images ? (typeof r.gallery_images === 'string' ? JSON.parse(r.gallery_images) : r.gallery_images) : [],
+      img: cleanUrl(r.img),
+      img2: cleanUrl(r.img2) || '',
+      img3: cleanUrl(r.img3) || '',
+      img4: cleanUrl(r.img4) || '',
+      galleryImages: cleanGallery(r.gallery_images),
       template: r.template || 'single',
       readTime: r.read_time,
       status: r.status,
@@ -237,7 +262,7 @@ router.put('/:id', verifyToken, async (req, res) => {
         full_content_en = COALESCE(?, full_content_en),
         category_en = COALESCE(?, category_en)
        WHERE id = ?`,
-      [title, desc, fullDesc, category, author, img, img2, img3, img4, galleryImages ? JSON.stringify(galleryImages) : undefined, template, readTime, status, title_en, desc_en, fullDesc_en, category_en, id]
+      [title, desc, fullDesc, category, author, cleanUrl(img), cleanUrl(img2), cleanUrl(img3), cleanUrl(img4), galleryImages ? JSON.stringify(galleryImages.map(cleanUrl)) : undefined, template, readTime, status, title_en, desc_en, fullDesc_en, category_en, id]
     );
 
     const [rows] = await pool.query('SELECT * FROM articles WHERE id = ?', [id]);
@@ -249,11 +274,11 @@ router.put('/:id', verifyToken, async (req, res) => {
       fullDesc: r.full_content || '',
       category: r.category,
       author: r.author,
-      img: r.img,
-      img2: r.img2 || '',
-      img3: r.img3 || '',
-      img4: r.img4 || '',
-      galleryImages: r.gallery_images ? (typeof r.gallery_images === 'string' ? JSON.parse(r.gallery_images) : r.gallery_images) : [],
+      img: cleanUrl(r.img),
+      img2: cleanUrl(r.img2) || '',
+      img3: cleanUrl(r.img3) || '',
+      img4: cleanUrl(r.img4) || '',
+      galleryImages: cleanGallery(r.gallery_images),
       template: r.template || 'single',
       readTime: r.read_time,
       status: r.status,
