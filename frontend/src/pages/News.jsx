@@ -161,8 +161,8 @@ const newsCSS = `
   .nw-read-btn:hover{background:#f36c1f}
 
   /* ── Filters ── */
-  .nw-filters{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;max-width:1200px;margin:0 auto 40px;padding:0 24px}
-  .nw-fbtn{background:transparent;border:1.5px solid #d5dde6;padding:9px 20px;border-radius:30px;color:#5a6f82;font-weight:600;font-size:13px;cursor:pointer;transition:all .22s;letter-spacing:.3px}
+  .nw-filters{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:1200px;margin:0 auto 48px;padding:40px 24px 0}
+  .nw-fbtn{background:transparent;border:1.5px solid #d5dde6;padding:10px 22px;border-radius:30px;color:#5a6f82;font-weight:600;font-size:13px;cursor:pointer;transition:all .22s;letter-spacing:.3px}
   .nw-fbtn.active,.nw-fbtn:hover{background:#0f2b57;color:#fff;border-color:#0f2b57}
   .nw-fbtn .count{background:rgba(0,0,0,.08);padding:2px 8px;border-radius:10px;font-size:11px;margin-left:6px}
   .nw-fbtn.active .count{background:rgba(255,255,255,.2)}
@@ -343,27 +343,6 @@ export default function News() {
         <p className="rv d2">{t.hero_p}</p>
       </section>
 
-      {/* ═══════ FEATURED ═══════ */}
-      <section className="nw-featured rv su">
-        <div className="nw-feat-card">
-          <div className="nw-feat-img" style={{ backgroundImage: `url('/Banner.jpg')` }}>
-            <div className="nw-feat-badge">{t.feat_badge}</div>
-          </div>
-          <div className="nw-feat-body">
-            <div className="cat">{t.feat_cat}</div>
-            <h2>{t.feat_title}</h2>
-            <div className="meta">
-              <span>{t.feat_meta_1}</span>
-              <span className="dot" />
-              <span>{t.feat_meta_2}</span>
-              <span className="dot" />
-              <span>{t.feat_meta_3}</span>
-            </div>
-            <p>{t.feat_p}</p>
-            <Link to="/news/1" className="nw-read-btn">{t.read_full}</Link>
-          </div>
-        </div>
-      </section>
 
       {/* ═══════ FILTERS ═══════ */}
       <div className="nw-filters rv">
