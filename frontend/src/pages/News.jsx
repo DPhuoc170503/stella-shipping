@@ -184,7 +184,7 @@ const newsCSS = `
   .nw-art-read{color:#8a9bb0;font-size:12px;display:flex;align-items:center;gap:4px}
   .nw-art-body h3{font-size:19px;margin:0 0 10px;color:#0f2b57;line-height:1.4;font-weight:700}
   .nw-art-body h3:hover{color:#f36c1f}
-  .nw-art-body>p{color:#5a6f82;font-size:14px;line-height:1.6;margin:0 0 14px}
+  .nw-art-body>p, .nw-art-desc, .nw-art-desc p{color:#5a6f82;font-size:14px;line-height:1.6;margin:0 0 14px}
   .nw-art-author{font-size:12px;color:#8a9bb0;font-weight:500}
   .nw-art-link{color:#0f2b57;font-weight:700;font-size:13px;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color .2s}
   .nw-art-link:hover{color:#f36c1f}
@@ -375,7 +375,7 @@ export default function News() {
                   <span className="nw-art-read">📖 {a.readTime}</span>
                 </div>
                 <h3>{lang === 'en' && a.title_en ? a.title_en : a.title}</h3>
-                <p>{lang === 'en' && a.desc_en ? a.desc_en : a.desc}</p>
+                <div className="nw-art-desc" dangerouslySetInnerHTML={{ __html: lang === 'en' && a.desc_en ? a.desc_en : a.desc }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span className="nw-art-author">✍️ {a.author}</span>
                   <Link to={`/news/${a.id}`} className="nw-art-link">{t.read_more}</Link>

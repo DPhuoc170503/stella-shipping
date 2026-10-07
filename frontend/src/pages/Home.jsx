@@ -630,7 +630,7 @@ export default function Home() {
                   </div>
                 </div>
                 <h4>{n.title}</h4>
-                <p>{n.desc}</p>
+                <div dangerouslySetInnerHTML={{ __html: n.desc }} />
                 <a href={n.id ? `/news/${n.id}` : "/news"}>{tt.news_read_more}</a>
               </div>
             </div>

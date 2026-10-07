@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { useArticles } from '../context/ArticlesContext'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 const IMAGES = ['/Banner.jpg', '/Shippinglines.jpg', '/AirFreight.jpg', '/INTERMODA.jpg', '/Logictis.jpg', '/OURRANGE.jpg', '/Chacracter.jpg']
 
@@ -36,6 +38,19 @@ const emptyForm = {
   template: 'single',
   readTime: '3 phút', status: 'draft'
 }
+
+const quillModules = {
+  toolbar: [
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    [{ 'size': ['small', false, 'large', 'huge'] }],
+    ['bold', 'italic', 'underline', 'strike'],
+    [{ 'color': [] }, { 'background': [] }],
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'align': [] }],
+    ['link', 'image', 'video'],
+    ['clean']
+  ]
+};
 
 /* ═══════════════════════════════ CSS ═══════════════════════════════ */
 const adminCSS = `
@@ -178,6 +193,11 @@ const adminCSS = `
     .adm-stats{grid-template-columns:1fr}
     .adm-header{flex-direction:column;align-items:flex-start}
   }
+
+  /* Quill editor overrides */
+  .ql-container { min-height: 250px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; font-family: inherit; font-size: 14px; }
+  .ql-toolbar { border-top-left-radius: 10px; border-top-right-radius: 10px; border-color: #e1e8ef !important; }
+  .ql-container.ql-snow { border-color: #e1e8ef !important; }
 `
 
 /* ═══════════════════ Image Picker Component ═══════════════════ */
@@ -632,26 +652,54 @@ export default function AdminNews() {
                     </div>
                   </div>
 
-                  <div className="adm-form-row">
+                  <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                     <div className="adm-form-group">
                       <label>Mô tả ngắn (VI) *</label>
-                      <textarea value={form.desc} onChange={e => setForm(f => ({ ...f, desc: e.target.value }))} placeholder="Mô tả ngắn (VI)..." rows={3} required />
+                      <ReactQuill 
+                        theme="snow" 
+                        modules={quillModules}
+                        value={form.desc || ''} 
+                        onChange={val => setForm(f => ({ ...f, desc: val }))} 
+                        placeholder="Mô tả ngắn (VI)..." 
+                        style={{ background: '#fff' }}
+                      />
                     </div>
                     <div className="adm-form-group">
                       <label>Mô tả ngắn (EN)</label>
-                      <textarea value={form.desc_en} onChange={e => setForm(f => ({ ...f, desc_en: e.target.value }))} placeholder="Short description (EN)..." rows={3} />
+                      <ReactQuill 
+                        theme="snow" 
+                        modules={quillModules}
+                        value={form.desc_en || ''} 
+                        onChange={val => setForm(f => ({ ...f, desc_en: val }))} 
+                        placeholder="Short description (EN)..." 
+                        style={{ background: '#fff' }}
+                      />
                     </div>
                   </div>
 
                   {form.template !== 'inline' && (
-                    <div className="adm-form-row">
+                    <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                       <div className="adm-form-group">
                         <label>Nội dung chi tiết (VI)</label>
-                        <textarea value={form.fullDesc} onChange={e => setForm(f => ({ ...f, fullDesc: e.target.value }))} placeholder="Nội dung đầy đủ (VI)..." rows={6} />
+                        <ReactQuill 
+                          theme="snow" 
+                          modules={quillModules}
+                          value={form.fullDesc || ''} 
+                          onChange={val => setForm(f => ({ ...f, fullDesc: val }))} 
+                          placeholder="Nội dung đầy đủ (VI)..." 
+                          style={{ background: '#fff' }}
+                        />
                       </div>
                       <div className="adm-form-group">
                         <label>Nội dung chi tiết (EN)</label>
-                        <textarea value={form.fullDesc_en} onChange={e => setForm(f => ({ ...f, fullDesc_en: e.target.value }))} placeholder="Full content (EN)..." rows={6} />
+                        <ReactQuill 
+                          theme="snow" 
+                          modules={quillModules}
+                          value={form.fullDesc_en || ''} 
+                          onChange={val => setForm(f => ({ ...f, fullDesc_en: val }))} 
+                          placeholder="Full content (EN)..." 
+                          style={{ background: '#fff' }}
+                        />
                       </div>
                     </div>
                   )}
@@ -746,23 +794,27 @@ export default function AdminNews() {
 
                             <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
                               {/* Text fields */}
-                              <div className="adm-form-row">
+                              <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                                 <div className="adm-form-group" style={{ marginBottom: 0 }}>
                                   <label>📝 Đoạn văn {idx + 1} (VI)</label>
-                                  <textarea
-                                    value={partsVi[idx] || ''}
-                                    onChange={e => updateFlowPart(idx, e.target.value)}
-                                    rows={4}
+                                  <ReactQuill 
+                                    theme="snow" 
+                                    modules={quillModules}
+                                    value={partsVi[idx] || ''} 
+                                    onChange={val => updateFlowPart(idx, val)} 
                                     placeholder={idx === 0 ? 'Đoạn mở đầu bài viết...' : `Tiếp tục nội dung khối ${idx + 1}...`}
+                                    style={{ background: '#fff' }}
                                   />
                                 </div>
                                 <div className="adm-form-group" style={{ marginBottom: 0 }}>
                                   <label>📝 Đoạn văn {idx + 1} (EN)</label>
-                                  <textarea
-                                    value={partsEn[idx] || ''}
-                                    onChange={e => updateFlowPart(idx, e.target.value, true)}
-                                    rows={4}
+                                  <ReactQuill 
+                                    theme="snow" 
+                                    modules={quillModules}
+                                    value={partsEn[idx] || ''} 
+                                    onChange={val => updateFlowPart(idx, val, true)} 
                                     placeholder={idx === 0 ? 'Opening paragraph (EN)...' : `Continue block ${idx + 1} (EN)...`}
+                                    style={{ background: '#fff' }}
                                   />
                                 </div>
                               </div>
@@ -878,14 +930,14 @@ export default function AdminNews() {
                           <div style={pageBodyStyle}>
                             <p style={previewLabelStyle}>💡 Header bar "STELLA SHIPPING | DANH MỤC" sẽ tự động hiển thị ở đầu trang 1</p>
                             
-                            <div className="adm-form-row" style={{ marginTop: 14 }}>
+                            <div className="adm-form-row" style={{ marginTop: 14, gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung đoạn 1 (VI)</label>
-                                <textarea value={partsVi[0]} onChange={e => updateInlinePart(0, e.target.value)} rows={5} placeholder="Đoạn giới thiệu bài viết, nằm bên trên ảnh chính..." />
+                                <ReactQuill theme="snow" modules={quillModules} value={partsVi[0] || ''} onChange={val => updateInlinePart(0, val)} placeholder="Đoạn giới thiệu bài viết, nằm bên trên ảnh chính..." style={{ background: '#fff' }} />
                               </div>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung đoạn 1 (EN)</label>
-                                <textarea value={partsEn[0]} onChange={e => updateInlinePart(0, e.target.value, true)} rows={5} placeholder="Introduction paragraph (EN)..." />
+                                <ReactQuill theme="snow" modules={quillModules} value={partsEn[0] || ''} onChange={val => updateInlinePart(0, val, true)} placeholder="Introduction paragraph (EN)..." style={{ background: '#fff' }} />
                               </div>
                             </div>
                             
@@ -906,14 +958,14 @@ export default function AdminNews() {
                               <ImagePicker value={form.img2} onChange={v => setForm(f => ({ ...f, img2: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">1</span> Ảnh đầu trang 2</>} />
                             </div>
                             
-                            <div className="adm-form-row">
+                            <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 2 (VI)</label>
-                                <textarea value={partsVi[1]} onChange={e => updateInlinePart(1, e.target.value)} rows={5} placeholder="Nội dung phân tích chính, nằm bên dưới ảnh đầu trang 2..." />
+                                <ReactQuill theme="snow" modules={quillModules} value={partsVi[1] || ''} onChange={val => updateInlinePart(1, val)} placeholder="Nội dung phân tích chính, nằm bên dưới ảnh đầu trang 2..." style={{ background: '#fff' }} />
                               </div>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 2 (EN)</label>
-                                <textarea value={partsEn[1]} onChange={e => updateInlinePart(1, e.target.value, true)} rows={5} placeholder="Main analysis content (EN)..." />
+                                <ReactQuill theme="snow" modules={quillModules} value={partsEn[1] || ''} onChange={val => updateInlinePart(1, val, true)} placeholder="Main analysis content (EN)..." style={{ background: '#fff' }} />
                               </div>
                             </div>
                           </div>
@@ -932,14 +984,14 @@ export default function AdminNews() {
                               <ImagePicker value={form.img3} onChange={v => setForm(f => ({ ...f, img3: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">2</span> Ảnh đầu trang 3</>} />
                             </div>
                             
-                            <div className="adm-form-row">
+                            <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 3 (VI)</label>
-                                <textarea value={partsVi[2]} onChange={e => updateInlinePart(2, e.target.value)} rows={5} placeholder="Phân tích chi tiết, ý nghĩa..." />
+                                <ReactQuill theme="snow" modules={quillModules} value={partsVi[2] || ''} onChange={val => updateInlinePart(2, val)} placeholder="Phân tích chi tiết, ý nghĩa..." style={{ background: '#fff' }} />
                               </div>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 3 (EN)</label>
-                                <textarea value={partsEn[2]} onChange={e => updateInlinePart(2, e.target.value, true)} rows={5} placeholder="Detailed analysis (EN)..." />
+                                <ReactQuill theme="snow" modules={quillModules} value={partsEn[2] || ''} onChange={val => updateInlinePart(2, val, true)} placeholder="Detailed analysis (EN)..." style={{ background: '#fff' }} />
                               </div>
                             </div>
                             
@@ -948,14 +1000,14 @@ export default function AdminNews() {
                               
                               <ImagePicker value={form.img4} onChange={v => setForm(f => ({ ...f, img4: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">3</span> Ảnh bổ sung trong trang 3</>} />
                               
-                              <div className="adm-form-row" style={{ marginTop: 16 }}>
+                              <div className="adm-form-row" style={{ marginTop: 16, gridTemplateColumns: '1fr', gap: '24px' }}>
                                 <div className="adm-form-group">
                                   <label>📝 Đoạn kết luận / Nguồn (VI)</label>
-                                  <textarea value={partsVi[3]} onChange={e => updateInlinePart(3, e.target.value)} rows={4} placeholder="Nguồn tham khảo, ghi chú biên tập, kết luận..." />
+                                  <ReactQuill theme="snow" modules={quillModules} value={partsVi[3] || ''} onChange={val => updateInlinePart(3, val)} placeholder="Nguồn tham khảo, ghi chú biên tập, kết luận..." style={{ background: '#fff' }} />
                                 </div>
                                 <div className="adm-form-group">
                                   <label>📝 Đoạn kết luận / Nguồn (EN)</label>
-                                  <textarea value={partsEn[3]} onChange={e => updateInlinePart(3, e.target.value, true)} rows={4} placeholder="Sources, editor notes, conclusion (EN)..." />
+                                  <ReactQuill theme="snow" modules={quillModules} value={partsEn[3] || ''} onChange={val => updateInlinePart(3, val, true)} placeholder="Sources, editor notes, conclusion (EN)..." style={{ background: '#fff' }} />
                                 </div>
                               </div>
                             </div>

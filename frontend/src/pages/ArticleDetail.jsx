@@ -108,7 +108,7 @@ export default function ArticleDetail() {
       {/* ═══════ BODY ═══════ */}
       <div className="dt-container">
         <div className="dt-content">
-          <p className="dt-lead">{article.desc}</p>
+          <div className="dt-lead" dangerouslySetInnerHTML={{ __html: article.desc }} />
 
           {/* ══════ TEMPLATE: SINGLE ══════ */}
           {template === 'single' && (
