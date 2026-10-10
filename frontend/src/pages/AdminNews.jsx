@@ -49,7 +49,13 @@ const quillModules = {
     [{ 'align': [] }],
     ['link', 'image', 'video'],
     ['clean']
-  ]
+  ],
+  keyboard: {
+    bindings: {}
+  },
+  clipboard: {
+    matchVisual: false
+  }
 };
 
 /* ═══════════════════════════════ CSS ═══════════════════════════════ */
@@ -196,6 +202,9 @@ const adminCSS = `
 
   /* Quill editor overrides */
   .ql-container { min-height: 250px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; font-family: inherit; font-size: 14px; }
+  .ql-editor { min-height: 200px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word; }
+  .ql-editor p { margin-bottom: 0.5em; }
+  .ql-editor br { display: block; content: ''; margin-top: 0; }
   .ql-toolbar { border-top-left-radius: 10px; border-top-right-radius: 10px; border-color: #e1e8ef !important; }
   .ql-container.ql-snow { border-color: #e1e8ef !important; }
 `
