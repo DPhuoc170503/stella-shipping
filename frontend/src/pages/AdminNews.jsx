@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useArticles } from '../context/ArticlesContext'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import ReactQuill from 'react-quill-new'
+import 'react-quill-new/dist/quill.snow.css'
 
 const IMAGES = ['/Banner.jpg', '/Shippinglines.jpg', '/AirFreight.jpg', '/INTERMODA.jpg', '/Logictis.jpg', '/OURRANGE.jpg', '/Chacracter.jpg']
 
@@ -45,7 +45,7 @@ const quillModules = {
     [{ 'size': ['small', false, 'large', 'huge'] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'color': [] }, { 'background': [] }],
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
     [{ 'align': [] }],
     ['link', 'image', 'video'],
     ['clean']
@@ -323,7 +323,7 @@ export default function AdminNews() {
   const handleSave = (e, targetStatus) => {
     if (e) e.preventDefault()
     if (!form.title.trim() || !form.desc.trim()) return alert('Vui lòng điền tiêu đề và mô tả.')
-    
+
     // Sử dụng targetStatus được truyền vào, hoặc giữ nguyên form.status nếu không có
     const payload = { ...form }
     if (targetStatus) {
@@ -355,8 +355,8 @@ export default function AdminNews() {
   /* ── Template label helper ── */
   const getTemplateBadge = (tpl) => {
     switch (tpl) {
-      case 'inline': return <span className="adm-tpl-badge adm-tpl-inline" style={{background: 'rgba(34,197,94,.08)', color: '#16a34a'}}>📄 Báo cáo</span>
-      case 'flow': return <span className="adm-tpl-badge adm-tpl-inline" style={{background: 'rgba(99,102,241,.08)', color: '#4f46e5'}}>📰 Bài dài</span>
+      case 'inline': return <span className="adm-tpl-badge adm-tpl-inline" style={{ background: 'rgba(34,197,94,.08)', color: '#16a34a' }}>📄 Báo cáo</span>
+      case 'flow': return <span className="adm-tpl-badge adm-tpl-inline" style={{ background: 'rgba(99,102,241,.08)', color: '#4f46e5' }}>📰 Bài dài</span>
       default: return <span className="adm-tpl-badge adm-tpl-single">🖼️ Cơ bản</span>
     }
   }
@@ -378,7 +378,7 @@ export default function AdminNews() {
     while (parts.length < 4) parts.push('');
     return parts;
   }
-  
+
   const updateInlinePart = (index, value, isEn = false) => {
     const key = isEn ? 'fullDesc_en' : 'fullDesc';
     const parts = getInlineParts(form[key]);
@@ -655,23 +655,23 @@ export default function AdminNews() {
                   <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                     <div className="adm-form-group">
                       <label>Mô tả ngắn (VI) *</label>
-                      <ReactQuill 
-                        theme="snow" 
+                      <ReactQuill
+                        theme="snow"
                         modules={quillModules}
-                        value={form.desc || ''} 
-                        onChange={val => setForm(f => ({ ...f, desc: val }))} 
-                        placeholder="Mô tả ngắn (VI)..." 
+                        value={form.desc || ''}
+                        onChange={val => setForm(f => ({ ...f, desc: val }))}
+                        placeholder="Mô tả ngắn (VI)..."
                         style={{ background: '#fff' }}
                       />
                     </div>
                     <div className="adm-form-group">
                       <label>Mô tả ngắn (EN)</label>
-                      <ReactQuill 
-                        theme="snow" 
+                      <ReactQuill
+                        theme="snow"
                         modules={quillModules}
-                        value={form.desc_en || ''} 
-                        onChange={val => setForm(f => ({ ...f, desc_en: val }))} 
-                        placeholder="Short description (EN)..." 
+                        value={form.desc_en || ''}
+                        onChange={val => setForm(f => ({ ...f, desc_en: val }))}
+                        placeholder="Short description (EN)..."
                         style={{ background: '#fff' }}
                       />
                     </div>
@@ -681,23 +681,23 @@ export default function AdminNews() {
                     <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                       <div className="adm-form-group">
                         <label>Nội dung chi tiết (VI)</label>
-                        <ReactQuill 
-                          theme="snow" 
+                        <ReactQuill
+                          theme="snow"
                           modules={quillModules}
-                          value={form.fullDesc || ''} 
-                          onChange={val => setForm(f => ({ ...f, fullDesc: val }))} 
-                          placeholder="Nội dung đầy đủ (VI)..." 
+                          value={form.fullDesc || ''}
+                          onChange={val => setForm(f => ({ ...f, fullDesc: val }))}
+                          placeholder="Nội dung đầy đủ (VI)..."
                           style={{ background: '#fff' }}
                         />
                       </div>
                       <div className="adm-form-group">
                         <label>Nội dung chi tiết (EN)</label>
-                        <ReactQuill 
-                          theme="snow" 
+                        <ReactQuill
+                          theme="snow"
                           modules={quillModules}
-                          value={form.fullDesc_en || ''} 
-                          onChange={val => setForm(f => ({ ...f, fullDesc_en: val }))} 
-                          placeholder="Full content (EN)..." 
+                          value={form.fullDesc_en || ''}
+                          onChange={val => setForm(f => ({ ...f, fullDesc_en: val }))}
+                          placeholder="Full content (EN)..."
                           style={{ background: '#fff' }}
                         />
                       </div>
@@ -797,22 +797,22 @@ export default function AdminNews() {
                               <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                                 <div className="adm-form-group" style={{ marginBottom: 0 }}>
                                   <label>📝 Đoạn văn {idx + 1} (VI)</label>
-                                  <ReactQuill 
-                                    theme="snow" 
+                                  <ReactQuill
+                                    theme="snow"
                                     modules={quillModules}
-                                    value={partsVi[idx] || ''} 
-                                    onChange={val => updateFlowPart(idx, val)} 
+                                    value={partsVi[idx] || ''}
+                                    onChange={val => updateFlowPart(idx, val)}
                                     placeholder={idx === 0 ? 'Đoạn mở đầu bài viết...' : `Tiếp tục nội dung khối ${idx + 1}...`}
                                     style={{ background: '#fff' }}
                                   />
                                 </div>
                                 <div className="adm-form-group" style={{ marginBottom: 0 }}>
                                   <label>📝 Đoạn văn {idx + 1} (EN)</label>
-                                  <ReactQuill 
-                                    theme="snow" 
+                                  <ReactQuill
+                                    theme="snow"
                                     modules={quillModules}
-                                    value={partsEn[idx] || ''} 
-                                    onChange={val => updateFlowPart(idx, val, true)} 
+                                    value={partsEn[idx] || ''}
+                                    onChange={val => updateFlowPart(idx, val, true)}
                                     placeholder={idx === 0 ? 'Opening paragraph (EN)...' : `Continue block ${idx + 1} (EN)...`}
                                     style={{ background: '#fff' }}
                                   />
@@ -875,7 +875,7 @@ export default function AdminNews() {
                   {form.template === 'inline' && (() => {
                     const partsVi = getInlineParts(form.fullDesc);
                     const partsEn = getInlineParts(form.fullDesc_en);
-                    
+
                     const pageHeaderStyle = {
                       background: '#0f2b57',
                       color: '#fff',
@@ -911,7 +911,7 @@ export default function AdminNews() {
                       marginTop: 4,
                       marginBottom: 0
                     };
-                    
+
                     return (
                       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
                         <div style={{ background: 'linear-gradient(135deg, #0f2b57 0%, #1a3a6a 100%)', color: '#fff', padding: '16px 20px', borderRadius: 10, textAlign: 'center' }}>
@@ -929,7 +929,7 @@ export default function AdminNews() {
                           </div>
                           <div style={pageBodyStyle}>
                             <p style={previewLabelStyle}>💡 Header bar "STELLA SHIPPING | DANH MỤC" sẽ tự động hiển thị ở đầu trang 1</p>
-                            
+
                             <div className="adm-form-row" style={{ marginTop: 14, gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung đoạn 1 (VI)</label>
@@ -940,7 +940,7 @@ export default function AdminNews() {
                                 <ReactQuill theme="snow" modules={quillModules} value={partsEn[0] || ''} onChange={val => updateInlinePart(0, val, true)} placeholder="Introduction paragraph (EN)..." style={{ background: '#fff' }} />
                               </div>
                             </div>
-                            
+
                             <p style={{ ...previewLabelStyle, marginTop: 12 }}>🖼️ Ảnh đại diện (chính) chỉ hiển thị bên ngoài danh sách tin tức, không hiện trong bài viết</p>
                           </div>
                         </div>
@@ -953,11 +953,11 @@ export default function AdminNews() {
                           </div>
                           <div style={pageBodyStyle}>
                             <p style={previewLabelStyle}>🖼️ Ảnh bên dưới sẽ hiển thị full-width ở đầu trang 2 (không padding)</p>
-                            
+
                             <div style={{ marginTop: 12, marginBottom: 16 }}>
                               <ImagePicker value={form.img2} onChange={v => setForm(f => ({ ...f, img2: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">1</span> Ảnh đầu trang 2</>} />
                             </div>
-                            
+
                             <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 2 (VI)</label>
@@ -979,11 +979,11 @@ export default function AdminNews() {
                           </div>
                           <div style={pageBodyStyle}>
                             <p style={previewLabelStyle}>🖼️ Ảnh bên dưới sẽ hiển thị full-width ở đầu trang 3</p>
-                            
+
                             <div style={{ marginTop: 12, marginBottom: 16 }}>
                               <ImagePicker value={form.img3} onChange={v => setForm(f => ({ ...f, img3: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">2</span> Ảnh đầu trang 3</>} />
                             </div>
-                            
+
                             <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 3 (VI)</label>
@@ -994,12 +994,12 @@ export default function AdminNews() {
                                 <ReactQuill theme="snow" modules={quillModules} value={partsEn[2] || ''} onChange={val => updateInlinePart(2, val, true)} placeholder="Detailed analysis (EN)..." style={{ background: '#fff' }} />
                               </div>
                             </div>
-                            
+
                             <div style={{ borderTop: '1px dashed #d5dde6', paddingTop: 16, marginTop: 8 }}>
                               <p style={{ fontSize: 12, color: '#7b8a9a', margin: '0 0 12px', fontWeight: 600 }}>📎 Ảnh bổ sung + Đoạn kết luận (tuỳ chọn)</p>
-                              
+
                               <ImagePicker value={form.img4} onChange={v => setForm(f => ({ ...f, img4: v }))} images={IMAGES} mediaFiles={mediaFiles} apiUrl={API_URL} label={<><span className="num">3</span> Ảnh bổ sung trong trang 3</>} />
-                              
+
                               <div className="adm-form-row" style={{ marginTop: 16, gridTemplateColumns: '1fr', gap: '24px' }}>
                                 <div className="adm-form-group">
                                   <label>📝 Đoạn kết luận / Nguồn (VI)</label>
