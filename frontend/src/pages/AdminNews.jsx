@@ -3,6 +3,10 @@ import { useArticles } from '../context/ArticlesContext'
 import ReactQuill from 'react-quill-new'
 import 'react-quill-new/dist/quill.snow.css'
 
+// Wrapper to fix Enter key issue: react-quill-new uses getSemanticHTML() by default
+// which causes content mismatch on each keystroke, preventing new lines.
+const RichEditor = (props) => <ReactQuill useSemanticHTML={false} {...props} />
+
 const IMAGES = ['/Banner.jpg', '/Shippinglines.jpg', '/AirFreight.jpg', '/INTERMODA.jpg', '/Logictis.jpg', '/OURRANGE.jpg', '/Chacracter.jpg']
 
 const TEMPLATES = [
@@ -50,9 +54,7 @@ const quillModules = {
     ['link', 'image', 'video'],
     ['clean']
   ],
-  keyboard: {
-    bindings: {}
-  },
+
   clipboard: {
     matchVisual: false
   }
@@ -664,7 +666,7 @@ export default function AdminNews() {
                   <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                     <div className="adm-form-group">
                       <label>Mô tả ngắn (VI) *</label>
-                      <ReactQuill
+                      <RichEditor
                         theme="snow"
                         modules={quillModules}
                         value={form.desc || ''}
@@ -675,7 +677,7 @@ export default function AdminNews() {
                     </div>
                     <div className="adm-form-group">
                       <label>Mô tả ngắn (EN)</label>
-                      <ReactQuill
+                      <RichEditor
                         theme="snow"
                         modules={quillModules}
                         value={form.desc_en || ''}
@@ -690,7 +692,7 @@ export default function AdminNews() {
                     <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                       <div className="adm-form-group">
                         <label>Nội dung chi tiết (VI)</label>
-                        <ReactQuill
+                        <RichEditor
                           theme="snow"
                           modules={quillModules}
                           value={form.fullDesc || ''}
@@ -701,7 +703,7 @@ export default function AdminNews() {
                       </div>
                       <div className="adm-form-group">
                         <label>Nội dung chi tiết (EN)</label>
-                        <ReactQuill
+                        <RichEditor
                           theme="snow"
                           modules={quillModules}
                           value={form.fullDesc_en || ''}
@@ -806,7 +808,7 @@ export default function AdminNews() {
                               <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                                 <div className="adm-form-group" style={{ marginBottom: 0 }}>
                                   <label>📝 Đoạn văn {idx + 1} (VI)</label>
-                                  <ReactQuill
+                                  <RichEditor
                                     theme="snow"
                                     modules={quillModules}
                                     value={partsVi[idx] || ''}
@@ -817,7 +819,7 @@ export default function AdminNews() {
                                 </div>
                                 <div className="adm-form-group" style={{ marginBottom: 0 }}>
                                   <label>📝 Đoạn văn {idx + 1} (EN)</label>
-                                  <ReactQuill
+                                  <RichEditor
                                     theme="snow"
                                     modules={quillModules}
                                     value={partsEn[idx] || ''}
@@ -942,11 +944,11 @@ export default function AdminNews() {
                             <div className="adm-form-row" style={{ marginTop: 14, gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung đoạn 1 (VI)</label>
-                                <ReactQuill theme="snow" modules={quillModules} value={partsVi[0] || ''} onChange={val => updateInlinePart(0, val)} placeholder="Đoạn giới thiệu bài viết, nằm bên trên ảnh chính..." style={{ background: '#fff' }} />
+                                <RichEditor theme="snow" modules={quillModules} value={partsVi[0] || ''} onChange={val => updateInlinePart(0, val)} placeholder="Đoạn giới thiệu bài viết, nằm bên trên ảnh chính..." style={{ background: '#fff' }} />
                               </div>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung đoạn 1 (EN)</label>
-                                <ReactQuill theme="snow" modules={quillModules} value={partsEn[0] || ''} onChange={val => updateInlinePart(0, val, true)} placeholder="Introduction paragraph (EN)..." style={{ background: '#fff' }} />
+                                <RichEditor theme="snow" modules={quillModules} value={partsEn[0] || ''} onChange={val => updateInlinePart(0, val, true)} placeholder="Introduction paragraph (EN)..." style={{ background: '#fff' }} />
                               </div>
                             </div>
 
@@ -970,11 +972,11 @@ export default function AdminNews() {
                             <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 2 (VI)</label>
-                                <ReactQuill theme="snow" modules={quillModules} value={partsVi[1] || ''} onChange={val => updateInlinePart(1, val)} placeholder="Nội dung phân tích chính, nằm bên dưới ảnh đầu trang 2..." style={{ background: '#fff' }} />
+                                <RichEditor theme="snow" modules={quillModules} value={partsVi[1] || ''} onChange={val => updateInlinePart(1, val)} placeholder="Nội dung phân tích chính, nằm bên dưới ảnh đầu trang 2..." style={{ background: '#fff' }} />
                               </div>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 2 (EN)</label>
-                                <ReactQuill theme="snow" modules={quillModules} value={partsEn[1] || ''} onChange={val => updateInlinePart(1, val, true)} placeholder="Main analysis content (EN)..." style={{ background: '#fff' }} />
+                                <RichEditor theme="snow" modules={quillModules} value={partsEn[1] || ''} onChange={val => updateInlinePart(1, val, true)} placeholder="Main analysis content (EN)..." style={{ background: '#fff' }} />
                               </div>
                             </div>
                           </div>
@@ -996,11 +998,11 @@ export default function AdminNews() {
                             <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 3 (VI)</label>
-                                <ReactQuill theme="snow" modules={quillModules} value={partsVi[2] || ''} onChange={val => updateInlinePart(2, val)} placeholder="Phân tích chi tiết, ý nghĩa..." style={{ background: '#fff' }} />
+                                <RichEditor theme="snow" modules={quillModules} value={partsVi[2] || ''} onChange={val => updateInlinePart(2, val)} placeholder="Phân tích chi tiết, ý nghĩa..." style={{ background: '#fff' }} />
                               </div>
                               <div className="adm-form-group">
                                 <label>📝 Nội dung trang 3 (EN)</label>
-                                <ReactQuill theme="snow" modules={quillModules} value={partsEn[2] || ''} onChange={val => updateInlinePart(2, val, true)} placeholder="Detailed analysis (EN)..." style={{ background: '#fff' }} />
+                                <RichEditor theme="snow" modules={quillModules} value={partsEn[2] || ''} onChange={val => updateInlinePart(2, val, true)} placeholder="Detailed analysis (EN)..." style={{ background: '#fff' }} />
                               </div>
                             </div>
 
@@ -1012,11 +1014,11 @@ export default function AdminNews() {
                               <div className="adm-form-row" style={{ marginTop: 16, gridTemplateColumns: '1fr', gap: '24px' }}>
                                 <div className="adm-form-group">
                                   <label>📝 Đoạn kết luận / Nguồn (VI)</label>
-                                  <ReactQuill theme="snow" modules={quillModules} value={partsVi[3] || ''} onChange={val => updateInlinePart(3, val)} placeholder="Nguồn tham khảo, ghi chú biên tập, kết luận..." style={{ background: '#fff' }} />
+                                  <RichEditor theme="snow" modules={quillModules} value={partsVi[3] || ''} onChange={val => updateInlinePart(3, val)} placeholder="Nguồn tham khảo, ghi chú biên tập, kết luận..." style={{ background: '#fff' }} />
                                 </div>
                                 <div className="adm-form-group">
                                   <label>📝 Đoạn kết luận / Nguồn (EN)</label>
-                                  <ReactQuill theme="snow" modules={quillModules} value={partsEn[3] || ''} onChange={val => updateInlinePart(3, val, true)} placeholder="Sources, editor notes, conclusion (EN)..." style={{ background: '#fff' }} />
+                                  <RichEditor theme="snow" modules={quillModules} value={partsEn[3] || ''} onChange={val => updateInlinePart(3, val, true)} placeholder="Sources, editor notes, conclusion (EN)..." style={{ background: '#fff' }} />
                                 </div>
                               </div>
                             </div>
