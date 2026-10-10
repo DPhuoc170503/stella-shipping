@@ -14,6 +14,30 @@ export function AuthProvider({ children }) {
     }
   })
 
+  // Validate stored token on mount — handles stale tokens after account changes
+  useEffect(() => {
+    const validateToken = async () => {
+      const token = localStorage.getItem('adminToken')
+      if (!user || !token) return
+
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'https://stella-shipping.onrender.com'
+        const res = await fetch(`${API_URL}/api/auth/verify`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        if (!res.ok) {
+          // Token invalid or user no longer exists — force logout
+          setUser(null)
+          localStorage.removeItem(STORAGE_KEY)
+          localStorage.removeItem('adminToken')
+        }
+      } catch {
+        // Network error — keep user logged in (might be offline)
+      }
+    }
+    validateToken()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (user) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(user))

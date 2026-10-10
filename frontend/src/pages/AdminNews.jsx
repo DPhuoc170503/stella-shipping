@@ -1,11 +1,62 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useArticles } from '../context/ArticlesContext'
 import ReactQuill from 'react-quill-new'
 import 'react-quill-new/dist/quill.snow.css'
 
-// Wrapper to fix Enter key issue: react-quill-new uses getSemanticHTML() by default
-// which causes content mismatch on each keystroke, preventing new lines.
-const RichEditor = (props) => <ReactQuill useSemanticHTML={false} {...props} />
+// A completely uncontrolled editor wrapper to guarantee cursor stability.
+// ReactQuill often jumps the cursor to the top if the `value` prop is updated during typing.
+// This component manages its own state and only forces an update if the external value truly changes.
+// A completely uncontrolled editor wrapper to guarantee cursor stability.
+// ReactQuill often jumps the cursor to the top if props change during typing.
+function SafeEditor({ value, onChange, style, ...rest }) {
+  const quillRef = useRef(null)
+  const lastEmittedValue = useRef(value || '')
+  const onChangeRef = useRef(onChange)
+  const [isFocused, setIsFocused] = useState(false)
+
+  useEffect(() => {
+    onChangeRef.current = onChange
+  }, [onChange])
+
+  useEffect(() => {
+    if (!isFocused && value !== lastEmittedValue.current && quillRef.current) {
+      const editor = quillRef.current.getEditor()
+      if (editor && value !== editor.root.innerHTML) {
+        editor.clipboard.dangerouslyPasteHTML(value || '')
+        lastEmittedValue.current = value || ''
+      }
+    }
+  }, [value, isFocused])
+
+  const handleChange = useCallback((val) => {
+    lastEmittedValue.current = val
+    if (onChangeRef.current) onChangeRef.current(val)
+  }, [])
+
+  const handleFocus = useCallback(() => setIsFocused(true), [])
+  const handleBlur = useCallback((range, source, editor) => {
+    setIsFocused(false)
+    const html = editor.getHTML()
+    lastEmittedValue.current = html
+    if (onChangeRef.current) onChangeRef.current(html)
+  }, [])
+
+  return (
+    <div style={style}>
+      <ReactQuill
+        ref={quillRef}
+        useSemanticHTML={false}
+        defaultValue={value || ''}
+        onChange={handleChange}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...rest}
+      />
+    </div>
+  )
+}
+
+const RichEditor = SafeEditor;
 
 const IMAGES = ['/Banner.jpg', '/Shippinglines.jpg', '/AirFreight.jpg', '/INTERMODA.jpg', '/Logictis.jpg', '/OURRANGE.jpg', '/Chacracter.jpg']
 
@@ -206,7 +257,6 @@ const adminCSS = `
   .ql-container { min-height: 250px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; font-family: inherit; font-size: 14px; }
   .ql-editor { min-height: 200px; overflow-y: auto; white-space: pre-wrap; word-wrap: break-word; }
   .ql-editor p { margin-bottom: 0.5em; }
-  .ql-editor br { display: block; content: ''; margin-top: 0; }
   .ql-toolbar { border-top-left-radius: 10px; border-top-right-radius: 10px; border-color: #e1e8ef !important; }
   .ql-container.ql-snow { border-color: #e1e8ef !important; }
 `
@@ -392,33 +442,47 @@ export default function AdminNews() {
 
   const updateInlinePart = (index, value, isEn = false) => {
     const key = isEn ? 'fullDesc_en' : 'fullDesc';
-    const parts = getInlineParts(form[key]);
-    parts[index] = value;
-    setForm(f => ({ ...f, [key]: parts.join('<!-- SPLIT -->') }));
+    setForm(f => {
+      const parts = getInlineParts(f[key]);
+      parts[index] = value;
+      return { ...f, [key]: parts.join('<!-- SPLIT -->') };
+    });
   }
 
   /* ── Flow template helpers ── */
-  const getFlowParts = (text) => {
-    if (!text) return [''];
-    return text.split('<!-- SPLIT -->');
+  const getFlowParts = (text, minCount = 1) => {
+    if (!text) {
+      const arr = [];
+      for (let i = 0; i < minCount; i++) arr.push('');
+      return arr.length ? arr : [''];
+    }
+    const parts = text.split('<!-- SPLIT -->');
+    while (parts.length < minCount) parts.push('');
+    return parts;
   }
   const updateFlowPart = (index, value, isEn = false) => {
     const key = isEn ? 'fullDesc_en' : 'fullDesc';
-    const parts = getFlowParts(form[key]);
-    parts[index] = value;
-    setForm(f => ({ ...f, [key]: parts.join('<!-- SPLIT -->') }));
+    setForm(f => {
+      const parts = getFlowParts(f[key], index + 1);
+      parts[index] = value;
+      return { ...f, [key]: parts.join('<!-- SPLIT -->') };
+    });
   }
   const addFlowPart = (isEn = false) => {
     const key = isEn ? 'fullDesc_en' : 'fullDesc';
-    const parts = getFlowParts(form[key]);
-    parts.push('');
-    setForm(f => ({ ...f, [key]: parts.join('<!-- SPLIT -->') }));
+    setForm(f => {
+      const parts = getFlowParts(f[key]);
+      parts.push('');
+      return { ...f, [key]: parts.join('<!-- SPLIT -->') };
+    });
   }
   const removeFlowPart = (index, isEn = false) => {
     const key = isEn ? 'fullDesc_en' : 'fullDesc';
-    const parts = getFlowParts(form[key]);
-    parts.splice(index, 1);
-    setForm(f => ({ ...f, [key]: parts.join('<!-- SPLIT -->') }));
+    setForm(f => {
+      const parts = getFlowParts(f[key]);
+      parts.splice(index, 1);
+      return { ...f, [key]: parts.join('<!-- SPLIT -->') };
+    });
   }
 
   /* ── Gallery/Flow image helpers ── */
@@ -688,7 +752,7 @@ export default function AdminNews() {
                     </div>
                   </div>
 
-                  {form.template !== 'inline' && (
+                  {form.template !== 'inline' && form.template !== 'flow' && (
                     <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                       <div className="adm-form-group">
                         <label>Nội dung chi tiết (VI)</label>
@@ -788,22 +852,51 @@ export default function AdminNews() {
 
                         {/* Dynamic blocks */}
                         {Array.from({ length: blockCount }).map((_, idx) => (
-                          <div key={idx} style={{ border: '1.5px solid #e1e8ef', borderRadius: 10, overflow: 'hidden' }}>
-                            {/* Block header */}
-                            <div style={{ background: '#f8fafc', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #e1e8ef' }}>
-                              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <span style={{ background: '#4f46e5', color: '#fff', width: 24, height: 24, borderRadius: 6, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 800 }}>{idx + 1}</span>
-                                <span style={{ fontSize: 13, fontWeight: 700, color: '#0f2b57' }}>Khối nội dung {idx + 1}</span>
+                          <div key={idx}>
+                            {/* Block header (styled like Báo cáo 3 trang) */}
+                            <div style={{
+                              background: '#0f2b57',
+                              color: '#fff',
+                              padding: '12px 20px',
+                              borderRadius: '10px 10px 0 0',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              fontSize: 13,
+                              fontWeight: 700,
+                              letterSpacing: 0.5
+                            }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                <span style={{
+                                  background: '#f36c1f',
+                                  color: '#fff',
+                                  fontSize: 10,
+                                  fontWeight: 800,
+                                  padding: '3px 10px',
+                                  borderRadius: 6,
+                                  letterSpacing: 0.5
+                                }}>KHỐI {idx + 1}</span>
+                                <span>Nội dung bài viết</span>
                               </div>
                               {blockCount > 1 && (
                                 <button type="button" onClick={() => { removeFlowPart(idx); removeFlowPart(idx, true); if (flowImgs[idx]) removeFlowImage(idx); }}
-                                  style={{ background: 'rgba(239,68,68,.08)', border: '1px solid rgba(239,68,68,.2)', color: '#dc2626', borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>
+                                  style={{ background: 'rgba(239,68,68,.15)', border: '1px solid rgba(239,68,68,.3)', color: '#ff8a8a', borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>
                                   ✕ Xoá khối
                                 </button>
                               )}
                             </div>
 
-                            <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                            {/* Block body */}
+                            <div style={{
+                              background: '#fff',
+                              border: '1.5px solid #e1e8ef',
+                              borderTop: 'none',
+                              borderRadius: '0 0 10px 10px',
+                              padding: '20px',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: 16
+                            }}>
                               {/* Text fields */}
                               <div className="adm-form-row" style={{ gridTemplateColumns: '1fr', gap: '24px' }}>
                                 <div className="adm-form-group" style={{ marginBottom: 0 }}>

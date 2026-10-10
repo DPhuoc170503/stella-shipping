@@ -50,4 +50,31 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// GET /api/auth/verify — validate stored token
+router.get('/verify', async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ success: false, error: 'Token không hợp lệ.' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, JWT_SECRET);
+
+    // Check user still exists in DB
+    const [rows] = await pool.query(
+      'SELECT id, username, name, role FROM admin_users WHERE id = ?',
+      [decoded.id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(401).json({ success: false, error: 'Tài khoản không tồn tại.' });
+    }
+
+    return res.json({ success: true, user: rows[0] });
+  } catch (err) {
+    return res.status(401).json({ success: false, error: 'Token hết hạn hoặc không hợp lệ.' });
+  }
+});
+
 module.exports = router;
